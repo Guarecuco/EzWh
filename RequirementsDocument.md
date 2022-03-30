@@ -19,17 +19,27 @@ Version: 0.0
 	+ [Context Diagram](#context-diagram)
 	+ [Interfaces](#interfaces) 
 	
+- [Contents](#contents)
+- [Informal description](#informal-description)
+- [Stakeholders](#stakeholders)
+- [Context Diagram and interfaces](#context-diagram-and-interfaces)
+	- [Context Diagram](#context-diagram)
+	- [Interfaces](#interfaces)
 - [Stories and personas](#stories-and-personas)
 - [Functional and non functional requirements](#functional-and-non-functional-requirements)
-	+ [Functional Requirements](#functional-requirements)
-	+ [Non functional requirements](#non-functional-requirements)
+	- [Functional Requirements](#functional-requirements)
+	- [Non Functional Requirements](#non-functional-requirements)
 - [Use case diagram and use cases](#use-case-diagram-and-use-cases)
-	+ [Use case diagram](#use-case-diagram)
-	+ [Use cases](#use-cases)
-    	+ [Relevant scenarios](#relevant-scenarios)
+	- [Use case diagram](#use-case-diagram)
+		- [Use case 1, UC1](#use-case-1-uc1)
+				- [Scenario 1.1](#scenario-11)
+				- [Scenario 1.2](#scenario-12)
+				- [Scenario 1.x](#scenario-1x)
+		- [Use case 2, UC2](#use-case-2-uc2)
+		- [Use case x, UCx](#use-case-x-ucx)
 - [Glossary](#glossary)
-- [System design](#system-design)
-- [Deployment diagram](#deployment-diagram)
+- [System Design](#system-design)
+- [Deployment Diagram](#deployment-diagram)
 
 # Informal description
 Medium companies and retailers need a simple application to manage the relationship with suppliers and the inventory of physical items stocked in a physical warehouse. 
@@ -50,7 +60,22 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 
 | Stakeholder name  | Description | 
 | ----------------- |:-----------:|
-|   Stakeholder x..     |             | 
+|   Managers    |             | 
+|   Suppliers     |             | 
+|   Quality supervisors     |             | 
+|   Retailers     |             | 
+|   Competitors     |             | 
+|   Shipping companies     |             | 
+|   Company's OU     |             | 
+|   local policies     |             | 
+|   Physical organization  |             | 
+|   Pick up area  |             | 
+|   Employees     |             | 
+|   Financial Unit     |             | 
+|   (Company)     |             | 
+
+
+
 
 # Context Diagram and interfaces
 
@@ -96,10 +121,12 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 
 | ID        | Type (efficiency, reliability, ..)           | Description  | Refers to |
 | ------------- |:-------------:| :-----:| -----:|
-|  NFR1     |   |  | |
-|  NFR2     | |  | |
-|  NFR3     | | | |
-| NFRx .. | | | | 
+|  NFR1     | Efficiency  | For a given function in a given context: response time  | |
+|  NFR2     | Availability | Percentage of time the product is / is not available to end user | |
+|  NFR3     | Correctness | Capability to provide intended functionality in ALL cases | |
+|  NFR3     | Usability | Effort needed to learn using the product | |
+|  NFR3     | Security | Access only to authorized users | |
+| Domain | Currency is Euro | | | 
 
 
 # Use case diagram and use cases
