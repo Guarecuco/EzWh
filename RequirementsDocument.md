@@ -8,7 +8,7 @@ Version: 0.0
  
 | Version number | Change |
 | ----------------- |:-----------|
-| | | 
+| 0.1 | | 
 
 
 # Contents
@@ -71,8 +71,10 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 |   Physical organization  |             | 
 |   Pick up area  |             | 
 |   Employees     |             | 
-|   Financial Unit     |             | 
-|   (Company)     |             | 
+|   Financial Unit     |             |
+|   Payment Service    |             |
+|   Administrator     |             | 
+
 
 
 
@@ -91,7 +93,16 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 
 | Actor | Logical Interface | Physical Interface  |
 | ------------- |:-------------:| -----:|
-|   Actor x..     |  |  |
+|   Employee     | GUI | Internet connection, Smartphone/PC |
+|   Manager     | GUI | Internet connection, Smartphone/PC |
+|   Quality supervisor     | GUI | Internet connection, Smartphone/PC  |
+|   Payment service     | APIs | Internet connection |
+|   Organizational unit     | GUI | Internet connection, Smartphone/PC |
+|   Supplier     | GUI | Internet connection, Smartphone/PC  | 
+|   Retailer     | GUI | Internet connection, Smartphone/PC |
+|   IT Administrator     | GUI | Internet connection, Smartphone/PC |
+
+
 
 # Stories and personas
 \<A Persona is a realistic impersonation of an actor. Define here a few personas and describe in plain text how a persona interacts with the system>
@@ -111,9 +122,29 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 
 | ID        | Description  |
 | ------------- |:-------------:| 
-|  FR1     |  |
-|  FR2     |   |
-| FRx..  | | 
+|  FR1     | Manage users  |
+|  FR1.1     | Define a new user, or modify an existing user  |
+|  FR1.2  | Delete a user | 
+|  FR1.3  | List all users | 
+|  FR1.4  | Search a user | 
+|  FR1.5  | Manage roles Authorize access to functions to specific actors according to access roles | 
+|  FR2  | Manage orders | 
+|  FR2.1  | Create/Receive orders | 
+|  FR2.2  | Modify/delete an order | 
+|  FR2.3  | Provide order status |
+|  FR3  | Manage items | 
+|  FR3.1  | Check quality |
+|  FR3.2  | Reject the item |
+|  FR3.3  | Track position | 
+|  FR3.4  | Quantity reports |
+|  FR3.5  | Modify Quantity |
+|  FR3.6  | Search an item |
+|  FR4  | Receive payments | 
+
+
+
+
+
 
 ## Non Functional Requirements
 
@@ -121,7 +152,7 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 
 | ID        | Type (efficiency, reliability, ..)           | Description  | Refers to |
 | ------------- |:-------------:| :-----:| -----:|
-|  NFR1     | Efficiency  | For a given function in a given context: response time  | |
+|  NFR1     | Efficiency  | All functions should complete in < 0.5 sec  | |
 |  NFR2     | Availability | Percentage of time the product is / is not available to end user | |
 |  NFR3     | Correctness | Capability to provide intended functionality in ALL cases | |
 |  NFR3     | Usability | Effort needed to learn using the product | |
