@@ -5,7 +5,7 @@ Version:
 
 
 # Estimation approach
-<Consider the EZWH  project as described in YOUR requirement document, assume that you are going to develop the project INDEPENDENT of the deadlines of the course>
+Consider the EZWH  project as described in YOUR requirement document, assume that you are going to develop the project INDEPENDENT of the deadlines of the course
 # Estimate by product decomposition
 ### 
 |             | Estimate                        |             
@@ -25,7 +25,8 @@ Version:
 Insert here Gantt chart with above activities
 
 # Summary
-<Report here the results of the two estimation approaches. The two estimates may differ. Discuss here the possible reasons for the difference>
+
+Report here the results of the two estimation approaches. The two estimates may differ. Discuss here the possible reasons for the difference
 
 |             | Estimated effort                        |   Estimated duration |          
 | ----------- | ------------------------------- | ---------------|
