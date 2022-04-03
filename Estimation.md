@@ -25,10 +25,15 @@ Version:
 Insert here Gantt chart with above activities
 
 # Summary
+<report here the results of the two estimation approaches  
+
+The two estimates may differ. Discuss here the possible reasons for the difference>
+
 |             | Estimated effort                        |   Estimated duration |          
 | ----------- | ------------------------------- | ---------------|
 | estimate by product decomposition ||
 | estimate by activity decomposition ||
 
 
-<The two estimates may differ. Discuss here the possible reasons for the difference>
+
+
