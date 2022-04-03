@@ -1,9 +1,9 @@
 # Project Estimation  
 Date:
+
 Version:
-# Contents
-- [Estimate by product decomposition]
-- [Estimate by activity decomposition ]
+
+
 # Estimation approach
 <Consider the EZWH  project as described in YOUR requirement document, assume that you are going to develop the project INDEPENDENT of the deadlines of the course>
 # Estimate by product decomposition
@@ -28,5 +28,7 @@ Insert here Gantt chart with above activities
 |             | Estimated effort                        |   Estimated duration |          
 | ----------- | ------------------------------- | ---------------|
 | estimate by product decomposition ||
-| estimate by activities ||
+| estimate by activity decomposition ||
+
+
 <The two estimates may differ. Discuss here the possible reasons for the difference>
