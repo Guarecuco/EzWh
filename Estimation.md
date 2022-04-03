@@ -27,6 +27,7 @@ Consider the EZWH  project as described in YOUR requirement document, assume tha
 |code ||
 | unit tests ||
 | api tests ||
+| management documents  ||
 
 
 
