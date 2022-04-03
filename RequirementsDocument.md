@@ -139,7 +139,10 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 |  FR3.4  | Quantity reports |
 |  FR3.5  | Modify Quantity |
 |  FR3.6  | Search an item |
-|  FR4  | Receive payments | 
+|  FR4  | Receive payments |
+|  FR5  | Log in |
+|  FR5.1  | Log out |
+
 
 
 
@@ -153,7 +156,7 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 | ID        | Type (efficiency, reliability, ..)           | Description  | Refers to |
 | ------------- |:-------------:| :-----:| -----:|
 |  NFR1     | Efficiency  | All functions should complete in < 0.5 sec  | |
-|  NFR2     | Availability | Percentage of time the product is / is not available to end user | |
+|  NFR2     | Reliability | Percentage of time the product is / is not available to end user | |
 |  NFR3     | Correctness | Capability to provide intended functionality in ALL cases | |
 |  NFR3     | Usability | Effort needed to learn using the product | |
 |  NFR3     | Security | Access only to authorized users | |
