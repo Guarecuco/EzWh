@@ -36,9 +36,8 @@ Version: 0.0
 				- [Scenario 1.2](#scenario-12)
 				- [Scenario 1.3](#scenario-13)
 				- [Scenario 1.4](#scenario-14)
-				- [Scenario 1.x](#scenario-1x)
-				- [Scenario 1.x](#scenario-1x-1)
-		- [Use case 2, UC2](#use-case-2-uc2)
+		- [Use case 2, UC2 - Manage items availability](#use-case-2-uc2---manage-items-availability)
+				- [Scenario 2.1](#scenario-21)
 		- [Use case x, UCx](#use-case-x-ucx)
 - [Glossary](#glossary)
 - [System Design](#system-design)
@@ -171,12 +170,12 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 
 
 ## Use case diagram
-![Installation](diagrams/test.dio)
+![UCDiagram](diagrams/UCDiagram.drawio.png)
 
 
 \<next describe here each use case in the UCD>
 ### Use case 1, UC1 - Manage users
-| Actors Involved        | IT Administrator, U |
+| Actors Involved        | IT Administrator, User |
 | ------------- |:-------------:| 
 |  Precondition     | \<Boolean expression, must evaluate to true before the UC can start> |
 |  Post condition     | \<Boolean expression, must evaluate to true after UC is finished> |
@@ -287,9 +286,19 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 |  Exception     | Selected User U's permissions block the request, abort |
 
 
-##### Scenario 1.x
+\<next describe here each use case in the UCD>
+### Use case 2, UC2 - Manage items availability
+| Actors Involved        | Manager, Payment Service |
+| ------------- |:-------------:| 
+|  Precondition     | Manager is logged in the system |
+|  Post condition     | Items' availability has been managed |
+|  Nominal Scenario     | \<Textual description of actions executed by the UC> |
+|  Variants     | \<other normal executions> |
+|  Exceptions     | \<exceptions, errors > |
 
-\<describe here scenarios instances of UC1>
+##### Scenario 2.1 
+
+\<describe here scenarios instances of UC2>
 
 \<a scenario is a sequence of steps that corresponds to a particular execution of one use case>
 
@@ -297,32 +306,33 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 
 \<only relevant scenarios should be described>
 
-| Scenario 1.1 | Create user |
+| Scenario 2.1 | Check items availabilty |
 | ------------- |:-------------:| 
-|  Precondition     | \<Boolean expression, must evaluate to true before the scenario can start> |
-|  Post condition     | \<Boolean expression, must evaluate to true after scenario is finished> |
+|  Precondition     |  |
+|  Post condition     |  |
+|  Nominal Scenario     | Manager selects the kind of research (sort by category, price, ..., find by id); the system prompts the results with corresponding availability  |
+
+| Scenario 2.2 | Issue order to supplier |
+| ------------- |:-------------:| 
+|  Precondition     |  |
+|  Post condition     | An order has been issued to the selected supplier |
 | Step#        | Description  |
-|  1     |  |  
-|  2     |  |
-|  ...     |  |
-
-##### Scenario 1.x
-
-
-
+|  1     | Manager enters a list of products with the relating quantity and supplier |  
+|  2     | System compute final price |
+|  3     | Manager enters credentials into payment service |
+|  4     | Manager confirms the payment  |
+|  5     | System prompts the receipt and sends it to the Manager's specified email address  |
+|  Exceptions     | Payment service respondes with error, abort |
 
 
+| Scenario 2.3 | Check all suppliers per item |
+| ------------- |:-------------:| 
+|  Precondition     | An item has been selected by the Manager |
+|  Post condition     |  |
+|  Nominal Scenario     | Manager asks the system to access to the list of suppliers for the specified item; The system prompts the results  |
+|  Exceptions     | No suppliers available for the specified item, abort |
 
 
-
-
-
-
-
-
-
-### Use case 2, UC2
-..
 
 ### Use case x, UCx
 ..
