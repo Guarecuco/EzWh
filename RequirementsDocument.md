@@ -223,9 +223,9 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 |  Post condition     | - |
 | Step#        | Description  |
 |  1     | IT Administrator asks the system to access to users' overview in tabular format|  
-|  2     | System prompts the requested informations |
+|  2     | System provides the requested informations |
 |  3     | IT Administrator picks one of the user to read more details  |
-|  4     | System prompts user's details  |
+|  4     | System provides user's details  |
 |  Variants     | Search by user id/name+surname. The system shows the user's details  |
 |  Variants     | Sort by role. The system shows users in hierarchical order   |
 |  Variants     | Sort by seniority. The system shows users in ascending order   |
@@ -248,9 +248,9 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 |  Post condition     | One or more users have been modified |
 | Step#        | Description  |
 |  1     | IT Administrator asks the system to access to users' overview in tabular format|  
-|  2     | System prompts the requested informations |
+|  2     | System provides the requested informations |
 |  3     | IT Administrator selects a user U to modify  |
-|  4     | System prompts user's details  |
+|  4     | System provides user's details  |
 |  5     | IT Administrator modifies U's informations and/or working role  |
 |  6     | Application updates U's informations  |
 |  Variants     | Search by user id/name+surname. The system shows the user's details  |
@@ -275,9 +275,9 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 |  Post condition     | User U is deleted |
 | Step#        | Description  |
 |  1     | IT Administrator asks the system to access to users' overview in tabular format  |  
-|  2     | System prompts the requested informations |
+|  2     | System provides the requested informations |
 |  3     | IT Administrator selects a user U to delete  |
-|  4     | System prompts user's details  |
+|  4     | System provides user's details  |
 |  5     | IT Administrator deletes User U  |
 |  6     | Application updates U's status  |
 |  Variants     | Search by user id/name+surname. The system shows the user's details  |
@@ -310,9 +310,25 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 | ------------- |:-------------:| 
 |  Precondition     |  |
 |  Post condition     |  |
-|  Nominal Scenario     | Manager selects the kind of research (sort by category, price, ..., find by id); the system prompts the results with corresponding availability  |
+|  Nominal Scenario     | Manager selects the kind of research (sort by category, price, ..., find by id); the system provides the results with corresponding availability  |
 
-| Scenario 2.2 | Issue order to supplier |
+
+| Scenario 2.2 | Check all suppliers per item |
+| ------------- |:-------------:| 
+|  Precondition     | An item has been selected by the Manager |
+|  Post condition     |  |
+|  Nominal Scenario     | Manager asks the system to access to the list of suppliers for the specified item; The system provides the results  |
+|  Exceptions     | No suppliers available for the specified item, abort |
+
+| Scenario 2.3 | Manage orders |
+| ------------- |:-------------:| 
+|  Precondition     |  |
+|  Post condition     | Orders has been managed  |
+|  Nominal Scenario     | Manager asks the system to access to the list of orders (pending and completed); The system provides the results  |
+
+
+
+| Scenario 2.4 | Issue order to supplier |
 | ------------- |:-------------:| 
 |  Precondition     |  |
 |  Post condition     | An order has been issued to the selected supplier |
@@ -321,16 +337,32 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 |  2     | System compute final price |
 |  3     | Manager enters credentials into payment service |
 |  4     | Manager confirms the payment  |
-|  5     | System prompts the receipt and sends it to the Manager's specified email address  |
+|  5     | System provides the receipt and sends it to the Manager's specified email address  |
 |  Exceptions     | Payment service respondes with error, abort |
 
 
-| Scenario 2.3 | Check all suppliers per item |
+| Scenario 2.5 | Read order |
 | ------------- |:-------------:| 
-|  Precondition     | An item has been selected by the Manager |
+|  Precondition     | Manager has chosen an order among those provided by the System |
+|  Post condition     | |
+|  Nominal Scenario     | The system provides the status (pending, completed) of the selected order with addiotional details (date of order, date of delivery, items, qty, price, ...) |
+
+
+| Scenario 2.6 | Track position |
+| ------------- |:-------------:| 
+|  Precondition     | Manager has chosen an order among those provided by the System |
 |  Post condition     |  |
-|  Nominal Scenario     | Manager asks the system to access to the list of suppliers for the specified item; The system prompts the results  |
-|  Exceptions     | No suppliers available for the specified item, abort |
+|  Nominal Scenario     | Manager asks the system to access to the shipping informations; The system provides the results  |
+|  Exceptions     | Shipping informations are not yet available, abort |
+
+
+
+| Scenario 2.7 | Delete order |
+| ------------- |:-------------:| 
+|  Precondition     | Manager has chosen an order among those provided by the System. The order must be in pending status and must not be shipped |
+|  Post condition     | The order has been deleted and won't be shipped |
+|  Nominal Scenario     | Manager asks the system to delete the order; The system deletes the order and sends a refund request to the email address of the supplier  |
+|  Exceptions     |  Order's deletion rejected due to supplier policies, abort |
 
 
 
