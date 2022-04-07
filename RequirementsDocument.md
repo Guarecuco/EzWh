@@ -43,9 +43,9 @@ Version: 0.0
 				- [Scenario 3.5](#scenario-35)
 				- [Scenario 3.6](#scenario-36)
 				- [Scenario 3.7](#scenario-37)
-		- [Use case 4, UC3 - Manage orders to suppliers](#use-case-4-uc3---manage-orders-to-suppliers)
-		- [Use case 5, UC4 - Manage orders from OU](#use-case-5-uc4---manage-orders-from-ou)
-		- [Use case 6, UC5 - Manage shipping](#use-case-6-uc5---manage-shipping)
+		- [Use case 4, UC4 - Manage orders to suppliers](#use-case-4-uc4---manage-orders-to-suppliers)
+		- [Use case 5, UC5 - Manage orders from OU](#use-case-5-uc5---manage-orders-from-ou)
+		- [Use case 6, UC6 - Manage shipping](#use-case-6-uc6---manage-shipping)
 - [Glossary](#glossary)
 - [System Design](#system-design)
 - [Deployment Diagram](#deployment-diagram)
@@ -174,11 +174,10 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 ### Use case 1, UC1 - Manage users
 | Actors Involved        | IT Administrator, User |
 | ------------- |:-------------| 
-|  Precondition     | Define at each Scenarion |
-|  Post condition   | Define at each Scenarion |
+|  Precondition     | Defined at each scenario |
+|  Post condition   | Defined at each scenario |
 |  Nominal Scenario | Manage users' accounts   |
-|  Variants     	| |
-|  Exceptions     	| Define at each Scenarion |
+|  Exceptions     	| Defined at each scenario |
 
 ##### Scenario 1.1 
 
@@ -296,9 +295,8 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 | Actors Involved        | Manager, Payment Service |
 | ------------- |:-------------| 
 |  Precondition     	| Manager is logged in the system |
-|  Post condition     	| Items' availability has been managed |
+|  Post condition     	| Items' inventory has been managed |
 |  Nominal Scenario     | \<Textual description of actions executed by the UC> |
-|  Variants     		| \<other normal executions> |
 |  Exceptions     		| \<exceptions, errors > |
 
 ##### Scenario 3.1 
@@ -307,7 +305,7 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 | ------------- |:-------------| 
 |  Precondition     	|  |
 |  Post condition   	|  |
-|  Nominal Scenario     | Manager selects the kind of research (sort by category, price, ..., find by id); the system provides the results with corresponding availability  |
+|  Nominal Scenario     | Manager selects the kind of search (sort by category, price, ..., find by id); the system provides the results with corresponding availability  |
 
 ##### Scenario 3.2 
 
@@ -369,7 +367,7 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 |  Exceptions     		|  Order's deletion rejected due to supplier policies, abort |
 
 
-### Use case 4, UC3 - Manage orders to suppliers
+### Use case 4, UC4 - Manage orders to suppliers
 
 | Actors Involved        | |
 | ------------- |:-------------| 
@@ -380,23 +378,23 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 |  Exceptions     		|  |
 
 
-### Use case 5, UC4 - Manage orders from OU
+### Use case 5, UC5 - Manage orders from OU
 
-| Actors Involved        | |
+| Actors Involved        | Employee|
 | ------------- |:-------------| 
-|  Precondition     	|  |
-|  Post condition     	|  |
-|  Nominal Scenario     |  |
-|  Variants     		|  |
-|  Exceptions     		|  |
+|  Precondition     	| Privileged employee of OU or retailer is logged in |
+|  Post condition     	| Internal order to the Warehouse is issued |
+|  Nominal Scenario     | An employee of an OU generates an internal order requesting items from the warehouse. It's only possible to request items with current availability |
+|  Exceptions     		| Item is not available at the warehouse, dismiss this the item from the order |
 
-### Use case 6, UC5 - Manage shipping
+### Use case 6, UC6 - Manage shipping
 
 | Actors Involved        | Supplier, Retailer, Shipping company, Employee, Quality supervisor|
 | ------------- |:-------------| 
 |  Precondition     	| A valid order exists in the system 	|
 |  Post condition     	| Order is marked as executed 			|
-|  Nominal Scenario     | A shipping company picks up the items at the supplier's address and delivers it to the Warehouse's address.  |
+|  Nominal Scenario     | In case of external orders: A shipping company picks up the items at the supplier's address and delivers it to the Warehouse's address.  |
+|  					    | In case of internal orders: A shipping company picks up the items at the Warehouse's pickup area and delivers it to the retailer/OU's address.  |
 |  Variants     		|  |
 |  Exceptions     		|  |
 
