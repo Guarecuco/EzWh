@@ -255,10 +255,9 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 | Actors Involved        | IT Administrator, User |
 | ------------- |:-------------| 
 |  Precondition     | User U exists |
-|  Post condition   | Define at each Scenario |
+|  Post condition   | Defined at each scenario |
 |  Nominal Scenario | Manage users' accounts   |
-|  Variants     	| |
-|  Exceptions     	| Define at each Scenario |
+|  Exceptions     	| Defined at each scenario |
 
 ##### Scenario 2.1
 
@@ -290,7 +289,7 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 |  2  				| Application asks for email and password |
 |  3  				| User U provides the password |
 |  4				| Application validates the password and allows access to the user |
-|  Exception     	| User U enters wrong default, abort |
+|  Exception     	| User U enters wrong password, abort |
 
 ### Use case 3, UC3 - Manage inventory
 
