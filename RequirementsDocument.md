@@ -32,16 +32,20 @@ Version: 0.0
 				- [Scenario 1.2](#scenario-12)
 				- [Scenario 1.3](#scenario-13)
 				- [Scenario 1.4](#scenario-14)
-		- [Use case 2, UC2 - Manage items availability](#use-case-2-uc2---manage-items-availability)
+		- [Use case 2, UC2 - Manage login](#use-case-2-uc2---manage-login)
 				- [Scenario 2.1](#scenario-21)
 				- [Scenario 2.2](#scenario-22)
-				- [Scenario 2.3](#scenario-23)
-				- [Scenario 2.4](#scenario-24)
-				- [Scenario 2.5](#scenario-25)
-				- [Scenario 2.6](#scenario-26)
-				- [Scenario 2.7](#scenario-27)
-		- [Use case 3, UC3 - Manage orders to suppliers](#use-case-3-uc3---manage-orders-to-suppliers)
-		- [Use case 4, UC4 - Manage orders from OU](#use-case-4-uc4---manage-orders-from-ou)
+		- [Use case 3, UC3 - Manage inventory](#use-case-3-uc3---manage-inventory)
+				- [Scenario 3.1](#scenario-31)
+				- [Scenario 3.2](#scenario-32)
+				- [Scenario 3.3](#scenario-33)
+				- [Scenario 3.4](#scenario-34)
+				- [Scenario 3.5](#scenario-35)
+				- [Scenario 3.6](#scenario-36)
+				- [Scenario 3.7](#scenario-37)
+		- [Use case 4, UC3 - Manage orders to suppliers](#use-case-4-uc3---manage-orders-to-suppliers)
+		- [Use case 5, UC4 - Manage orders from OU](#use-case-5-uc4---manage-orders-from-ou)
+		- [Use case 6, UC5 - Manage shipping](#use-case-6-uc5---manage-shipping)
 - [Glossary](#glossary)
 - [System Design](#system-design)
 - [Deployment Diagram](#deployment-diagram)
@@ -88,17 +92,13 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 # Context Diagram and interfaces
 
 ## Context Diagram
-\<Define here Context diagram using UML use case diagram>
 
-\<actors are a subset of stakeholders>
+![UCDiagram](diagrams/Context%20Diagram.jpg)
 
 ## Interfaces
-\<describe here each interface in the context diagram>
-
-\<GUIs will be described graphically in a separate document>
 
 | Actor | Logical Interface | Physical Interface  |
-| ------------- |:-------------:| -----:|
+| ------------- |:-------------:| :-----|
 |   Employee     		| GUI | Internet connection, Smartphone/PC |
 |   User     			| GUI | Internet connection, Smartphone/PC |
 |   Manager     		| GUI | Internet connection, Smartphone/PC |
@@ -123,12 +123,8 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 
 ## Functional Requirements
 
-\<In the form DO SOMETHING, or VERB NOUN, describe high level capabilities of the system>
-
-\<they match to high level use cases>
-
 | ID        | Description  |
-| ------------- |:-------------:| 
+| ------------- |:-------------| 
 |  FR1    	| Manage users  |
 |  FR1.1    | Define a new user, or modify an existing user  |
 |  FR1.2	| Delete a user | 
@@ -158,10 +154,8 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 
 ## Non Functional Requirements
 
-\<Describe constraints on functional requirements>
-
 | ID        | Type (efficiency, reliability, ..)           | Description  | Refers to |
-| ------------- |:-------------:| :-----:| -----:|
+| ------------- |:-------------:| :-----| -----:|
 |  NFR1     | Efficiency  	| All functions should complete in < 0.5 sec  | |
 |  NFR2     | Reliability 	| Percentage of time the product is / is not available to end user | |
 |  NFR3     | Correctness 	| Capability to provide intended functionality in ALL cases | |
@@ -177,27 +171,27 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 ![UCDiagram](diagrams/UCDiagram.drawio.png)
 
 
-\<next describe here each use case in the UCD>
 ### Use case 1, UC1 - Manage users
 | Actors Involved        | IT Administrator, User |
-| ------------- |:-------------:| 
-|  Precondition     | \<Boolean expression, must evaluate to true before the UC can start> |
-|  Post condition   | \<Boolean expression, must evaluate to true after UC is finished> |
-|  Nominal Scenario | \<Textual description of actions executed by the UC> |
-|  Variants     	| \<other normal executions> |
-|  Exceptions     	| \<exceptions, errors > |
+| ------------- |:-------------| 
+|  Precondition     | Define at each Scenarion |
+|  Post condition   | Define at each Scenarion |
+|  Nominal Scenario | Manage users' accounts   |
+|  Variants     	| |
+|  Exceptions     	| Define at each Scenarion |
 
 ##### Scenario 1.1 
 
 | Scenario 1.1 | Create user |
-| ------------- |:-------------:| 
+| ------------- |:-------------| 
 |  Precondition     | User U does not exist |
 |  Post condition   | User U exists |
+|  Step#			| Description 				|
 |  1   				| IT Administrator asks the system to create account of User U   |  
-|  2  				| application asks for name, surname, email, working role |
+|  2  				| Application asks for name, surname, email, working role |
 |  3  				| IT Administrator enters name, surname, email, working role |
-|  4  				| application checks wheter there is no other account with the specified informations   |
-|  5  				| application creates account for user U   |
+|  4  				| Application checks wheter there is no other account with the specified information   |
+|  5  				| Application creates account for user U   |
 |  Exception     	| User U already exists but with different working role, abort |
 |  Exception     	| User U already exists but with same working role, the system deletes the old one and create the new one |
 
@@ -205,12 +199,13 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 ##### Scenario 1.2
 
 | Scenario 1.2 | Read users |
-| ------------- |:-------------:| 
+| ------------- |:-------------| 
 |  Precondition     | IT Administrator is logged in the system |
 |  Post condition   | - |
+|  Step#			| Description 				|
 |  1     			| IT Administrator asks the system to access to users' overview in tabular format|  
-|  2     			| System provides the requested informations |
-|  3     			| IT Administrator picks one of the user to read more details  |
+|  2     			| System provides the requested information |
+|  3     			| IT Administrator picks one of the users to read more details  |
 |  4     			| System provides user's details  |
 |  Variants     	| Search by user id/name+surname. The system shows the user's details  |
 |  Variants     	| Sort by role. The system shows users in hierarchical order   |
@@ -221,14 +216,15 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 ##### Scenario 1.3
 
 | Scenario 1.3 | Modify user |
-| ------------- |:-------------:| 
+| ------------- |:-------------| 
 |  Precondition     | IT Administrator is logged in the system |
 |  Post condition   | One or more users have been modified |
+|  Step#			| Description 				|
 |  1     			| IT Administrator asks the system to access to users' overview in tabular format|  
 |  2     			| System provides the requested informations |
 |  3     			| IT Administrator selects a user U to modify  |
 |  4     			| System provides user's details  |
-|  5     			| IT Administrator modifies U's informations and/or working role  |
+|  5     			| IT Administrator modifies U's information and/or working role  |
 |  6     			| Application updates U's informations  |
 |  Variants     	| Search by user id/name+surname. The system shows the user's details  |
 |  Variants     	| Sort by role. The system shows users in hierarchical order   |
@@ -239,9 +235,10 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 ##### Scenario 1.4
 
 | Scenario 1.1 | Delete user |
-| ------------- |:-------------:| 
+| ------------- |:-------------| 
 |  Precondition     | IT Administrator is logged in the system |
 |  Post condition   | User U is deleted |
+|  Step#			| Description 				|
 |  1     			| IT Administrator asks the system to access to users' overview in tabular format  |  
 |  2     			| System provides the requested informations |
 |  3     			| IT Administrator selects a user U to delete  |
@@ -254,48 +251,90 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 |  Exception     	| Selected User U's permissions block the request, abort |
 
 
-### Use case 2, UC2 - Manage items availability
+### Use case 2, UC2 - Manage login
+| Actors Involved        | IT Administrator, User |
+| ------------- |:-------------| 
+|  Precondition     | User U exists |
+|  Post condition   | Define at each Scenario |
+|  Nominal Scenario | Manage users' accounts   |
+|  Variants     	| |
+|  Exceptions     	| Define at each Scenario |
+
+##### Scenario 2.1
+
+| Scenario 2.1 | First-time login |
+| ------------- |:-------------| 
+|  Precondition     | User U exist |
+| 				    | First time User U logs into the application |
+|  Post condition   | User U logs in |
+|  Post condition   | User U's password is modified |
+|  Step#			| Description 				|
+|  1   				| User U whishes to log in  to the application |  
+|  2  				| Application asks for email and password |
+|  3  				| User U provides the default password |
+|  4  				| Application prompts the user to change the password |
+|  5  				| User U provides a new different password |
+|  6				| Application validates the new password and allows access to the user |
+|  Exception     	| User U enters wrong default password, abort |
+|  Exception     	| User U refuses to change password, abort |
+|  Exception     	| New password doesn't comply with password policy, abort |
+
+##### Scenario 2.2
+
+| Scenario 2.2 | Regular login |
+| ------------- |:-------------| 
+|  Precondition     | User U exist |
+|  Post condition   | User U logs in |
+|  Step#			| Description 				|
+|  1   				| User U whishes to log in  to the application |  
+|  2  				| Application asks for email and password |
+|  3  				| User U provides the password |
+|  4				| Application validates the password and allows access to the user |
+|  Exception     	| User U enters wrong default, abort |
+
+### Use case 3, UC3 - Manage inventory
 
 | Actors Involved        | Manager, Payment Service |
-| ------------- |:-------------:| 
+| ------------- |:-------------| 
 |  Precondition     	| Manager is logged in the system |
 |  Post condition     	| Items' availability has been managed |
 |  Nominal Scenario     | \<Textual description of actions executed by the UC> |
 |  Variants     		| \<other normal executions> |
 |  Exceptions     		| \<exceptions, errors > |
 
-##### Scenario 2.1 
+##### Scenario 3.1 
 
-| Scenario 2.1 | Check items availabilty |
-| ------------- |:-------------:| 
+| Scenario 3.1 | Check items availabilty |
+| ------------- |:-------------| 
 |  Precondition     	|  |
 |  Post condition   	|  |
 |  Nominal Scenario     | Manager selects the kind of research (sort by category, price, ..., find by id); the system provides the results with corresponding availability  |
 
-##### Scenario 2.2 
+##### Scenario 3.2 
 
-| Scenario 2.2 | Check all suppliers per item |
-| ------------- |:-------------:| 
+| Scenario 3.2 | Check all suppliers per item |
+| ------------- |:-------------| 
 |  Precondition     	| An item has been selected by the Manager |
 |  Post condition     	|  |
 |  Nominal Scenario     | Manager asks the system to access to the list of suppliers for the specified item; The system provides the results  |
 |  Exceptions     		| No suppliers available for the specified item, abort |
 
-##### Scenario 2.3 
+##### Scenario 3.3 
 
-| Scenario 2.3 | Manage orders |
-| ------------- |:-------------:| 
+| Scenario 3.3 | Manage orders |
+| ------------- |:-------------| 
 |  Precondition   	  |  |
 |  Post condition     | Orders has been managed  |
 |  Nominal Scenario   | Manager asks the system to access to the list of orders (pending and completed); The system provides the results  |
 
 
-##### Scenario 2.4
+##### Scenario 3.4
 
-| Scenario 2.4 | Issue order to supplier |
-| ------------- |:-------------:| 
+| Scenario 3.4 | Issue order to supplier |
+| ------------- |:-------------| 
 |  Precondition       |  |
 |  Post condition     | An order has been issued to the selected supplier |
+|  Step#			  |	Description 				|
 |  1    			  | Manager enters a list of products with the relating quantity and supplier |  
 |  2     			  | System compute final price |
 |  3     			  | Manager enters credentials into payment service |
@@ -303,7 +342,7 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 |  5     			  | System provides the receipt and sends it to the Manager's specified email address  |
 |  Exceptions     	  | Payment service respondes with error, abort |
 
-##### Scenario 2.5
+##### Scenario 3.5
 
 | Scenario 2.5 | Read order |
 | ------------- |:-------------:| 
@@ -311,30 +350,30 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 |  Post condition     	| |
 |  Nominal Scenario     | The system provides the status (pending, completed) of the selected order with addiotional details (date of order, date of delivery, items, qty, price, ...) |
 
-##### Scenario 2.6
+##### Scenario 3.6
 
-| Scenario 2.6 | Track position |
-| ------------- |:-------------:| 
+| Scenario 3.6 | Track position |
+| ------------- |:-------------| 
 |  Precondition     	| Manager has chosen an order among those provided by the System |
 |  Post condition     	|  |
 |  Nominal Scenario     | Manager asks the system to access to the shipping informations; The system provides the results  |
 |  Exceptions     		| Shipping informations are not yet available, abort |
 
 
-##### Scenario 2.7
+##### Scenario 3.7
 
-| Scenario 2.7 | Delete order |
-| ------------- |:-------------:| 
+| Scenario 3.7 | Delete order |
+| ------------- |:-------------| 
 |  Precondition     	| Manager has chosen an order among those provided by the System. The order must be in pending status and must not be shipped |
 |  Post condition     	| The order has been deleted and won't be shipped |
 |  Nominal Scenario     | Manager asks the system to delete the order; The system deletes the order and sends a refund request to the email address of the supplier  |
 |  Exceptions     		|  Order's deletion rejected due to supplier policies, abort |
 
 
-### Use case 3, UC3 - Manage orders to suppliers
+### Use case 4, UC3 - Manage orders to suppliers
 
 | Actors Involved        | |
-| ------------- |:-------------:| 
+| ------------- |:-------------| 
 |  Precondition     	|  |
 |  Post condition     	|  |
 |  Nominal Scenario     |  |
@@ -342,22 +381,29 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 |  Exceptions     		|  |
 
 
-### Use case 4, UC4 - Manage orders from OU
+### Use case 5, UC4 - Manage orders from OU
 
 | Actors Involved        | |
-| ------------- |:-------------:| 
+| ------------- |:-------------| 
 |  Precondition     	|  |
 |  Post condition     	|  |
 |  Nominal Scenario     |  |
 |  Variants     		|  |
 |  Exceptions     		|  |
 
+### Use case 6, UC5 - Manage shipping
+
+| Actors Involved        | Supplier, Retailer, Shipping company, Employee, Quality supervisor|
+| ------------- |:-------------| 
+|  Precondition     	| A valid order exists in the system 	|
+|  Post condition     	| Order is marked as executed 			|
+|  Nominal Scenario     | A shipping company picks up the items at the supplier's address and delivers it to the Warehouse's address.  |
+|  Variants     		|  |
+|  Exceptions     		|  |
 
 # Glossary
 
-\<use UML class diagram to define important terms, or concepts in the domain of the system, and their relationships> 
-
-\<concepts are used consistently all over the document, ex in use cases, requirements etc>
+![UCDiagram](diagrams/Glossary.jpg)
 
 # System Design
 \<describe here system design>
