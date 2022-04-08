@@ -36,9 +36,17 @@ Consider the EZWH  project as described in YOUR requirement document, assume tha
 ### 
 |         Activity name    | Estimated effort (person hours)   |             
 | ----------- | ------------------------------- | 
-| | |
+|Requirement document   | 40 |
+|GUI prototype          | 16 |
+|Design document        | 40 |
+|Code                   | 464|
+|Unit tests             | 24 |
+|API tests              | 16 |
+|Management documents   | 24 |
+
 ###
-Insert here Gantt chart with above activities
+
+![Gant](diagrams/EzWh_Gantt.png)
 
 # Summary
 
@@ -48,7 +56,7 @@ Report here the results of the three estimation approaches. The  estimates may d
 | ----------- | ------------------------------- | ---------------|
 | estimate by size                   |400|  2.5 Weeks |
 | estimate by product decomposition  |520|  3.25 Weeks |
-| estimate by activity decomposition |XX |  x Week |
+| estimate by activity decomposition |624 | X Week |
 
 
 
