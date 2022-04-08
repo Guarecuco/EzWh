@@ -1,8 +1,9 @@
 # Project Estimation  
 Date:
+13/04/2022
 
 Version:
-
+0.1
 
 # Estimation approach
 Consider the EZWH  project as described in YOUR requirement document, assume that you are going to develop the project INDEPENDENT of the deadlines of the course
@@ -10,24 +11,24 @@ Consider the EZWH  project as described in YOUR requirement document, assume tha
 ### 
 |             | Estimate                        |             
 | ----------- | ------------------------------- |  
-| NC =  Estimated number of classes to be developed   |                             |             
-|  A = Estimated average size per class, in LOC       |                            | 
-| S = Estimated size of project, in LOC (= NC * A) | |
-| E = Estimated effort, in person hours (here use productivity 10 LOC per person hour)  |                                      |   
-| C = Estimated cost, in euro (here use 1 person hour cost = 30 euro) | | 
-| Estimated calendar time, in calendar weeks (Assume team of 4 people, 8 hours per day, 5 days per week ) |                    |               
+| NC =  Estimated number of classes to be developed                 | 20                         |             
+|  A = Estimated average size per class, in LOC                     | 200                           | 
+| S = Estimated size of project, in LOC (= NC * A)                  | 4000                               |
+| E = Estimated effort, in person hours (here use productivity 10 LOC per person hour)  | 400                                     |   
+| C = Estimated cost, in euro (here use 1 person hour cost = 30 euro)                   | 12000          | 
+| Estimated calendar time, in calendar weeks (Assume team of 4 people, 8 hours per day, 5 days per week ) | 2.5                  |               
 
 # Estimate by product decomposition
 ### 
 |         component name    | Estimated effort (person hours)   |             
 | ----------- | ------------------------------- | 
-|requirement document    | |
-| GUI prototype ||
-|design document ||
-|code ||
-| unit tests ||
-| api tests ||
-| management documents  ||
+|Requirement document   | 30 |
+|GUI prototype          | 10 |
+|Design document        | 30 |
+|Code                   | 400|
+|Unit tests             | 20 |
+|API tests              | 10 |
+|Management documents   | 20 |
 
 
 
@@ -45,9 +46,9 @@ Report here the results of the three estimation approaches. The  estimates may d
 
 |             | Estimated effort                        |   Estimated duration |          
 | ----------- | ------------------------------- | ---------------|
-| estimate by size ||
-| estimate by product decomposition ||
-| estimate by activity decomposition ||
+| estimate by size                   |400|  2.5 Weeks |
+| estimate by product decomposition  |520|  3.25 Weeks |
+| estimate by activity decomposition |XX |  x Week |
 
 
 
