@@ -1,9 +1,15 @@
 
  #Requirements Document 
 
+Authors: 
+* Alessio Carachino
+* Samuele Giangreco
+* Daniel Guarecuco
+* Zoltan Mazzuco
+
 Date: 22 march 2022
 
-Version: 0.0
+Version: 0.2
 
  
 | Version number 	| Change 	 |
@@ -369,13 +375,12 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 
 ### Use case 4, UC4 - Manage orders to suppliers
 
-| Actors Involved        | |
+| Actors Involved       | Manager |
 | ------------- |:-------------| 
-|  Precondition     	|  |
-|  Post condition     	|  |
-|  Nominal Scenario     |  |
-|  Variants     		|  |
-|  Exceptions     		|  |
+|  Precondition     	| Manager is logged in the system |
+|  Post condition     	| Order to supplier is issued |
+|  Nominal Scenario     | When stock is low, manager creates an order to suppliers with needed items |
+|  Exceptions     		| Items X is not available at supplier Y. Dissmis Item from order |
 
 
 ### Use case 5, UC5 - Manage orders from OU
