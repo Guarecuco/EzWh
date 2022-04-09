@@ -36,13 +36,18 @@ Consider the EZWH  project as described in YOUR requirement document, assume tha
 ### 
 |         Activity name    | Estimated effort (person hours)   |             
 | ----------- | ------------------------------- | 
-|Requirement document   | 40 |
-|GUI prototype          | 16 |
-|Design document        | 40 |
-|Code                   | 464|
-|Unit tests             | 24 |
-|API tests              | 16 |
-|Management documents   | 24 |
+|Requirements            | 70 |
+|+Requirement document   | 30 |
+|+GUI prototype          | 10 |
+|+Design document        | 30 |
+|Coding                  | 400|
+|+Order interface        | 150|
+|+Inventory interface    | 150|
+|+Login interface        | 100|
+|Testing                 | 30 |
+|+Unit tests             | 20 |
+|+API tests              | 10 |
+|Management documents    | 20 |
 
 ###
 
@@ -56,7 +61,7 @@ Report here the results of the three estimation approaches. The  estimates may d
 | ----------- | ------------------------------- | ---------------|
 | estimate by size                   |400|  2.5 Weeks |
 | estimate by product decomposition  |520|  3.25 Weeks |
-| estimate by activity decomposition |624 | X Week |
+| estimate by activity decomposition |520|  12 Week |
 
 
 
