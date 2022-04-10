@@ -345,11 +345,13 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 |  Post condition     | An order has been issued to the selected supplier |
 |  Step#			  |	Description 				|
 |  1    			  | Manager enters a list of products with the relating quantity and supplier |  
-|  2     			  | System compute final price |
-|  3     			  | Manager enters credentials into payment service |
-|  4     			  | Manager confirms the payment  |
-|  5     			  | System provides the receipt and sends it to the Manager's specified email address  |
-|  Exceptions     	  | Payment service respondes with error, abort |
+|  2     			  | System compute final price and provides an order preview |
+|  3     			  | Manager sends via email the order Preview to the Financial unit's email address |
+|  4     			  | Manager sends via email the order Preview to the Supplier's email address  |
+|  5     			  | System saves the order  |
+|  Exceptions     	  | Manager refuses to continue before step 3, abort |
+|  Exceptions     	  | Internet connection fails, abort |
+
 
 ##### Scenario 3.5
 
@@ -357,7 +359,7 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 | ------------- |:-------------:| 
 |  Precondition     	| Manager has chosen an order among those provided by the System |
 |  Post condition     	| |
-|  Nominal Scenario     | The system provides the status (pending, completed) of the selected order with addiotional details (date of order, date of delivery, items, qty, price, ...) |
+|  Nominal Scenario     | The system provides the status (pending, completed, payed/unpayed by the Financial Unit) of the selected order with additional details (date of order, date of delivery, items, qty, price, ...) |
 
 ##### Scenario 3.6
 
@@ -375,7 +377,8 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 | ------------- |:-------------| 
 |  Precondition     	| Manager has chosen an order among those provided by the System. The order must be in pending status and must not be shipped |
 |  Post condition     	| The order has been deleted and won't be shipped |
-|  Nominal Scenario     | Manager asks the system to delete the order; The system deletes the order and sends a refund request to the email address of the supplier  |
+|  Nominal Scenario     | Manager asks the system to delete the order; The system deletes the order and notifies the Financial Unit so that it won't pay  |
+|  Exceptions     		|  Order is already paid by the Financial unit, the system sends an email to Financial Unit so that it can ask for a refund |
 |  Exceptions     		|  Order's deletion rejected due to supplier policies, abort |
 
 
