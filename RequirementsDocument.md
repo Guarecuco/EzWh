@@ -16,7 +16,7 @@ Version: 0.2
 | ----------------- |:-----------|
 | 0.1 				| Describing stakeholders, adding a few UCs			| 
 | 0.2 				| Describing stakeholders in detail, adding more UCs| 
-| 0.3 				| 	| 
+| 0.3 				| Adding more UCs + various fixes and improvements to old UCs	| 
 
 
 # Contents
@@ -38,7 +38,7 @@ Version: 0.2
 				- [Scenario 1.2](#scenario-12)
 				- [Scenario 1.3](#scenario-13)
 				- [Scenario 1.4](#scenario-14)
-		- [Use case 2, UC2 - Manage login](#use-case-2-uc2---manage-login)
+		- [Use case 2, UC2 - Authenticate](#use-case-2-uc2---authenticate)
 				- [Scenario 2.1](#scenario-21)
 				- [Scenario 2.2](#scenario-22)
 		- [Use case 3, UC3 - Manage inventory](#use-case-3-uc3---manage-inventory)
@@ -49,9 +49,14 @@ Version: 0.2
 				- [Scenario 3.5](#scenario-35)
 				- [Scenario 3.6](#scenario-36)
 				- [Scenario 3.7](#scenario-37)
-		- [Use case 4, UC4 - Manage orders to suppliers](#use-case-4-uc4---manage-orders-to-suppliers)
-		- [Use case 5, UC5 - Manage orders from OU](#use-case-5-uc5---manage-orders-from-ou)
+		- [Use case 5, UC5 - Manage internal orders](#use-case-5-uc5---manage-internal-orders)
 		- [Use case 6, UC6 - Manage shipping](#use-case-6-uc6---manage-shipping)
+		- [Use case 7, UC7 - Check quality](#use-case-7-uc7---check-quality)
+				- [Scenario 7.1](#scenario-71)
+		- [Use case 8, UC8 - Read items](#use-case-8-uc8---read-items)
+				- [Scenario 8.1](#scenario-81)
+				- [Scenario 8.2](#scenario-82)
+				- [Scenario 8.3](#scenario-83)
 - [Glossary](#glossary)
 - [System Design](#system-design)
 - [Deployment Diagram](#deployment-diagram)
@@ -83,6 +88,7 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 |   Shipping company     	| Uses the application to get addresses for shipping    			   | 
 |   Employee	   			| Uses the applicaiton to list orders					               | 
 |   Financial Unit  		| Uses the application to list owed orders and pay for them through a payment service |
+|   Financial Unit  		| A specialized unit that must pay the orders coming via email from the manager |
 |   Physical organization  	| Application maps the physical layout of the Warehouse, used for internal item tracking  | 
 |   Pick up area  			| Physical space at the Warehouse where to place items to be picked up | 
 |   Administrator   		| Defines roles of all involved parties that use the application       | 
@@ -109,7 +115,7 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 |   User     			| GUI | Internet connection, Smartphone/PC |
 |   Manager     		| GUI | Internet connection, Smartphone/PC |
 |   Quality supervisor  | GUI | Internet connection, Smartphone/PC  |
-|   Payment service     | APIs| Internet connection |
+|	Financial Unit 		| Emails  |  Internet connection, Smartphone/PC     |
 |   Organizational unit | GUI | Internet connection, Smartphone/PC |
 |   Supplier     		| GUI | Internet connection, Smartphone/PC | 
 |   Retailer     		| GUI | Internet connection, Smartphone/PC |
@@ -256,7 +262,7 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 |  Exception     	| Selected User U's permissions block the request, abort |
 
 
-### Use case 2, UC2 - Manage login
+### Use case 2, UC2 - Authenticate
 | Actors Involved        | IT Administrator, User |
 | ------------- |:-------------| 
 |  Precondition     | User U exists |
@@ -373,24 +379,29 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 |  Exceptions     		|  Order's deletion rejected due to supplier policies, abort |
 
 
-### Use case 4, UC4 - Manage orders to suppliers
 
-| Actors Involved       | Manager |
+
+### Use case 5, UC5 - Manage internal orders
+
+| Actors Involved        | Organizatinal Unit employee|
 | ------------- |:-------------| 
-|  Precondition     	| Manager is logged in the system |
-|  Post condition     	| Order to supplier is issued |
-|  Nominal Scenario     | When stock is low, manager creates an order to suppliers with needed items |
-|  Exceptions     		| Items X is not available at supplier Y. Dissmis Item from order |
-
-
-### Use case 5, UC5 - Manage orders from OU
-
-| Actors Involved        | Employee|
-| ------------- |:-------------| 
-|  Precondition     	| Privileged employee of OU or retailer is logged in |
+|  Precondition     	| Privileged employee of OU is logged in |
 |  Post condition     	| Internal order to the Warehouse is issued |
 |  Nominal Scenario     | An employee of an OU generates an internal order requesting items from the warehouse. It's only possible to request items with current availability |
 |  Exceptions     		| Item is not available at the warehouse, dismiss this the item from the order |
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ### Use case 6, UC6 - Manage shipping
 
@@ -402,6 +413,76 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 |  					    | In case of internal orders: A shipping company picks up the items at the Warehouse's pickup area and delivers it to the retailer/OU's address.  |
 |  Variants     		|  |
 |  Exceptions     		|  |
+
+### Use case 7, UC7 - Check quality
+
+| Actors Involved        | Quality supervisor |
+| ------------- |:-------------| 
+|  Precondition   	  | Quality supervisor is logged in the system |
+|  Post condition     | The quality of the selected items is granted |
+|  Nominal Scenario   | Quality supervisor asks the system to access to the list of items which state is new-arrival/untested; The system provides the results; Quality supervisor picks the selection mode to pick the items; Quality supervisor confirms that the items passed the tests  |
+|  Exceptions     		| At least one item failed the tests, Scenario 7.2  |
+
+##### Scenario 7.1
+
+| Scenario 7.1 | Send back to supplier |
+| ------------- |:-------------| 
+|  Precondition   	  | At least one item failed the tests  |
+|  Post condition     | The bad-quality items have been sent back to relative suppliers  |
+|  Nominal Scenario   | Quality supervisor asks the system for the email address of the suppliers, the system returns the requested email address, quality supervisor writes a different email for each of the provided email address and sends them |
+
+
+
+
+
+### Use case 8, UC8 - Read items
+
+| Actors Involved        | Manager as W, Employee as W |
+| ------------- |:-------------| 
+|  Precondition   	  | W is logged in the system |
+|  Post condition     |  |
+|  Nominal Scenario   | W asks the system to the list of stored intems, filtered by zone and/or state (new arrival, requested by an order);   |
+|  Variant     		| W could access to item's location history, Scenario 8.3   |
+|  Variant     		| If W is a manager, then Scenario 8.1 is possible   |
+|  Variant     		| If W is an employee, then Scenario 8.2 is possible   |
+
+##### Scenario 8.1
+
+| Scenario 8.1 | Move items - request |
+| ------------- |:-------------| 
+|  Precondition   	  | Manager selected items to be moved  |
+|  Post condition     | A request of moving the items will be available to targetted Employees  |
+| Description		| A manager selects the items that must be moved by one or more employee. The system keep trace of these items and it will provide them to the relative employee when they access to Scenario 8.2 |
+|  Nominal Scenario   | The manager asks the system to access the list of zones and their current state (%capacity); The system returns the result; The manager selects one destination zone; the system returns a list of recommended employees; the manager select the employees that must do the job; the system keep trace of these items and it will provide them to the relative employee when they access to Scenario 8.2   |
+
+
+
+##### Scenario 8.2
+
+| Scenario 8.2 | Move items |
+| ------------- |:-------------| 
+|  Precondition   	  |   |
+|  Post condition     | Items have been moved as requested by the manager  |
+|  Nominal Scenario   | Employee asks the system access the requests he must satisfy; the system returns the result; the employee selects one of them; Once the item has been physically moved, the employee marks as complete the request; the system updates the status of the request and saves its new location in item's location history |
+|  Exceptions     		| The employee can't find the item, abort  |
+|  Exceptions     		| There are no requests for the employee, abort  |
+|  Exceptions     		| An other employee completed the request before the current employee marks as complete the request, abort  |
+
+
+
+##### Scenario 8.3
+
+| Scenario 8.3 | Check item's location history |
+| ------------- |:-------------| 
+|  Precondition   	  | An item has been selected by the Employee/Manager (W)  |
+|  Post condition     | W has seen the location history of the item  |
+|  Nominal Scenario   | W asks the system to access to all of the different locations where an item has been stored; the system returns the result |
+
+
+
+
+
+
 
 # Glossary
 
