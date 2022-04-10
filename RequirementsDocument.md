@@ -41,7 +41,7 @@ Version: 0.2
 		- [Use case 2, UC2 - Authenticate](#use-case-2-uc2---authenticate)
 				- [Scenario 2.1](#scenario-21)
 				- [Scenario 2.2](#scenario-22)
-		- [Use case 2.5, UC2.5](#use-case-25-uc25)
+		- [Use case 2.5, UC2.5 - Logout](#use-case-25-uc25---logout)
 		- [Use case 3, UC3 - Manage items availability](#use-case-3-uc3---manage-items-availability)
 				- [Scenario 3.1](#scenario-31)
 				- [Scenario 3.2](#scenario-32)
@@ -306,7 +306,7 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 |  Exception     	| Step 4: the system recognize this is the first login for the user, Scenario 2.1 |
 |  Exception     	| User U enters wrong password, abort |
 
-### Use case 2.5, UC2.5
+### Use case 2.5, UC2.5 - Logout
 | Actors Involved        | User as Employee, Manager, etc |
 | ------------- |:-------------| 
 |  Precondition     | User U is logged in the system |
