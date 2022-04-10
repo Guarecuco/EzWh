@@ -41,7 +41,8 @@ Version: 0.2
 		- [Use case 2, UC2 - Authenticate](#use-case-2-uc2---authenticate)
 				- [Scenario 2.1](#scenario-21)
 				- [Scenario 2.2](#scenario-22)
-		- [Use case 3, UC3 - Manage inventory](#use-case-3-uc3---manage-inventory)
+		- [Use case 2.5, UC2.5](#use-case-25-uc25)
+		- [Use case 3, UC3 - Manage items availability](#use-case-3-uc3---manage-items-availability)
 				- [Scenario 3.1](#scenario-31)
 				- [Scenario 3.2](#scenario-32)
 				- [Scenario 3.3](#scenario-33)
@@ -49,14 +50,18 @@ Version: 0.2
 				- [Scenario 3.5](#scenario-35)
 				- [Scenario 3.6](#scenario-36)
 				- [Scenario 3.7](#scenario-37)
-		- [Use case 5, UC5 - Manage internal orders](#use-case-5-uc5---manage-internal-orders)
-		- [Use case 6, UC6 - Manage shipping](#use-case-6-uc6---manage-shipping)
-		- [Use case 7, UC7 - Check quality](#use-case-7-uc7---check-quality)
-				- [Scenario 7.1](#scenario-71)
-		- [Use case 8, UC8 - Read items](#use-case-8-uc8---read-items)
-				- [Scenario 8.1](#scenario-81)
-				- [Scenario 8.2](#scenario-82)
-				- [Scenario 8.3](#scenario-83)
+		- [Use case 4, UC4 - Manage internal orders](#use-case-4-uc4---manage-internal-orders)
+				- [Scenario 4.1](#scenario-41)
+				- [Scenario 4.2](#scenario-42)
+				- [Scenario 4.3](#scenario-43)
+				- [Scenario 4.4](#scenario-44)
+				- [Scenario 4.5](#scenario-45)
+		- [Use case 5, UC5 - Check quality](#use-case-5-uc5---check-quality)
+				- [Scenario 5.1](#scenario-51)
+		- [Use case 6, UC6 - Read items](#use-case-6-uc6---read-items)
+				- [Scenario 6.1](#scenario-61)
+				- [Scenario 6.2](#scenario-62)
+				- [Scenario 6.3](#scenario-63)
 - [Glossary](#glossary)
 - [System Design](#system-design)
 - [Deployment Diagram](#deployment-diagram)
@@ -117,8 +122,6 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 |   Quality supervisor  | GUI | Internet connection, Smartphone/PC  |
 |	Financial Unit 		| Emails  |  Internet connection, Smartphone/PC     |
 |   Organizational unit | GUI | Internet connection, Smartphone/PC |
-|   Supplier     		| GUI | Internet connection, Smartphone/PC | 
-|   Retailer     		| GUI | Internet connection, Smartphone/PC |
 |   IT Administrator	| GUI | Internet connection, Smartphone/PC |
 
 
@@ -263,7 +266,7 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 
 
 ### Use case 2, UC2 - Authenticate
-| Actors Involved        | IT Administrator, User |
+| Actors Involved        | User |
 | ------------- |:-------------| 
 |  Precondition     | User U exists |
 |  Post condition   | Defined at each scenario |
@@ -274,14 +277,14 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 
 | Scenario 2.1 | First-time login |
 | ------------- |:-------------| 
-|  Precondition     | User U exist |
+|  Precondition     | User U exists |
 | 				    | First time User U logs into the application |
 |  Post condition   | User U logs in |
 |  Post condition   | User U's password is modified |
 |  Step#			| Description 				|
 |  1   				| User U whishes to log in  to the application |  
 |  2  				| Application asks for email and password |
-|  3  				| User U provides the default password |
+|  3  				| User U provides the email and default password |
 |  4  				| Application prompts the user to change the password |
 |  5  				| User U provides a new different password |
 |  6				| Application validates the new password and allows access to the user |
@@ -293,16 +296,25 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 
 | Scenario 2.2 | Regular login |
 | ------------- |:-------------| 
-|  Precondition     | User U exist |
+|  Precondition     | User U exists |
 |  Post condition   | User U logs in |
 |  Step#			| Description 				|
-|  1   				| User U whishes to log in  to the application |  
+|  1   				| User U whishes to log in to the application |  
 |  2  				| Application asks for email and password |
-|  3  				| User U provides the password |
+|  3  				| User U provides email and password |
 |  4				| Application validates the password and allows access to the user |
+|  Exception     	| Step 4: the system recognize this is the first login for the user, Scenario 2.1 |
 |  Exception     	| User U enters wrong password, abort |
 
-### Use case 3, UC3 - Manage inventory
+### Use case 2.5, UC2.5
+| Actors Involved        | User as Employee, Manager, etc |
+| ------------- |:-------------| 
+|  Precondition     | User U is logged in the system |
+|  Post condition   | User U is not logged in anymore |
+|  Nominal Scenario | User U asks the system to be logged out; The system logs out the User   |
+
+
+### Use case 3, UC3 - Manage items availability
 
 | Actors Involved        | Manager, Payment Service |
 | ------------- |:-------------| 
@@ -334,7 +346,7 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 | ------------- |:-------------| 
 |  Precondition   	  |  |
 |  Post condition     | Orders has been managed  |
-|  Nominal Scenario   | Manager asks the system to access to the list of orders (pending and completed); The system provides the results  |
+|  Nominal Scenario   | Manager asks the system to access to the list of orders (pending and completed), both external and internal; The system provides the results  |
 
 
 ##### Scenario 3.4
@@ -342,12 +354,12 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 | Scenario 3.4 | Issue order to supplier |
 | ------------- |:-------------| 
 |  Precondition       |  |
-|  Post condition     | An order has been issued to the selected supplier |
+|  Post condition     | An order is issued to the selected supplier |
 |  Step#			  |	Description 				|
 |  1    			  | Manager enters a list of products with the relating quantity and supplier |  
 |  2     			  | System compute final price and provides an order preview |
-|  3     			  | Manager sends via email the order Preview to the Financial unit's email address |
-|  4     			  | Manager sends via email the order Preview to the Supplier's email address  |
+|  3     			  | Manager sends via email the order preview to the Financial unit's email address |
+|  4     			  | Manager sends via email the order preview to the Supplier's email address  |
 |  5     			  | System saves the order  |
 |  Exceptions     	  | Manager refuses to continue before step 3, abort |
 |  Exceptions     	  | Internet connection fails, abort |
@@ -357,7 +369,7 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 
 | Scenario 2.5 | Read order |
 | ------------- |:-------------:| 
-|  Precondition     	| Manager has chosen an order among those provided by the System |
+|  Precondition     	| Manager has chosen an order among those provided by the System (both external and internal) |
 |  Post condition     	| |
 |  Nominal Scenario     | The system provides the status (pending, completed, payed/unpayed by the Financial Unit) of the selected order with additional details (date of order, date of delivery, items, qty, price, ...) |
 
@@ -378,46 +390,67 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 |  Precondition     	| Manager has chosen an order among those provided by the System. The order must be in pending status and must not be shipped |
 |  Post condition     	| The order has been deleted and won't be shipped |
 |  Nominal Scenario     | Manager asks the system to delete the order; The system deletes the order and notifies the Financial Unit so that it won't pay  |
+|  Variant     		| The order is Internal, the manager notifies OU via email about the deletion |
 |  Exceptions     		|  Order is already paid by the Financial unit, the system sends an email to Financial Unit so that it can ask for a refund |
 |  Exceptions     		|  Order's deletion rejected due to supplier policies, abort |
 
 
 
 
-### Use case 5, UC5 - Manage internal orders
+### Use case 4, UC4 - Manage internal orders
 
-| Actors Involved        | Organizatinal Unit employee|
+| Actors Involved        | Organizatinal Unit |
 | ------------- |:-------------| 
 |  Precondition     	| Privileged employee of OU is logged in |
 |  Post condition     	| Internal order to the Warehouse is issued |
 |  Nominal Scenario     | An employee of an OU generates an internal order requesting items from the warehouse. It's only possible to request items with current availability |
 |  Exceptions     		| Item is not available at the warehouse, dismiss this the item from the order |
 
+##### Scenario 4.1
 
-
-
-
-
-
-
-
-
-
-
-
-
-### Use case 6, UC6 - Manage shipping
-
-| Actors Involved        | Supplier, Retailer, Shipping company, Employee, Quality supervisor|
+| Scenario 3.6 | Issue order to warehouse |
 | ------------- |:-------------| 
-|  Precondition     	| A valid order exists in the system 	|
-|  Post condition     	| Order is marked as executed 			|
-|  Nominal Scenario     | In case of external orders: A shipping company picks up the items at the supplier's address and delivers it to the Warehouse's address.  |
-|  					    | In case of internal orders: A shipping company picks up the items at the Warehouse's pickup area and delivers it to the retailer/OU's address.  |
-|  Variants     		|  |
-|  Exceptions     		|  |
+|  Precondition     	| OU asks the System to issue an internal order  |
+|  Post condition     	| An internal order is issued to the warehouse |
+|  Nominal Scenario     | OU enters a list of products, which are currently available and in the warehouse, with the relating quantity; the System shows an order preview; OU confirms and sends the internal order;
+the System saves it |
+|  Exceptions     		| OU has entered invalid quantities or products, abort |
 
-### Use case 7, UC7 - Check quality
+##### Scenario 4.2
+
+| Scenario 4.2 | Read internal orders |
+| ------------- |:-------------| 
+|  Precondition     	| OU has chosen an order among those provided by the System (only internal) |
+|  Post condition     	| |
+|  Nominal Scenario     | The system provides the status (pending, completed) of the selected order with additional details (date of order, date of delivery, items, qty, value of the items, ...) |
+
+##### Scenario 4.3
+
+| Scenario 4.3 | Track position of Internal Order |
+| ------------- |:-------------| 
+|  Precondition     	| OU has chosen an internal order among those provided by the System |
+|  Post condition     	|  |
+|  Nominal Scenario     | OU asks the system to access to the shipping informations; The system provides the results  |
+|  Exceptions     		| Shipping informations are not yet available, abort |
+
+##### Scenario 4.4
+| Scenario 4.4 | Mark as completed |
+| ------------- |:-------------| 
+|  Precondition     	|  |
+|  Post condition     	| At least one order will be saved as 'Completed' in the System |
+|  Nominal Scenario     | OU asks the system to access to shipped internal orders; the System returns the results; OU selects one of the orders provided by the System and marks them as 'Completed'; the System saves the new status;   |
+
+
+##### Scenario 4.5
+
+| Scenario 4.5 | Delete order |
+| ------------- |:-------------| 
+|  Precondition     	| OU has chosen an order among those provided by the System. The internal order must be in pending status and must not be shipped |
+|  Post condition     	| The internal order has been deleted and won't be shipped |
+|  Nominal Scenario     | OU selects one of the orders provided by the System and marks them as 'Completed'; the System saves the new status;   |
+
+
+### Use case 5, UC5 - Check quality
 
 | Actors Involved        | Quality supervisor |
 | ------------- |:-------------| 
@@ -426,9 +459,9 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 |  Nominal Scenario   | Quality supervisor asks the system to access to the list of items which state is new-arrival/untested; The system provides the results; Quality supervisor picks the selection mode to pick the items; Quality supervisor confirms that the items passed the tests  |
 |  Exceptions     		| At least one item failed the tests, Scenario 7.2  |
 
-##### Scenario 7.1
+##### Scenario 5.1
 
-| Scenario 7.1 | Send back to supplier |
+| Scenario 5.1 | Send back to supplier |
 | ------------- |:-------------| 
 |  Precondition   	  | At least one item failed the tests  |
 |  Post condition     | The bad-quality items have been sent back to relative suppliers  |
@@ -438,7 +471,7 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 
 
 
-### Use case 8, UC8 - Read items
+### Use case 6, UC6 - Read items
 
 | Actors Involved        | Manager as W, Employee as W |
 | ------------- |:-------------| 
@@ -449,9 +482,9 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 |  Variant     		| If W is a manager, then Scenario 8.1 is possible   |
 |  Variant     		| If W is an employee, then Scenario 8.2 is possible   |
 
-##### Scenario 8.1
+##### Scenario 6.1
 
-| Scenario 8.1 | Move items - request |
+| Scenario 6.1 | Move items - request |
 | ------------- |:-------------| 
 |  Precondition   	  | Manager selected items to be moved  |
 |  Post condition     | A request of moving the items will be available to targetted Employees  |
@@ -460,9 +493,9 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 
 
 
-##### Scenario 8.2
+##### Scenario 6.2
 
-| Scenario 8.2 | Move items |
+| Scenario 6.2 | Move items |
 | ------------- |:-------------| 
 |  Precondition   	  |   |
 |  Post condition     | Items have been moved as requested by the manager  |
@@ -473,9 +506,9 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 
 
 
-##### Scenario 8.3
+##### Scenario 6.3
 
-| Scenario 8.3 | Check item's location history |
+| Scenario 6.3 | Check item's location history |
 | ------------- |:-------------| 
 |  Precondition   	  | An item has been selected by the Employee/Manager (W)  |
 |  Post condition     | W has seen the location history of the item  |
