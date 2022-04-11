@@ -9,14 +9,15 @@ Authors:
 
 Date: 22 march 2022
 
-Version: 0.2
+Version: 0.4
 
  
 | Version number 	| Change 	 |
 | ----------------- |:-----------|
 | 0.1 				| Describing stakeholders, adding a few UCs			| 
 | 0.2 				| Describing stakeholders in detail, adding more UCs| 
-| 0.3 				| Adding more UCs + various fixes and improvements to old UCs	| 
+| 0.3 				| Adding more UCs + various fixes and improvements to old UCs| 
+| 0.4 				| Adding deployment diagram, fixing FR/NFR| 
 
 
 # Contents
@@ -85,22 +86,22 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 
 
 | Stakeholder name  		| Description | 
-| ----------------- 		|:-----------:|
+| ----------------- 		|:-----------|
 |   Manager		    		| Uses the application to issue, delete or edit orders to suppliers    | 
 |   Quality supervisor    	| Uses the application to rate the quality of the items				   | 
 |   Retailer     			| Uses the application to issue, delete or edit orders to the Warehouse|
-|   Company's OU    		| Uses the application to issue, delete or edit orders to the Warehouse| 
-|   Shipping company     	| Uses the application to get addresses for shipping    			   | 
+|   Company's OU    		| Uses the application to issue, delete or edit orders to the Warehouse|  
 |   Employee	   			| Uses the applicaiton to list orders					               | 
 |   Financial Unit  		| A specialized unit that must pay the orders coming via email from the manager |
 |   Email Service			| The application needs an email service in order to create and send emails in a facilitated way	|
 |   Physical organization  	| Application maps the physical layout of the Warehouse, used for internal item tracking  | 
 |   Pick up area  			| Physical space at the Warehouse where to place items to be picked up | 
 |   Administrator   		| Defines roles of all involved parties that use the application       | 
-|   Supplier	   			| TO BE ADDED    | 
-|   Competitor      		|             | 
+|   Supplier	   			| Sell items to the warehouse. Get the order of items by email  	   | 
+|   Shipping company     	| Ships items from the supplier to the warehouse. Get addresses by email |
+|   Competitor      		| Competitors within the same sector            					   | 
 |   Local policy 	  		| Regulates physical space, allowed items, licenses        			   | 
-|   Payment Service 		| Handles payment between parties. Not covered by the EZWZ           	   |
+|   Payment Service 		| Handles payment between parties. Not covered by the EZWZ         	   |
 
 
 
@@ -120,8 +121,8 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 |   Employee     		| GUI | Internet connection, Smartphone/PC |
 |   User     			| GUI | Internet connection, Smartphone/PC |
 |   Manager     		| GUI | Internet connection, Smartphone/PC |
-|   Quality supervisor  | GUI | Internet connection, Smartphone/PC  |
-|	Financial Unit 		| GUI |  Internet connection, Smartphone/PC     |
+|   Quality supervisor  | GUI | Internet connection, Smartphone/PC |
+|	Financial Unit 		| GUI | Internet connection, Smartphone/PC |
 |   Organizational unit | GUI | Internet connection, Smartphone/PC |
 |   IT Administrator	| GUI | Internet connection, Smartphone/PC |
 |   Email Service 		| API | Internet connection, Smartphone/PC |
@@ -147,25 +148,30 @@ Tom is the youngest salesperson at Umbrella Corporation, the biggest supplier of
 | ID        | Description  |
 | ------------- |:-------------| 
 |  FR1    	| Manage users  |
-|  FR1.1    | Define a new user, or modify an existing user  |
-|  FR1.2	| Delete a user | 
-|  FR1.3  	| List all users | 
-|  FR1.4  	| Search a user | 
-|  FR1.5  	| Manage roles Authorize access to functions to specific actors according to access roles | 
-|  FR2  	| Manage orders | 
-|  FR2.1  	| Create/Receive orders | 
-|  FR2.2  	| Modify/delete an order | 
-|  FR2.3  	| Provide order status |
-|  FR3  	| Manage items | 
-|  FR3.1  	| Check quality |
-|  FR3.2  	| Reject the item |
-|  FR3.3  	| Track position | 
-|  FR3.4  	| Quantity reports |
-|  FR3.5  	| Modify Quantity |
-|  FR3.6  	| Search an item |
-|  FR4  	| Receive payments |
-|  FR5  	| Log in |
-|  FR5.1  	| Log out |
+|  FR1.1    | Create user  |
+|  FR1.2    | Modify user  |
+|  FR1.3	| Delete user  | 
+|  FR1.4  	| List users   | 
+|  FR1.5  	| Search user  | 
+|  FR1.6  	| Assign role to user |
+|  FR1.7  	| Link user with sold items |
+|  FR2  	| Authentication |
+|  FR2.1  	| Regular login |
+|  FR2.2	| First-time login|
+|  FR2.3  	| Logout 		|
+|  FR3  	| Manage orders | 
+|  FR3.1  	| Create order 	| 
+|  FR3.2  	| Modify order 	| 
+|  FR3.3  	| Delete order 	| 
+|  FR3.4  	| List orders	|
+|  FR4  	| Manage items 	| 
+|  FR4.1  	| Check quality - Passed/Failed|
+|  FR4.2  	| Reject items in an order |
+|  FR4.3  	| Track position | 
+|  FR4.4  	| Inventory report |
+|  FR4.5  	| Modify quantity |
+|  FR4.6  	| Search item |
+
 
 
 
@@ -177,13 +183,14 @@ Tom is the youngest salesperson at Umbrella Corporation, the biggest supplier of
 
 | ID        | Type (efficiency, reliability, ..)           | Description  | Refers to |
 | ------------- |:-------------:| :-----| -----:|
-|  NFR1     | Efficiency  	| All functions should complete in < 0.5 sec  | |
-|  NFR2     | Reliability 	| Percentage of time the product is / is not available to end user | |
-|  NFR3     | Correctness 	| Capability to provide intended functionality in ALL cases | |
-|  NFR3     | Usability 	| Effort needed to learn using the product | |
-|  NFR3     | Security 		| Access only to authorized users | |
-|  NFR4		| Domain 		| Currency is Euro | | 
-
+|  NFR1     | Efficiency  	| All functions should complete in < 0.5 sec  | All FR|
+|  NFR2     | Portability  	| The application should run in Chrome, Edge, Safari and Firefox, both in desktop and mobile mode (this cover about 90% of the browsers' market share). Compatibility with smartphones (iOS and Android) should be guaranteed  | All FR|
+|  NFR3     | Reliability 	| Application should be available 100% of the time during weekdays from 6am-10pm CET. Maintenance windows out of this time range is acceptable | All FR |
+|  NFR4     | Usability 	| The basics of the application should be usable in less than 1 day of training | All FR|
+|  NFR5     | Security 		| Access only to authorized users and to authorized sections | All FR, especially FR2 |
+|  NFR6		| Localization	| Currency is Euro | FR3 and FR4| 
+|  NFR7		| Localization	| Commas (,) are used as decimal separator | FR3 and FR4|
+|  NFR8		| Localization	| Central European Time (CET) is used for all timestamps | All FR|
 
 # Use case diagram and use cases
 
