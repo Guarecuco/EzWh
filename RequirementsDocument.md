@@ -64,6 +64,7 @@ Version: 0.4
 				- [Scenario 6.2](#scenario-62)
 		- [Use case 7, UC7 - Upload catalogue of supplier](#use-case-7-uc7---upload-catalogue-of-supplier)
 				- [Scenario 7.1](#scenario-71)
+		- [Use case 8, UC8 - Send email](#use-case-8-uc8---send-email)
 - [Glossary](#glossary)
 - [System Design](#system-design)
 - [Deployment Diagram](#deployment-diagram)
@@ -121,8 +122,7 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 |   Employee     		| GUI | Internet connection, Smartphone/PC |
 |   User     			| GUI | Internet connection, Smartphone/PC |
 |   Manager     		| GUI | Internet connection, Smartphone/PC |
-|   Quality supervisor  | GUI | Internet connection, Smartphone/PC |
-|	Financial Unit 		| GUI | Internet connection, Smartphone/PC |
+|   Quality supervisor  | GUI | Internet connection, Smartphone/PC  |
 |   Organizational unit | GUI | Internet connection, Smartphone/PC |
 |   IT Administrator	| GUI | Internet connection, Smartphone/PC |
 |   Email Service 		| API | Internet connection, Smartphone/PC |
@@ -329,7 +329,7 @@ Tom is the youngest salesperson at Umbrella Corporation, the biggest supplier of
 
 ### Use case 3, UC3 - Manage items availability
 
-| Actors Involved        | Manager, Payment Service |
+| Actors Involved        | Manager, Email Service |
 | ------------- |:-------------| 
 |  Precondition     	| Manager is logged in the system |
 |  Post condition     	| Items' inventory has been managed |
@@ -371,9 +371,10 @@ Tom is the youngest salesperson at Umbrella Corporation, the biggest supplier of
 |  Step#			  |	Description 				|
 |  1    			  | Manager enters a list of products with the relating quantity and supplier |  
 |  2     			  | System compute final price and provides an order preview |
-|  3     			  | Manager sends via email the order preview to the Financial unit's email address |
-|  4     			  | Manager sends via email the order preview to the Supplier's email address  |
-|  5     			  | System saves the order  |
+|  3     			  | Manager confirms the order preview |
+|  4     			  | The System sends the order preview via email, by using the Email Service, to Financial Unit's email address |
+|  5    			  | The System sends the order preview via email, by using the Email Service, to the Supplier's email address  |
+|  6     			  | System saves the order  |
 |  Exceptions     	  | Manager refuses to continue before step 3, abort |
 |  Exceptions     	  | Internet connection fails, abort |
 
@@ -402,7 +403,7 @@ Tom is the youngest salesperson at Umbrella Corporation, the biggest supplier of
 | ------------- |:-------------| 
 |  Precondition     	| Manager has chosen an order among those provided by the System. The order must be in pending status and must not be shipped |
 |  Post condition     	| The order has been deleted and won't be shipped |
-|  Nominal Scenario     | Manager asks the system to delete the order; The system deletes the order and notifies the Financial Unit so that it won't pay  |
+|  Nominal Scenario     | Manager asks the system to delete the order; The system deletes the order and notifies via email the Financial Unit so that it won't pay  |
 |  Variant     		| The order is Internal, the manager notifies OU via email about the deletion |
 |  Exceptions     		|  Order is already paid by the Financial unit, the system sends an email to Financial Unit so that it can ask for a refund |
 |  Exceptions     		|  Order's deletion rejected due to supplier policies, abort |
@@ -470,16 +471,15 @@ the System saves it |
 |  Precondition   	  | Quality supervisor is logged in the system |
 |  Post condition     | The quality of the selected items is granted |
 |  Nominal Scenario   | Quality supervisor asks the system to access to the list of items which state is new-arrival/untested; The system provides the results; Quality supervisor picks the selection mode to pick the items; Quality supervisor confirms that the items passed the tests  |
-|  Exceptions     		| At least one item failed the tests, Scenario 7.2  |
+|  Exceptions     		| At least one item failed the tests, Scenario 5.1  |
 
 ##### Scenario 5.1
 
 | Scenario 5.1 | Send back to supplier |
 | ------------- |:-------------| 
 |  Precondition   	  | At least one item failed the tests  |
-|  Post condition     | The bad-quality items have been sent back to relative suppliers  |
-|  Nominal Scenario   | Quality supervisor asks the system for the email address of the suppliers, the system returns the requested email address, quality supervisor writes a different email for each of the provided email address and sends them |
-
+|  Post condition     | A request to send back the bad-quality items is made  |
+|  Nominal Scenario   | Quality supervisor selects the bad-quality items that must be sent back to the original supplier; The system sends an email to the supplier's email address, containing which are the issues of the item, date of order and other details; The System sends an email to the Managers, which request to one of them to move the items to Pick Up Area, by completing a UC6 - Scenario 6.1 followed by Scenario 6.2   |
 
 
 
@@ -536,6 +536,15 @@ the System saves it |
 |  Post condition     | The catalogue of a supplier is updated/added  |
 |  Nominal Scenario   | Manager asks the system to import the catalogue from a CSV file; the System prompts the file; the Manager selects a valid CSV file; the System checks its validity; the System merges the catalogue (csv records eventually overwrites products which are already stored in the System)  |
 |  Exceptions     	  | Provided CSV file is invalid, abort  |
+
+### Use case 8, UC8 - Send email
+
+| Actors Involved        | Email Service |
+| ------------- |:-------------| 
+|  Precondition   	  | System needs to send an email with specified sender and recipient |
+|  Post condition     | An email is sent |
+|  Nominal Scenario   |  Manager asks the System to access the list of supplier; the System returns the result; The Manager selects the supplier which catalogue needs to be updated/added; The Manager enters Product/Item, min amount, amount, price and asks the System to save the new data; System updated the data  |
+|  Exception     		| Internet connection fails, retry when it will be restored  |
 
 
 # Glossary
