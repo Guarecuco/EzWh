@@ -61,7 +61,6 @@ Version: 0.2
 		- [Use case 6, UC6 - Read items](#use-case-6-uc6---read-items)
 				- [Scenario 6.1](#scenario-61)
 				- [Scenario 6.2](#scenario-62)
-				- [Scenario 6.3](#scenario-63)
 - [Glossary](#glossary)
 - [System Design](#system-design)
 - [Deployment Diagram](#deployment-diagram)
@@ -86,20 +85,20 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 | Stakeholder name  		| Description | 
 | ----------------- 		|:-----------:|
 |   Manager		    		| Uses the application to issue, delete or edit orders to suppliers    | 
-|   Supplier	   			| Uses the application to view and accept orders from the Warehouse    | 
 |   Quality supervisor    	| Uses the application to rate the quality of the items				   | 
 |   Retailer     			| Uses the application to issue, delete or edit orders to the Warehouse|
 |   Company's OU    		| Uses the application to issue, delete or edit orders to the Warehouse| 
 |   Shipping company     	| Uses the application to get addresses for shipping    			   | 
 |   Employee	   			| Uses the applicaiton to list orders					               | 
-|   Financial Unit  		| Uses the application to list owed orders and pay for them through a payment service |
 |   Financial Unit  		| A specialized unit that must pay the orders coming via email from the manager |
+|   Email Service			| The application needs an email service in order to create and send emails in a facilitated way	|
 |   Physical organization  	| Application maps the physical layout of the Warehouse, used for internal item tracking  | 
 |   Pick up area  			| Physical space at the Warehouse where to place items to be picked up | 
 |   Administrator   		| Defines roles of all involved parties that use the application       | 
+|   Supplier	   			| TO BE ADDED    | 
 |   Competitor      		|             | 
 |   Local policy 	  		| Regulates physical space, allowed items, licenses        			   | 
-|   Payment Service 		| Handles payment between parties. Not cover by the EZWZ           	   |
+|   Payment Service 		| Handles payment between parties. Not covered by the EZWZ           	   |
 
 
 
@@ -120,9 +119,11 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 |   User     			| GUI | Internet connection, Smartphone/PC |
 |   Manager     		| GUI | Internet connection, Smartphone/PC |
 |   Quality supervisor  | GUI | Internet connection, Smartphone/PC  |
-|	Financial Unit 		| Emails  |  Internet connection, Smartphone/PC     |
+|	Financial Unit 		| GUI |  Internet connection, Smartphone/PC     |
 |   Organizational unit | GUI | Internet connection, Smartphone/PC |
 |   IT Administrator	| GUI | Internet connection, Smartphone/PC |
+|   Email Service 		| API | Internet connection, Smartphone/PC |
+
 
 
 
@@ -480,19 +481,19 @@ the System saves it |
 | ------------- |:-------------| 
 |  Precondition   	  | W is logged in the system |
 |  Post condition     |  |
-|  Nominal Scenario   | W asks the system to the list of stored intems, filtered by zone and/or state (new arrival, requested by an order);   |
-|  Variant     		| W could access to item's location history, Scenario 8.3   |
-|  Variant     		| If W is a manager, then Scenario 8.1 is possible   |
-|  Variant     		| If W is an employee, then Scenario 8.2 is possible   |
+|  Nominal Scenario   | W asks the system to access the list of stored items, filtered/sorted by zone (including pick up area), category, min amount and so on;   |
+|  Variant     		| W is an Employee, Scenario 6.2 is possible  |
+
+
 
 ##### Scenario 6.1
 
 | Scenario 6.1 | Move items - request |
 | ------------- |:-------------| 
-|  Precondition   	  | Manager selected items to be moved  |
+|  Precondition   	  | W selected items to be moved  |
 |  Post condition     | A request of moving the items will be available to targetted Employees  |
-| Description		| A manager selects the items that must be moved by one or more employee. The system keep trace of these items and it will provide them to the relative employee when they access to Scenario 8.2 |
-|  Nominal Scenario   | The manager asks the system to access the list of zones and their current state (%capacity); The system returns the result; The manager selects one destination zone; the system returns a list of recommended employees; the manager select the employees that must do the job; the system keep trace of these items and it will provide them to the relative employee when they access to Scenario 8.2   |
+| Description		| W selects the items that must be moved by one or more employees. The system keep trace of these items and it will provide them to the relative employee when they access to Scenario 6.2 |
+|  Nominal Scenario   | W asks the system to access the list of zones (and pick up area) and their current state (%capacity); The system returns the result; W selects one destination zone; the system returns a list of recommended employees; the manager select the employees that must do the job; the system keep trace of these items and it will provide them to the relative employee when they access to Scenario 6.2   |
 
 
 
@@ -500,26 +501,12 @@ the System saves it |
 
 | Scenario 6.2 | Move items |
 | ------------- |:-------------| 
-|  Precondition   	  |   |
-|  Post condition     | Items have been moved as requested by the manager  |
-|  Nominal Scenario   | Employee asks the system access the requests he must satisfy; the system returns the result; the employee selects one of them; Once the item has been physically moved, the employee marks as complete the request; the system updates the status of the request and saves its new location in item's location history |
+|  Precondition   	  | W is logged in as Employee  |
+|  Post condition     | Items have been moved as requested by the manager/employee  |
+|  Nominal Scenario   | Employee asks the system to access the requests he must satisfy; the system returns the result; the employee selects one of them; Once the item has been physically moved, the employee marks as complete the request; the system updates the status of the request and saves its new location in item's location history |
 |  Exceptions     		| The employee can't find the item, abort  |
 |  Exceptions     		| There are no requests for the employee, abort  |
 |  Exceptions     		| An other employee completed the request before the current employee marks as complete the request, abort  |
-
-
-
-##### Scenario 6.3
-
-| Scenario 6.3 | Check item's location history |
-| ------------- |:-------------| 
-|  Precondition   	  | An item has been selected by the Employee/Manager (W)  |
-|  Post condition     | W has seen the location history of the item  |
-|  Nominal Scenario   | W asks the system to access to all of the different locations where an item has been stored; the system returns the result |
-
-
-
-
 
 
 
