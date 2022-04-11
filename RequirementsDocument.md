@@ -536,13 +536,12 @@ the System saves it |
 ![UCDiagram](diagrams/Glossary.jpg)
 
 # System Design
-\<describe here system design>
 
-\<must be consistent with Context diagram>
+Only software components are used, there is no integration with hardware beyond the servers for the web application deployment.
 
 # Deployment Diagram 
 
-\<describe here deployment diagram >
+![UCDiagram](diagrams/deployment.jpg)
 
 
 
