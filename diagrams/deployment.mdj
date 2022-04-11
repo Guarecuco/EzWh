@@ -1747,6 +1747,32 @@
 							"propertyLabel": {
 								"$ref": "AAAAAAGAF5+HFOPvHxQ="
 							}
+						},
+						{
+							"_type": "UMLTextView",
+							"_id": "AAAAAAGAF770be6GTXc=",
+							"_parent": {
+								"$ref": "AAAAAAGAF5Xs+uC5TaM="
+							},
+							"font": "Arial;13;0",
+							"left": 304,
+							"top": 560,
+							"width": 17,
+							"height": 25,
+							"text": "*"
+						},
+						{
+							"_type": "UMLTextView",
+							"_id": "AAAAAAGAF78p6u81ddM=",
+							"_parent": {
+								"$ref": "AAAAAAGAF5Xs+uC5TaM="
+							},
+							"font": "Arial;13;0",
+							"left": 312,
+							"top": 488,
+							"width": 17,
+							"height": 25,
+							"text": "*"
 						}
 					]
 				},
