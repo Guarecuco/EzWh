@@ -61,6 +61,8 @@ Version: 0.2
 		- [Use case 6, UC6 - Read items](#use-case-6-uc6---read-items)
 				- [Scenario 6.1](#scenario-61)
 				- [Scenario 6.2](#scenario-62)
+		- [Use case 7, UC7 - Upload catalogue of supplier](#use-case-7-uc7---upload-catalogue-of-supplier)
+				- [Scenario 7.1](#scenario-71)
 - [Glossary](#glossary)
 - [System Design](#system-design)
 - [Deployment Diagram](#deployment-diagram)
@@ -508,6 +510,25 @@ the System saves it |
 |  Exceptions     		| There are no requests for the employee, abort  |
 |  Exceptions     		| An other employee completed the request before the current employee marks as complete the request, abort  |
 
+### Use case 7, UC7 - Upload catalogue of supplier
+
+| Actors Involved        | Manager |
+| ------------- |:-------------| 
+|  Precondition   	  | Manager is logged in the system |
+|  Post condition     | The catalogue of a supplier is updated/added |
+|  Nominal Scenario   |  Manager asks the System to access the list of supplier; the System returns the result; The Manager selects the supplier which catalogue needs to be updated/added; The Manager enters Product/Item, min amount, amount, price and asks the System to save the new data; System updated the data  |
+|  Variant     		| The manager wants to import a csv file to accellerate the process, Scenario 7.1  |
+
+
+
+##### Scenario 7.1
+
+| Scenario 7.1 | Import from csv file |
+| ------------- |:-------------| 
+|  Precondition   	  | The Manager selected one of the supplier which catalogue needs to be updated/added  |
+|  Post condition     | The catalogue of a supplier is updated/added  |
+|  Nominal Scenario   | Manager asks the system to import the catalogue from a CSV file; the System prompts the file; the Manager selects a valid CSV file; the System checks its validity; the System merges the catalogue (csv records eventually overwrites products which are already stored in the System)  |
+|  Exceptions     	  | Provided CSV file is invalid, abort  |
 
 
 # Glossary
