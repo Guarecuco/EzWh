@@ -164,6 +164,7 @@ Tom is the youngest salesperson at Umbrella Corporation, the biggest supplier of
 |  FR3.2  	| Modify order 	| 
 |  FR3.3  	| Delete order 	| 
 |  FR3.4  	| List orders	|
+|  FR3.5  	| Send email	|
 |  FR4  	| Manage items 	| 
 |  FR4.1  	| Check quality - Passed/Failed|
 |  FR4.2  	| Reject items in an order |
@@ -184,7 +185,7 @@ Tom is the youngest salesperson at Umbrella Corporation, the biggest supplier of
 | ID        | Type (efficiency, reliability, ..)           | Description  | Refers to |
 | ------------- |:-------------:| :-----| -----:|
 |  NFR1     | Efficiency  	| All functions should complete in < 0.5 sec  | All FR|
-|  NFR2     | Portability  	| The application should run in Chrome, Edge, Safari and Firefox, both in desktop and mobile mode (this cover about 90% of the browsers' market share). Compatibility with smartphones (iOS and Android) should be guaranteed  | All FR|
+|  NFR2     | Portability  	| The application should run in Chrome, Edge, Safari and Firefox, both in desktop and mobile mode (this covers about 90% of the browsers' market share). Compatibility with smartphones (iOS and Android) should be guaranteed  | All FR|
 |  NFR3     | Reliability 	| Application should be available 100% of the time during weekdays from 6am-10pm CET. Maintenance windows out of this time range is acceptable | All FR |
 |  NFR4     | Usability 	| The basics of the application should be usable in less than 1 day of training | All FR|
 |  NFR5     | Security 		| Access only to authorized users and to authorized sections | All FR, especially FR2 |
@@ -329,7 +330,7 @@ Tom is the youngest salesperson at Umbrella Corporation, the biggest supplier of
 
 ### Use case 3, UC3 - Manage items availability
 
-| Actors Involved        | Manager, Email Service |
+| Actors Involved        | Manager |
 | ------------- |:-------------| 
 |  Precondition     	| Manager is logged in the system |
 |  Post condition     	| Items' inventory has been managed |
@@ -382,7 +383,7 @@ Tom is the youngest salesperson at Umbrella Corporation, the biggest supplier of
 ##### Scenario 3.5
 
 | Scenario 2.5 | Read order |
-| ------------- |:-------------:| 
+| ------------- |:-------------| 
 |  Precondition     	| Manager has chosen an order among those provided by the System (both external and internal) |
 |  Post condition     	| |
 |  Nominal Scenario     | The system provides the status (pending, completed, payed/unpayed by the Financial Unit) of the selected order with additional details (date of order, date of delivery, items, qty, price, ...) |
