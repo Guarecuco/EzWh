@@ -1,12 +1,20 @@
 # Project Estimation  
-Date:
-13/04/2022
 
-Version:
-0.1
+Authors: 
+* Alessio Carachino
+* Samuele Giangreco
+* Daniel Guarecuco
+* Zoltan Mazzuco
+
+Date: 22 march 2022
+
+Deadline: 13 april 2022
+
+version: 1
 
 # Estimation approach
 Consider the EZWH  project as described in YOUR requirement document, assume that you are going to develop the project INDEPENDENT of the deadlines of the course
+
 # Estimate by size
 ### 
 |             | Estimate                        |             
