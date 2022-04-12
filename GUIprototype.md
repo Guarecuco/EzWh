@@ -76,7 +76,7 @@ Changes can be confirmed or aborted.
 ![Manageuser](GUIimages/ManageUsers.png)
 In this page the administrator is able to see several information about employees and suppliers, it can be filtered by role or searched by different attributes.
 
-A new user can be added by pressing ***Add user*** where we can add a [New Employee](#new-employee) or a [New Supplier](#new-supplier).
+A new user can be added by pressing ***Add user*** where a [New Employee](#new-employee) or a [New Supplier](#new-supplier) can be added.
 
 It is also possible to [Edit a user](#edit-user) by selecting ***Edit*** or removing one with ***Remove***.
 
@@ -110,11 +110,11 @@ The ***Bin*** icon deletes the user and then redirects to [Manage users](#manage
 ![OrderSupplier](GUIimages/ManageOrders_suppliers.png)
 This screen shows the list of all olders to suppliers. By changing the drop-down menu on the left to ***Internal Orders*** it is possible to switch to the [Internal Orders](#list-internal-orders). The view can be grouped by item and/or supplier, and a search can be done by specific fields.
 
-By selecting ***Details*** we can see the [Order details](#order-details), or we can ***Delete*** the order only if it is in pending state
+By selecting ***Details*** the [Order details](#order-details) are shown, or  ***Delete*** to remove the order, only if it is in pending state
 
 ### Order details
 ![OrderDetails](GUIimages/OrderDetails_Suppliers.png)
-Here we can check the order details. Regarding the orders to suppliers, the price per unit and the total price are shown. The ***Recepit*** button downloads this report. It is also possible to cancel an order, if it hasn't been shipped, by using the ***Cancel Order*** button. It is also possible to issue the same order again with ***Order Again***.
+Here the order details are listed. Regarding the orders to suppliers, the price per unit and the total price are shown. The ***Recepit*** button downloads this report. It is also possible to cancel an order, if it hasn't been shipped, by using the ***Cancel Order*** button. It is also possible to issue the same order again with ***Order Again***.
 
 ### List internal orders
 ![OrderInternal](GUIimages/ManageOrders_internal.png)
@@ -142,16 +142,16 @@ For each Supplier it is possible to [***Edit***](#edit-supplier) its information
 ### Edit supplier
 ![EditSupplier](GUIimages/EditUser_Supplier.png)
 
-Here it is possible to edit the Supplier's information and [add](#add-item-supplier) a list of the items sold, then we can ***Save*** or ***Go back*** to the previous page.
+Here it is possible to edit the Supplier's information and [add](#add-item-supplier) a list of the items sold, it can be confirmed by using the ***Save***  button or dismiss by using the ***Go back*** button.
 
 ### Add item supplier
 ![EditSupplier](GUIimages/NewItem.png)
-Here we can add products manually or import them from a .csv file
+This section allows to add products manually or import them from a .csv file according to a standard format.
 
 ### Supplier catalogue
 ![SupplierCatalogue](GUIimages/SupplierCatalogue.png)
 
-This shows the catalog of a supplier, where we can check the items sold and ***Edit***, ***Order*** or ***Remove*** them.
+This shows the catalog of a supplier, where the products are shown. It is possible to ***Edit***, ***Order*** or ***Remove*** these items.
 
 
 ## Case 7 - Quality check
