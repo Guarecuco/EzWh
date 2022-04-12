@@ -31,6 +31,7 @@ This is the view presented to all users trying to use the application. If any us
 
 This view is presented to all users that are trying to access the application for the first time after the administrator has created their accounts. They are requested to change their default password. Failure to change the password will reject the authentication.
 * By pressing ***Submit*** the user is redirected to the [Dashboard](#case-2-dashboard) screen.
+* If the passwords are not the same, an error message is displayed and the user can try again.
 
 
 ## Case 2 - Dashboard
