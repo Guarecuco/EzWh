@@ -18,16 +18,24 @@ Version: #1
 ### Regular Log-in
 ![ManagerLogin](GUIimages/Login.png)
 
+This is the view presented to all users trying to use the application. If any user tries to connect to any other page without being authenticated, they will be redirected here for login.
+
+* The user is requested to provide e-mail and password.
+* The ***Login*** button send the form for authentication with the backend.
+  * If it is the first time the user tries to log in, they will be redirected to the [Firt-time log-in](#firt-time-log-in) screen.
+  * Otherwise, they will be redirected to the [Dashboard](#case-2-dashboard) screen.
+
 ### Firt-time Log-in
 
 ![ManagerLogin](GUIimages/Firstlogin.png)
 
+This view is presented to all users that are trying to access the application for the first time after the administrator have created their accounts. They are requested to change their default password. Failure to change the password will reject the authentication.
+* By pressing ***Submit*** the user is redirected to the [Dashboard](#case-2-dashboard) screen.
 
 
 ## Case 2 - Dashboard
 ![MainMenu](GUIimages/Mainmenu.png)
 
-This view is available only to the manager. It is the first page shown. If the manager tries to connect to any other page without having an active session he is redirected here for the login.
 
 
 
