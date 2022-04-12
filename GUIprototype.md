@@ -92,21 +92,30 @@ It is possible to [edit a user](#edit-user) by selecting ***Edit*** or removing 
 
 ### List orders to suppliers
 ![OrderSupplier](GUIimages/ManageOrders_suppliers.png)
+The list of all older to Suppliers, By changing the drop-down menu on the left to ***Internal Orders*** it is possible to switch to the [Internal Orders](#list-internal-orders). The view can be grouped by item and/or supplier, and it can be done a search by a specific field.
+
+By selecting ***Details*** we can see the [Order details](#order-details), or we can ***Delete*** the order only if it is in pending state
 
 ### Order details
 ![OrderDetails](GUIimages/OrderDetails_Suppliers.png)
+Here we can check the order details. Specifically for order to supplier we have the Price per unit, the total price and the ***Recepit*** button do download it. It is also possible to cancel and order, if not already shipped, with ***Cancel Order*** or make the same order again with ***Order Again***.
 
 ### List internal orders
 ![OrderInternal](GUIimages/ManageOrders_internal.png)
+The list of all internal order, By changing the drop-down menu on the left to ***Orders to Suppliers*** it is possible to switch to the [Orders to suppliers](#list-orders-to-suppliers). The view can be grouped by item and/or Organizational unit that is performing the order, and it can be done a search by a specific field
 
-### Placing orders
+### Placing Internal Orders
 ![PlacingOrder](GUIimages/InternalOrder.png)
+An internal order can be placed by selecting the quantities of each item and preceding to ***Order*** to be redirected to the [order confirmation](#internal-orders-confirmation) page, it is also possible to ***Go back*** aborting the order and returning to the previous page.
 
+### Internal Orders Confirmation
 ![OrderConfirmation](GUIimages/InternalOrderconfirmation.png)
+Confirmation page for a new Internal order. It is possible to cancel an order not already processed.
 
 ### Placing orders to suppliers
 ![IssueOrder](GUIimages/IssueOrder.png)
-
+Here are shown the informations on the products that are being purchased from a supplier.
+It is possible to modify the quantity of an item, adding more products of the same supplier, ***abort*** or ***confirm*** the order.
 
 
 ## Case 6 - Manage suppliers
