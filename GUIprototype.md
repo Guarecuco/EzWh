@@ -42,6 +42,22 @@ This view is presented to all users that are trying to access the application fo
 ## Case 3 - Manage items
 ![ManageItems](GUIimages/ManageItems.png)
 
+This view shows the avaiable items in the warehouse and their informations:
+* ID: is a unique identifier for an item sold by a specific Company
+* Category
+* Product/Item
+* Name/Company: is the supplier from which the item is bought
+* Min Amount: shows the minimum amount of that item that we always want to have avaiable, it checks all the Suppliers it is bought from
+* Amount: shows the amount of that item that is avaiable in the warehouse
+* Price: is the price at which the supplier sells the item
+* Shelf: is the fisical position of the item in the warehouse
+
+* Options:
+  * By pressing ***Edit*** the user is redirected to the [Edit Items](#case-3-edit-items) screen.
+
+Items can be filtered by catergory, item or company or a more specific search could be done with the search bar on the right. 
+Changing the granularity of the view means that some tabs will not be shown for example the price when we are grouping by items.
+
 ### Edit items
 ![EditItems](GUIimages/EditItem.png)
 
