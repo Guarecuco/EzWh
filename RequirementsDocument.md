@@ -9,6 +9,8 @@ Authors:
 
 Date: 22 march 2022
 
+Deadline: 13 april 2022
+
 Version: 0.4
 
  
@@ -39,7 +41,7 @@ Version: 0.4
 				- [Scenario 1.2](#scenario-12)
 				- [Scenario 1.3](#scenario-13)
 				- [Scenario 1.4](#scenario-14)
-		- [Use case 2, UC2 - Authenticate](#use-case-2-uc2---authenticate)
+		- [Use case 2, UC2 - Authentication](#use-case-2-uc2---authentication)
 				- [Scenario 2.1](#scenario-21)
 				- [Scenario 2.2](#scenario-22)
 		- [Use case 2.5, UC2.5 - Logout](#use-case-25-uc25---logout)
@@ -132,13 +134,17 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 
 # Stories and personas
 
-Sofia is 28, she works full-time as a manager at a retailer shop located in Via Roma, they sell fashion accessories. As she works in a very transited street, she must deal with a great number of customers, she also keeps an eye on security, and every day just before finishing her shift, she does the inventory and places an internal order to the company’s warehouse requesting out-of-stock items. As she is under a lot of workloads, she desires to place new orders as easily as possible, without having to call Mario to get a list of available items.
+Sofia is 28, she works full-time as a manager at a retailer shop located in Via Roma, they sell fashion accessories. As she works in a very transited street, she must deal with a great number of customers, she also keeps an eye on security, and every day just before finishing her shift, she does the inventory and places an internal order to the company’s warehouse requesting out-of-stock items. As she is under a lot of workloads, she desires to place new orders as easily as possible, without having to call Mario to get a list of available items, she needs an interconnected system with the warehouse.
 
 
-Mario is 55, he serves as the warehouse's manager. He has a big family with whom he enjoys spending time. He has been managing orders in spreadsheets for almost 20 years. He is a smart person and realizes there are currently better ways for managing warehouses. He wants to remain competitive and relevant within the organization, so he is eager to implement new technologies than can help him ease the job and get back to his family on time.
+Mario is 55, he serves as the warehouse's manager. He has a big family with whom he enjoys spending time. He has been managing orders in spreadsheets for almost 20 years. He is a smart person and realizes there are currently better ways for managing warehouses than old-fashioned spreadsheets. He wants to remain competitive and relevant within the organization, so he is eager to implement new technologies than can help him ease the job and get back to his family on time.
 
 
-Tom is the youngest salesperson at Umbrella Corporation, the biggest supplier of umbrellas in southern Europe. He must deal with many warehouses across the continent, so he hates that many of these warehouses use different proprietary software for placing orders. He prefers receiving orders via e-mails, as he won’t need to memorize different passwords for each single warehouse.
+Elena is about 35 years old. She works as a quality supervisor at the company’s warehouse, she has been certified as a product inspector by multiple agencies. She is very meticulous and very good at her job. She knows all items that go through the warehouse and has a very good eye for detecting anomalies. She runs quality inspections on random items on every shipment that arrives to the warehouse, she writes down her inspection report on paper, and then transcribes it in her desktop PC located inside her office. If she finds any item doesn’t comply with the standard, she will reject the item and return it to the supplier for a replacement. However, this can only be done once she goes back to her office. Elena would like to make her report in real time by means of a portable tablet she can carry with her through the entire warehouse. She would save critical time, allowing here to inspect more items. But also, she can request for a replacement as soon as possible.
+
+
+Tom is the youngest salesperson at Umbrella Corporation, the biggest supplier of umbrellas in southern Europe. He must deal with many warehouses across the continent, so he hates that many of these warehouses use different proprietary software for placing orders. He prefers receiving orders via e-mails, as he won’t need to memorize different passwords for each single warehouse. Once he gets an automated email from Mario, he ships the items to the warehouse. If any of them doesn’t meet the quality check, he gets and automated email from Elena requesting for a replacement. Emails are the means of communication between Tom and all other actors in the warehouse.
+
 
 
 # Functional and non functional requirements
@@ -219,7 +225,7 @@ Tom is the youngest salesperson at Umbrella Corporation, the biggest supplier of
 |  2  				| Application asks for name, surname, email, working role |
 |  3  				| IT Administrator enters name, surname, email, working role |
 |  4  				| Application checks wheter there is no other account with the specified information   |
-|  5  				| Application creates account for user U   |
+|  5  				| Application creates account for user U with a default password   |
 |  Exception     	| User U already exists but with different working role, abort |
 |  Exception     	| User U already exists but with same working role, the system deletes the old one and create the new one |
 
@@ -249,11 +255,11 @@ Tom is the youngest salesperson at Umbrella Corporation, the biggest supplier of
 |  Post condition   | One or more users have been modified |
 |  Step#			| Description 				|
 |  1     			| IT Administrator asks the system to access to users' overview in tabular format|  
-|  2     			| System provides the requested informations |
+|  2     			| System provides the requested information |
 |  3     			| IT Administrator selects a user U to modify  |
 |  4     			| System provides user's details  |
 |  5     			| IT Administrator modifies U's information and/or working role  |
-|  6     			| Application updates U's informations  |
+|  6     			| Application updates U's information  |
 |  Variants     	| Search by user id/name+surname. The system shows the user's details  |
 |  Variants     	| Sort by role. The system shows users in hierarchical order   |
 |  Variants     	| Sort by seniority. The system shows users in ascending order   |
@@ -279,7 +285,7 @@ Tom is the youngest salesperson at Umbrella Corporation, the biggest supplier of
 |  Exception     	| Selected User U's permissions block the request, abort |
 
 
-### Use case 2, UC2 - Authenticate
+### Use case 2, UC2 - Authentication
 | Actors Involved        | User |
 | ------------- |:-------------| 
 |  Precondition     | User U exists |
@@ -334,15 +340,15 @@ Tom is the youngest salesperson at Umbrella Corporation, the biggest supplier of
 | ------------- |:-------------| 
 |  Precondition     	| Manager is logged in the system |
 |  Post condition     	| Items' inventory has been managed |
-|  Nominal Scenario     | \<Textual description of actions executed by the UC> |
-|  Exceptions     		| \<exceptions, errors > |
+|  Nominal Scenario     | Defined at each scenario |
+|  Exceptions     		| Defined at each scenario |
 
 ##### Scenario 3.1 
 
 | Scenario 3.1 | Check items availabilty |
 | ------------- |:-------------| 
-|  Precondition     	|  |
-|  Post condition   	|  |
+|  Precondition     	| Manager is logged in the system |
+|  Post condition   	| - |
 |  Nominal Scenario     | Manager selects the kind of search (sort by category, price, ..., find by id); the system provides the results with corresponding availability  |
 
 ##### Scenario 3.2 
@@ -350,7 +356,7 @@ Tom is the youngest salesperson at Umbrella Corporation, the biggest supplier of
 | Scenario 3.2 | Check all suppliers per item |
 | ------------- |:-------------| 
 |  Precondition     	| An item has been selected by the Manager |
-|  Post condition     	|  |
+|  Post condition     	| - |
 |  Nominal Scenario     | Manager asks the system to access to the list of suppliers for the specified item; The system provides the results  |
 |  Exceptions     		| No suppliers available for the specified item, abort |
 
@@ -358,7 +364,7 @@ Tom is the youngest salesperson at Umbrella Corporation, the biggest supplier of
 
 | Scenario 3.3 | Manage orders |
 | ------------- |:-------------| 
-|  Precondition   	  |  |
+|  Precondition   	  | Manager is logged in the system |
 |  Post condition     | Orders has been managed  |
 |  Nominal Scenario   | Manager asks the system to access to the list of orders (pending and completed), both external and internal; The system provides the results  |
 
@@ -367,7 +373,7 @@ Tom is the youngest salesperson at Umbrella Corporation, the biggest supplier of
 
 | Scenario 3.4 | Issue order to supplier |
 | ------------- |:-------------| 
-|  Precondition       |  |
+|  Precondition       | Manager is logged in the system |
 |  Post condition     | An order is issued to the selected supplier |
 |  Step#			  |	Description 				|
 |  1    			  | Manager enters a list of products with the relating quantity and supplier |  
@@ -385,7 +391,7 @@ Tom is the youngest salesperson at Umbrella Corporation, the biggest supplier of
 | Scenario 2.5 | Read order |
 | ------------- |:-------------| 
 |  Precondition     	| Manager has chosen an order among those provided by the System (both external and internal) |
-|  Post condition     	| |
+|  Post condition     	| - |
 |  Nominal Scenario     | The system provides the status (pending, completed, payed/unpayed by the Financial Unit) of the selected order with additional details (date of order, date of delivery, items, qty, price, ...) |
 
 ##### Scenario 3.6
@@ -393,8 +399,8 @@ Tom is the youngest salesperson at Umbrella Corporation, the biggest supplier of
 | Scenario 3.6 | Track position |
 | ------------- |:-------------| 
 |  Precondition     	| Manager has chosen an order among those provided by the System |
-|  Post condition     	|  |
-|  Nominal Scenario     | Manager asks the system to access to the shipping informations; The system provides the results  |
+|  Post condition     	| - |
+|  Nominal Scenario     | Manager asks the system to access to the shipping information; The system provides the results  |
 |  Exceptions     		| Shipping informations are not yet available, abort |
 
 
@@ -404,7 +410,7 @@ Tom is the youngest salesperson at Umbrella Corporation, the biggest supplier of
 | ------------- |:-------------| 
 |  Precondition     	| Manager has chosen an order among those provided by the System. The order must be in pending status and must not be shipped |
 |  Post condition     	| The order has been deleted and won't be shipped |
-|  Nominal Scenario     | Manager asks the system to delete the order; The system deletes the order and notifies via email the Financial Unit so that it won't pay  |
+|  Nominal Scenario     | Manager asks the system to delete the order; The system deletes the order and notifies via email the Financial Unit so that it won't pay. It notifies the supplier so items are not shipped.  |
 |  Variant     		| The order is Internal, the manager notifies OU via email about the deletion |
 |  Exceptions     		|  Order is already paid by the Financial unit, the system sends an email to Financial Unit so that it can ask for a refund |
 |  Exceptions     		|  Order's deletion rejected due to supplier policies, abort |
@@ -419,7 +425,7 @@ Tom is the youngest salesperson at Umbrella Corporation, the biggest supplier of
 |  Precondition     	| Privileged employee of OU is logged in |
 |  Post condition     	| Internal order to the Warehouse is issued |
 |  Nominal Scenario     | An employee of an OU generates an internal order requesting items from the warehouse. It's only possible to request items with current availability |
-|  Exceptions     		| Item is not available at the warehouse, dismiss this the item from the order |
+|  Exceptions     		| Item is not available at the warehouse, dismiss the item from the order |
 
 ##### Scenario 4.1
 
@@ -427,7 +433,7 @@ Tom is the youngest salesperson at Umbrella Corporation, the biggest supplier of
 | ------------- |:-------------| 
 |  Precondition     	| OU asks the System to issue an internal order  |
 |  Post condition     	| An internal order is issued to the warehouse |
-|  Nominal Scenario     | OU enters a list of products, which are currently available and in the warehouse, with the relating quantity; the System shows an order preview; OU confirms and sends the internal order;
+|  Nominal Scenario     | OU enters a list of products, which are currently available in the warehouse, with the relating quantity; the System shows an order preview; OU confirms and sends the internal order;
 the System saves it |
 |  Exceptions     		| OU has entered invalid quantities or products, abort |
 
@@ -436,7 +442,7 @@ the System saves it |
 | Scenario 4.2 | Read internal orders |
 | ------------- |:-------------| 
 |  Precondition     	| OU has chosen an order among those provided by the System (only internal) |
-|  Post condition     	| |
+|  Post condition     	| - |
 |  Nominal Scenario     | The system provides the status (pending, completed) of the selected order with additional details (date of order, date of delivery, items, qty, value of the items, ...) |
 
 ##### Scenario 4.3
@@ -444,14 +450,14 @@ the System saves it |
 | Scenario 4.3 | Track position of Internal Order |
 | ------------- |:-------------| 
 |  Precondition     	| OU has chosen an internal order among those provided by the System |
-|  Post condition     	|  |
-|  Nominal Scenario     | OU asks the system to access to the shipping informations; The system provides the results  |
+|  Post condition     	| - |
+|  Nominal Scenario     | OU asks the system to access to the shipping information; The system provides the results  |
 |  Exceptions     		| Shipping informations are not yet available, abort |
 
 ##### Scenario 4.4
 | Scenario 4.4 | Mark as completed |
 | ------------- |:-------------| 
-|  Precondition     	|  |
+|  Precondition     	| OU employeed is logged in the system, order has arrived |
 |  Post condition     	| At least one order will be saved as 'Completed' in the System |
 |  Nominal Scenario     | OU asks the system to access to shipped internal orders; the System returns the results; OU selects one of the orders provided by the System and marks them as 'Completed'; the System saves the new status;   |
 
@@ -471,7 +477,7 @@ the System saves it |
 | ------------- |:-------------| 
 |  Precondition   	  | Quality supervisor is logged in the system |
 |  Post condition     | The quality of the selected items is granted |
-|  Nominal Scenario   | Quality supervisor asks the system to access to the list of items which state is new-arrival/untested; The system provides the results; Quality supervisor picks the selection mode to pick the items; Quality supervisor confirms that the items passed the tests  |
+|  Nominal Scenario   | Quality supervisor asks the system to access to the list of items which state is new-arrival/untested; The system provides the results; Quality supervisor picks the items; Quality supervisor confirms that the items passed the tests  |
 |  Exceptions     		| At least one item failed the tests, Scenario 5.1  |
 
 ##### Scenario 5.1
@@ -479,7 +485,7 @@ the System saves it |
 | Scenario 5.1 | Send back to supplier |
 | ------------- |:-------------| 
 |  Precondition   	  | At least one item failed the tests  |
-|  Post condition     | A request to send back the bad-quality items is made  |
+|  Post condition     | A request to return the bad-quality items is made  |
 |  Nominal Scenario   | Quality supervisor selects the bad-quality items that must be sent back to the original supplier; The system sends an email to the supplier's email address, containing which are the issues of the item, date of order and other details; The System sends an email to the Managers, which request to one of them to move the items to Pick Up Area, by completing a UC6 - Scenario 6.1 followed by Scenario 6.2   |
 
 
@@ -490,7 +496,7 @@ the System saves it |
 | Actors Involved        | Manager as W, Employee as W |
 | ------------- |:-------------| 
 |  Precondition   	  | W is logged in the system |
-|  Post condition     |  |
+|  Post condition     | - |
 |  Nominal Scenario   | W asks the system to access the list of stored items, filtered/sorted by zone (including pick up area), category, min amount and so on;   |
 |  Variant     		| W is an Employee, Scenario 6.2 is possible  |
 
@@ -501,9 +507,9 @@ the System saves it |
 | Scenario 6.1 | Move items - request |
 | ------------- |:-------------| 
 |  Precondition   	  | W selected items to be moved  |
-|  Post condition     | A request of moving the items will be available to targetted Employees  |
-| Description		| W selects the items that must be moved by one or more employees. The system keep trace of these items and it will provide them to the relative employee when they access to Scenario 6.2 |
-|  Nominal Scenario   | W asks the system to access the list of zones (and pick up area) and their current state (%capacity); The system returns the result; W selects one destination zone; the system returns a list of recommended employees; the manager select the employees that must do the job; the system keep trace of these items and it will provide them to the relative employee when they access to Scenario 6.2   |
+|  Post condition     | A request of moving the items will be available to targeted employees  |
+| Description		| W selects the items that must be moved by one or more employees. The system keeps track of these items and it will provide them to the relative employee when they access to Scenario 6.2 |
+|  Nominal Scenario   | W asks the system to access the list of zones (and pick up area) and their current state (%capacity); The system returns the result; W selects one destination zone; the system returns a list of recommended employees; the manager select the employees that must do the job; the system keeps track of these items and it will provide them to the relative employee when they access to Scenario 6.2   |
 
 
 
@@ -511,12 +517,13 @@ the System saves it |
 
 | Scenario 6.2 | Move items |
 | ------------- |:-------------| 
-|  Precondition   	  | W is logged in as Employee  |
+|  Precondition   	  | W is logged in as employee  |
 |  Post condition     | Items have been moved as requested by the manager/employee  |
-|  Nominal Scenario   | Employee asks the system to access the requests he must satisfy; the system returns the result; the employee selects one of them; Once the item has been physically moved, the employee marks as complete the request; the system updates the status of the request and saves its new location in item's location history |
+|  Nominal Scenario   | Employee asks the system to access the requests he must satisfy; the system returns the result; the employee selects one of them; Once the item has been physically moved, the employee marks the request as completed; the system updates the status of the request and saves its new location in item's location history |
 |  Exceptions     		| The employee can't find the item, abort  |
 |  Exceptions     		| There are no requests for the employee, abort  |
 |  Exceptions     		| An other employee completed the request before the current employee marks as complete the request, abort  |
+
 
 ### Use case 7, UC7 - Upload catalogue of supplier
 
@@ -524,8 +531,8 @@ the System saves it |
 | ------------- |:-------------| 
 |  Precondition   	  | Manager is logged in the system |
 |  Post condition     | The catalogue of a supplier is updated/added |
-|  Nominal Scenario   |  Manager asks the System to access the list of supplier; the System returns the result; The Manager selects the supplier which catalogue needs to be updated/added; The Manager enters Product/Item, min amount, amount, price and asks the System to save the new data; System updated the data  |
-|  Variant     		| The manager wants to import a csv file to accellerate the process, Scenario 7.1  |
+|  Nominal Scenario   |  Manager asks the System to access the list of suppliers; the System returns the result; The Manager selects the supplier's catalogue that needs to be updated/added; The Manager enters Product/Item, min amount, amount, price and asks the System to save the new data; System updates the data  |
+|  Variant     		| The manager wants to import a csv file to accelerate the process, Scenario 7.1  |
 
 
 
@@ -533,7 +540,7 @@ the System saves it |
 
 | Scenario 7.1 | Import from csv file |
 | ------------- |:-------------| 
-|  Precondition   	  | The Manager selected one of the supplier which catalogue needs to be updated/added  |
+|  Precondition   	  | The Manager selected one of the supplier's catalogue that needs to be updated/added  |
 |  Post condition     | The catalogue of a supplier is updated/added  |
 |  Nominal Scenario   | Manager asks the system to import the catalogue from a CSV file; the System prompts the file; the Manager selects a valid CSV file; the System checks its validity; the System merges the catalogue (csv records eventually overwrites products which are already stored in the System)  |
 |  Exceptions     	  | Provided CSV file is invalid, abort  |
@@ -544,8 +551,8 @@ the System saves it |
 | ------------- |:-------------| 
 |  Precondition   	  | System needs to send an email with specified sender and recipient |
 |  Post condition     | An email is sent |
-|  Nominal Scenario   |  Manager asks the System to access the list of supplier; the System returns the result; The Manager selects the supplier which catalogue needs to be updated/added; The Manager enters Product/Item, min amount, amount, price and asks the System to save the new data; System updated the data  |
-|  Exception     		| Internet connection fails, retry when it will be restored  |
+|  Nominal Scenario   | When the manager creates an order to a supplier, or the quality supervisor rejects an item, an automated email is sent to a specified recipient with a standard body text describing the scenario  |
+|  Exception     		| Internet connection fails, retry when it is restored  |
 
 
 # Glossary
@@ -554,7 +561,7 @@ the System saves it |
 
 # System Design
 
-Only software components are used, there is no integration with hardware beyond the servers for the web application deployment.
+Only software components are used, there is no integration with hardware beyond the servers used for the web application deployment.
 
 # Deployment Diagram 
 
