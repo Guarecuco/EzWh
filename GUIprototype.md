@@ -36,7 +36,7 @@ This view is presented to all users that are trying to access the application fo
 ## Case 2 - Dashboard
 ![MainMenu](GUIimages/Mainmenu.png)
 
-The main menu of the application it is possible to [Manage items](#case-3---manage-items), [Manage users](#manage-users), 
+The main menu of the application it is possible to [Manage items](#case-3---manage-items), [Manage users](#manage-users), [Manage orders](#case-5---manage-orders), [Manage suppliers](#manage-supplier), [Quality check](#case-7---quality-check), and [Show warehouse](#case-8---show-warehouse)
 
 
 ## Case 3 - Manage items
