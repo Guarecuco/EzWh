@@ -121,26 +121,38 @@ It is possible to modify the quantity of an item, adding more products of the sa
 ## Case 6 - Manage suppliers
 ### Manage supplier
 ![ManageSupplier](GUIimages/ManageSuppliers.png)
+For each Supplier it is possible to [***Edit***](#edit-supplier) their informations, make a new [***Order***](#placing-orders-to-suppliers) to that supplier, see his [***Catalogue***](#supplier-catalogue) or ***Remove*** him from the database
 
 ### Edit supplier
 ![EditSupplier](GUIimages/EditUser_Supplier.png)
 
+Here it is possible to edit Supplier's informations and [add](#add-item-supplier) a list of the items he sells, then we can ***Save*** or ***Go back*** to the previous page
+
 ### Add item supplier
 ![EditSupplier](GUIimages/NewItem.png)
+Here we can add products manually or import them from a .csv file
 
 ### Supplier catalogue
 ![SupplierCatalogue](GUIimages/SupplierCatalogue.png)
 
+Finally, in the catalog we can check the items of a specific supplier and ***Edit***, ***Order*** or ***Remove*** them
 
 
 ## Case 7 - Quality check
 ![QualitySupervision](GUIimages/QualitySupervision.png)
 
+Here quality supervisors can look at the recently received items and decide to [***check***](#check) some of them.
+
+### check
 ![QualityCheck](GUIimages/Qualitycheck.png)
 
+After doing a test, the quality supervisor can select the type of test he performed and indicate the result with ***Failed*** or ***Passed***.
+At the end he can decide if the item needs to be accepted with ***Accept item*** or rejected with ***Reject item***.
 
 
 ## Case 8 - Show warehouse
 ![WarehouseOverview](GUIimages/Warehouseoverview.png)
 
+It is possible to have a graphical view of the warehouse where the green shelves are free, the yellow ones are partially occupied, and the red ones are full.
 
+Clicking on every shelf opens a page with the informations on the items stored.
