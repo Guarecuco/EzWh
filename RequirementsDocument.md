@@ -433,8 +433,7 @@ Tom is the youngest salesperson at Umbrella Corporation, the biggest supplier of
 | ------------- |:-------------| 
 |  Precondition     	| OU asks the System to issue an internal order  |
 |  Post condition     	| An internal order is issued to the warehouse |
-|  Nominal Scenario     | OU enters a list of products, which are currently available in the warehouse, with the relating quantity; the System shows an order preview; OU confirms and sends the internal order;
-the System saves it |
+|  Nominal Scenario     | OU enters a list of products, which are currently available in the warehouse, with the relating quantity; the System shows an order preview; OU confirms and sends the internal order; the System saves it |
 |  Exceptions     		| OU has entered invalid quantities or products, abort |
 
 ##### Scenario 4.2
