@@ -429,7 +429,7 @@ Tom is the youngest salesperson at Umbrella Corporation, the biggest supplier of
 
 ##### Scenario 4.1
 
-| Scenario 3.6 | Issue order to warehouse |
+| Scenario 4.1 | Issue order to warehouse |
 | ------------- |:-------------| 
 |  Precondition     	| OU asks the System to issue an internal order  |
 |  Post condition     	| An internal order is issued to the warehouse |
@@ -551,7 +551,7 @@ the System saves it |
 | ------------- |:-------------| 
 |  Precondition   	  | System needs to send an email with specified sender and recipient |
 |  Post condition     | An email is sent |
-|  Nominal Scenario   | When the manager creates an order to a supplier, or the quality supervisor rejects an item, an automated email is sent to a specified recipient with a standard body text describing the scenario  |
+|  Nominal Scenario   | System generates the email body message; System provides to Email Service the sender and recipient's address and the body message; Email Service processes the body message and sends the email  |
 |  Exception     		| Internet connection fails, retry when it is restored  |
 
 
