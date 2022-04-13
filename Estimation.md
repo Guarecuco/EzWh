@@ -69,7 +69,14 @@ Report here the results of the three estimation approaches. The  estimates may d
 | ----------- | ------------------------------- | ---------------|
 | estimate by size                   |400|  2.5 Weeks |
 | estimate by product decomposition  |520|  3.25 Weeks |
-| estimate by activity decomposition |520|  12 Week |
+| estimate by activity decomposition |520|  15 Week |
+
+In the first case, only the lines of codes (LOC) are taken into account for the calculation of the estimated effort. This approach also considers that 
+all 400 LOC can be written concurrently by all 4 team members during the entire duration of the project. None of the tasks need to wait for others, this is unrealistic.
+
+The second case (product decomposition) also takes into account the time required to write all documents and possible tests on the code, that is why the estimed effort and duration is greater than the previous case. The same assumption about concurrency is applied, therefore, all tasks can be executed in parallel by 100% effort of all team members.
+
+The third estimation, based on a Gantt diagram is more realistic. It takes the same amout of person-hours as the second case, because all milestones are the same. However, each task has one or several dependencies on previous task. It means that a given task can only be started after all previous tasks are completed. Also, team members are assigned different tasks based on their expertise and availability, so there are cases where only 1 team members is working, while the others are idle waiting for dependencies to be completed.
 
 
 
