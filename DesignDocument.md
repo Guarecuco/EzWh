@@ -20,12 +20,12 @@ Version:
 
 # Instructions
 
-The design must satisfy the Official Requirements document 
+The design must satisfy the Official Requirements document, notably functional and non functional requirements, and be consistent with the APIs
 
 # High level design 
 
 <discuss architectural styles used, if any>
-<report package diagram>
+<report package diagram, if needed>
 
 
 
@@ -34,7 +34,7 @@ The design must satisfy the Official Requirements document
 
 # Low level design
 
-<for each package, report class diagram>
+<for each package in high level design, report class diagram. Each class should detail attributes and operations>
 
 
 
@@ -60,10 +60,4 @@ The design must satisfy the Official Requirements document
 
 # Verification sequence diagrams 
 \<select key scenarios from the requirement document. For each of them define a sequence diagram showing that the scenario can be implemented by the classes and methods in the design>
-
-
-
-
-
-
 
