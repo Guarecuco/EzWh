@@ -46,7 +46,18 @@ The design must satisfy the Official Requirements document, notably functional a
 
 # Verification traceability matrix
 
-\<for each functional requirement from the requirement document, list which classes concur to implement it>
+|   | EzWh |User| Supplier | Customer  | Item | A | RestockOrder | TranportNote | ReturnOrder | SKU | Inventory | SKUItem | AA | TestDescriptor | AAA | TestResult | Position | InternalOrder |  
+| ----------------- |:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|
+|  FR1     |X|X|||||||||||||||||
+| FR2    |X|||||||||X||X|||||||
+| FR3    |X|||||||||X|X|X||X||X|X||
+| FR4     |X|||X|||||||||||||||
+| FR5    |X||X||X||X|X|||||||X||||
+| FR6  | X |||||X|X||||||X|||||X|
+| FR7  | X |||||||||X|X|X|||||||
+
+
+
 
 
 
