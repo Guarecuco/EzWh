@@ -14,9 +14,9 @@ Version:
 - [Contents](#contents)
 - [Instructions](#instructions)
 - [High level design](#high-level-design)
-- [Low level design](#low-level-design)
 - [Verification traceability matrix](#verification-traceability-matrix)
 - [Verification sequence diagrams](#verification-sequence-diagrams)
+  - [UC3, sc1-2 - Manage issue of restock orders](#uc3-sc1-2---manage-issue-of-restock-orders)
 
 # Instructions
 
@@ -29,29 +29,20 @@ MVC...
 
 ```plantuml
 @startuml
-package it.company.ezwe.gui as GUI
-package it.company.ezwe as application
-package it.company.ezwe.exceptions as exceptions
-package it.company.ezwe.data as data
-GUI - application
-application - exceptions
-data - application
-exceptions -> data: import
-@enduml
-```
-
-
-
-
-
-# Low level design
-
-```plantuml
-@startuml
 top to bottom direction
 
-class EzWh {
-  --
+class DataImpl {
+  SKU
+  SKUItem
+  Position
+  TestDescriptor
+  TestResults
+  Users
+  RestockOrders
+  ReturnOrders
+  InternalOrders
+  Item 
+ --
   List<SKU> : getAllSKUs()
   SKU : getSKU(int SKUID)
   int : addSKU(JSON info)F
@@ -167,7 +158,11 @@ class RestockOrder {
   transportNote
   SKUItems
   state
-  void setState(string newState)
+  createRestockOrder(string issueDate, List<Item> products, int supplierId, string state)
+  void setIssueDate(string issueDate)
+  void setState(string state)
+  void setProducts(List<Item> products)
+  void setSupplier(int id)
   void setSKUItems(List<SKUItem> skuItems)
   void setTransportNote(TransportNote transportNote)
 }
@@ -281,9 +276,9 @@ class InternalOrder {
   void: setProducts(List<SKUItems> RFIDs)
  }
 
-EzWh – “*” SKUItem
-EzWh – “*” SKU
-EzWh – “*” Position
+DataImpl – “*” SKUItem
+DataImpl – “*” SKU
+DataImpl – “*” Position
 Warehouse -- "*" Position
 Supplier -- "*" Item : sells
 Supplier -- "*" RestockOrder
@@ -358,4 +353,22 @@ N3 .. ReturnOrder
 
 # Verification sequence diagrams 
 \<select key scenarios from the requirement document. For each of them define a sequence diagram showing that the scenario can be implemented by the classes and methods in the design>
+
+## UC3, sc1-2 - Manage issue of restock orders
+
+```plantuml
+activate EzWh
+EzWh->DataImpl: addRestockOrder(issueDate, products, supplierId)
+activate DataImpl
+DataImpl -> RestockOrder: createRestockOrder(issueDate, products, supplierId, issuedState)
+activate RestockOrder
+RestockOrder-> RestockOrder: setIssueDate(issueDate)
+RestockOrder-> RestockOrder: setProducts(products)
+RestockOrder -> RestockOrder: setSupplierId(supplierId)
+RestockOrder-> RestockOrder: setState(issuedState)
+RestockOrder--> DataImpl: restockOrderId
+deactivate RestockOrder
+deactivate DataImpl
+deactivate EzWh
+```
 
