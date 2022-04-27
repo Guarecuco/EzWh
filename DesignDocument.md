@@ -2,8 +2,12 @@
 
 
 Authors: 
+* Alessio Carachino
+* Samuele Giangreco
+* Daniel Guarecuco
+* Zoltan Mazzuco 
 
-Date:
+Date: 27 April, 2022
 
 Version:
 
@@ -27,16 +31,17 @@ The design must satisfy the Official Requirements document, notably functional a
 
 # High level design 
 
-discuss architectural styles used, if any
-MVC...
-
-
+The application is composed of the following packages:
+* ***GUI***: Implementing the Graphical User Interface through a web browser.
+* ***Data***:Implementing the model layer in a MVC architecture. It manages and processes all the data.
+* ***Exceptions***:Implementing the exceptions handler, triggered by the user.
+* 
 ```plantuml
 @startuml
-package it.company.ezwe.gui as GUI
-package it.company.ezwe as application
-package it.company.ezwe.exceptions as exceptions
-package it.company.ezwe.data as data
+package it.company.ezwh.gui as GUI
+package it.company.ezwh as application
+package it.company.ezwh.exceptions as exceptions
+package it.company.ezwh.data as data
 GUI - application
 application - exceptions
 data - application
@@ -137,6 +142,19 @@ class DataImpl {
 } 
 
 Class User {
+  ID
+  name
+  surname
+  email
+  password
+  type
+  void:setUserId(int Id)
+  void:setUserName(string Name)
+  void:setUserSurname(string Surname)
+  void:setUserEmail(string Email)
+  void:setPassword(string Password)
+  void:setUserType(string Type)
+  string: getUserData(string Email)
 }
 
 class Supplier {
@@ -250,9 +268,6 @@ class TestDescriptor {
   String: getTestDescriptorDescription()
 }
 
-class AAA {
-  date of stock 
-}
 
 class TestResult {
   ID
@@ -304,7 +319,8 @@ class InternalOrder {
 DataImpl – “*” SKUItem
 DataImpl – “*” SKU
 DataImpl – “*” Position
-Warehouse -- "*" Position
+DataImpl -- “*” User
+Position "*" -- Warehouse
 Supplier -- "*" Item : sells
 Supplier -- "*" RestockOrder
 RestockOrder -- "*" Item
@@ -353,15 +369,15 @@ N3 .. ReturnOrder
 
 # Verification traceability matrix
 
-|   | EzWh |User| Supplier | Customer  | Item | A | RestockOrder | TranportNote | ReturnOrder | SKU | Inventory | SKUItem | AA | TestDescriptor | AAA | TestResult | Position | InternalOrder |  
-| ----------------- |:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|
-|  FR1     |X|X|||||||||||||||||
-| FR2    |X|||||||||X||X|||||||
-| FR3    |X|||||||||X|X|X||X||X|X||
-| FR4     |X|||X|||||||||||||||
-| FR5    |X||X||X||X|X|||||||X||||
-| FR6  | X |||||X|X||||||X|||||X|
-| FR7  | X |||||||||X|X|X|||||||
+|   | DataImpl |User| Supplier | Customer  | Item | A | RestockOrder | TranportNote | ReturnOrder | SKU | Inventory | SKUItem | AA | TestDescriptor | TestResult | Position | InternalOrder |  
+| ----------------- |:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|
+|  FR1     |X|X||||||||||||||||
+| FR2    |X|||||||||X||X||||||
+| FR3    |X|||||||||X|X|X||X|X|X||
+| FR4     |X|||X||||||||||||||
+| FR5    |X||X||X||X|X||||||||||
+| FR6  | X |||||X|X||||||X||||X|
+| FR7  | X |||||||||X|X|X||||||
 
 
 
