@@ -14,6 +14,7 @@ Version:
 - [Contents](#contents)
 - [Instructions](#instructions)
 - [High level design](#high-level-design)
+- [Low level design](#low-level-design)
 - [Verification traceability matrix](#verification-traceability-matrix)
 - [Verification sequence diagrams](#verification-sequence-diagrams)
   - [UC3, sc1-2 - Manage issue of restock orders](#uc3-sc1-2---manage-issue-of-restock-orders)
@@ -28,6 +29,21 @@ The design must satisfy the Official Requirements document, notably functional a
 
 discuss architectural styles used, if any
 MVC...
+
+
+```plantuml
+@startuml
+package it.company.ezwe.gui as GUI
+package it.company.ezwe as application
+package it.company.ezwe.exceptions as exceptions
+package it.company.ezwe.data as data
+GUI - application
+application - exceptions
+data - application
+exceptions -> data: import
+@enduml
+```
+# Low level design
 
 ```plantuml
 @startuml
@@ -161,6 +177,7 @@ class RestockOrder {
   SKUItems
   state
   createRestockOrder(string issueDate, List<Item> products, int supplierId, string state)
+  int: updateRestockOrder(string newState, int ID)
   void setIssueDate(string issueDate)
   void setState(string state)
   void setProducts(List<Item> products)
@@ -216,6 +233,7 @@ class SKUItem {
   int getAvailability()
   void : setRFID(int RFID)
   void : setAvailability(int Availability)
+  void : setSKUId(int SKUId)
   void : setDateOfStock(string DateOfStock)
 }
 
@@ -238,12 +256,17 @@ class AAA {
 
 class TestResult {
   ID
+  IdTestDescriptor
+  RFID
   date
-  result boolean
-  void: setTestResultDate(string Date)
-  void: setTestResult(boolean Result) 
-  String: getTestResultDate()
-  boolean: getTestResultResult()
+  Result
+  void: setRFID(int RFID)
+  int: addTestResult(JSON info)
+  void: setIdTestDescriptor(int ID)
+  void: setDate(string Date)
+  void: setResult(boolean Result) 
+  String: getDate()
+  boolean: getResult()
 }
 
 class Warehouse
