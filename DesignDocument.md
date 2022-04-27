@@ -405,6 +405,27 @@ deactivate EzWh
 
 ```plantuml
 @startuml
-
+activate EzWh
+loop for each SKUItem
+EzWh->DataImpl: addTestResult(RFID, idTestDescriptor, date, result)
+activate DataImpl
+DataImpl -> TestResult: addTestResult(RFID, idTestDescriptor, date, result)
+activate TestResult
+TestResult -> TestResult: setResult(result)
+TestResult-> TestResult: setDate(date)
+TestResult -> TestResult: setIdTestDescriptor(idTestDescriptor)
+TestResult -> TestResult: setRFID(RFID)
+TestResult--> DataImpl: TestResultId
+deactivate TestResult
+DataImpl --> EzWh: TestResultId
+EzWh->DataImpl: updateRestockOrder(testedState, id)
+DataImpl -> RestockOrder: updateRestockOrder(id, testedState)
+activate RestockOrder
+RestockOrder --> DataImpl: Done
+deactivate RestockOrder 
+DataImpl --> EzWh: Done
+deactivate DataImpl
+end loop
+deactivate EzWh
 @enduml
 ```
