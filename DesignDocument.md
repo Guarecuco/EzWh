@@ -17,6 +17,8 @@ Version:
 - [Verification traceability matrix](#verification-traceability-matrix)
 - [Verification sequence diagrams](#verification-sequence-diagrams)
   - [UC3, sc1-2 - Manage issue of restock orders](#uc3-sc1-2---manage-issue-of-restock-orders)
+  - [UC5.1, sc 5.1.1 - Record restock order arrival](#uc51-sc-511---record-restock-order-arrival)
+  - [UC5.2, sc 5.2.1, 5.2.2, 5.2.3](#uc52-sc-521-522-523)
 
 # Instructions
 
@@ -368,7 +370,41 @@ RestockOrder -> RestockOrder: setSupplierId(supplierId)
 RestockOrder-> RestockOrder: setState(issuedState)
 RestockOrder--> DataImpl: restockOrderId
 deactivate RestockOrder
+DataImpl --> EzWh: Done
 deactivate DataImpl
 deactivate EzWh
 ```
 
+## UC5.1, sc 5.1.1 - Record restock order arrival
+
+```plantuml
+@startuml
+activate EzWh
+EzWh->DataImpl: addSKUItem(RFID, SKUId, dateOfStock)
+activate DataImpl
+DataImpl -> SKUItem: createSKUItem(RFID, SKUId, dateOfStock)
+activate SKUItem
+SKUItem-> SKUItem: setRFID(RFID)
+SKUItem-> SKUItem: setSKUId(SKUId)
+SKUItem -> SKUItem: setDateOfStock(dateOfStock)
+SKUItem--> DataImpl: SKUItemId
+deactivate SKUItem
+DataImpl --> EzWh: SKUItemId
+EzWh->DataImpl: updateRestockOrder(deliveredState, id)
+DataImpl -> RestockOrder: updateRestockOrder(id, deliveredState)
+activate RestockOrder
+RestockOrder --> DataImpl: Done
+deactivate RestockOrder 
+DataImpl --> EzWh: Done
+deactivate DataImpl
+deactivate EzWh
+@enduml
+```
+
+## UC5.2, sc 5.2.1, 5.2.2, 5.2.3
+
+```plantuml
+@startuml
+
+@enduml
+```
