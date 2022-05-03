@@ -126,6 +126,29 @@ class UserDAO{
         })
     }
 
+    getUserByEmailType(data){
+        return new Promise((resolve, reject) => {
+            const sql = 'SELECT * FROM USERS WHERE EMAIL = ? AND TYPE = ?'
+            this.db.all(sql, [data.username, data.type] , (err, rows) => {
+                if(err){
+                    reject(err);
+                    return;
+                }
+                const userinfo = rows.map((r) => (
+                    {
+                        id: r.ID,
+                        name: r.NAME,
+                        surname: r.SURNAME,
+                        email: r.EMAIL,
+                        password: r.PASSWORD,
+                        type: r.TYPE
+                    }
+                ));
+                resolve(userinfo)
+            })
+        })
+    }
+
     storeUser(data){
         return new Promise((resolve, reject) => {
             const sql = 'INSERT INTO USERS(NAME, SURNAME, EMAIL, PASSWORD, TYPE) VALUES (?,?,?,?,?)'
@@ -139,6 +162,18 @@ class UserDAO{
         })
     }
 
+    deleteUser(data){
+        return new Promise((resolve, reject) => {
+            const sql = 'DELETE FROM USERS WHERE EMAIL = ? AND TYPE = ?'
+            this.db.run(sql, [data.username, data.type] , (err) => {
+                if(err){
+                    reject(err);
+                    return;
+                }
+                resolve(this.lastID)
+            })
+        })
+    }
 }
 
 module.exports = UserDAO;
