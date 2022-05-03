@@ -1,4 +1,4 @@
-class UserDAO{
+class TestDescriptosDAO{
     sqlite3 = require('sqlite3')
 constructor(dbname){
     this.db = new this.sqlite3.Database(dbname, (err) => {
@@ -18,7 +18,7 @@ newTableTests(){
     })
 }
 
-getTestDescriptors() {
+getTestsDescriptors() {
     return new Promise((resolve, reject) => {
         const sql = 'SELECT * FROM TESTS'           //Add condition to check if online
         this.db.all(sql, [], (err, rows) => {
@@ -40,6 +40,28 @@ getTestDescriptors() {
     })
 }
 
+getTestDescriptor(id) {
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT * FROM TESTS WHERE id= ?'           //Add condition to check if online
+        this.db.all(sql, [id], (err, rows) => {
+            if(err){
+                reject(err);
+                return;
+            }
+            const test = rows.map((r) => (
+                {
+                    id: r.id,
+                    name: r.name,
+                    procedureDescriptor: r.procedureDescriptor,
+                    idSKU: r.idSKU
+                }
+                
+            ));
+            resolve(test)
+        })
+    })
+}
+//------------------------------------------
     getLoggedUsers() {
         return new Promise((resolve, reject) => {
             const sql = 'SELECT * FROM USERS'           //Add condition to check if online
