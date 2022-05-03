@@ -1,7 +1,14 @@
 'use strict';
+
+const userRouter = require('./routesModule/UserRoutes.js')
+const skuRouter = require('./routesModule/SkuRoutes.js')
+
 const express = require('express');
 // init express
 const app = new express();
+app.use(userRouter)
+app.use(skuRouter)
+
 const port = 3001;
 
 app.use(express.json());
@@ -13,6 +20,7 @@ app.get('/api/hello', (req,res)=>{
   }
   return res.status(200).json(message);
 });
+
 
 // activate the server
 app.listen(port, () => {
