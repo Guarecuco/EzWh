@@ -36,7 +36,7 @@ The application is composed of the following packages:
 * ***GUI***: Implementing the Graphical User Interface through a web browser.
 * ***Data***:Implementing the model layer in a MVC architecture. It manages and processes all the data.
 * ***Exceptions***:Implementing the exceptions handler, triggered by the user.
-* 
+
 ```plantuml
 @startuml
 package it.company.ezwh.gui as GUI
@@ -143,6 +143,19 @@ class DataImpl {
 } 
 
 Class User {
+  ID
+  name
+  surname
+  email
+  password
+  type
+  void:setUserId(int Id)
+  void:setUserName(string Name)
+  void:setUserSurname(string Surname)
+  void:setUserEmail(string Email)
+  void:setPassword(string Password)
+  void:setUserType(string Type)
+  string: getUserData(string Email)
 }
 
 class Supplier {
@@ -259,9 +272,6 @@ class TestDescriptor {
   String: getTestDescriptorDescription()
 }
 
-class AAA {
-  date of stock 
-}
 
 class TestResult {
   ID
@@ -313,7 +323,8 @@ class InternalOrder {
 DataImpl – “*” SKUItem
 DataImpl – “*” SKU
 DataImpl – “*” Position
-Warehouse -- "*" Position
+DataImpl -- “*” User
+Position "*" -- Warehouse
 Supplier -- "*" Item : sells
 Supplier -- "*" RestockOrder
 RestockOrder -- "*" Item
