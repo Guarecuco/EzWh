@@ -2,10 +2,14 @@
 
 
 Authors: 
+* Alessio Carachino
+* Samuele Giangreco
+* Daniel Guarecuco
+* Zoltan Mazzuco 
 
-Date:
+Date: 3 May, 2022
 
-Version:
+Version: 1.1
 
 
 # Contents
@@ -28,16 +32,17 @@ The design must satisfy the Official Requirements document, notably functional a
 
 # High level design 
 
-discuss architectural styles used, if any
-MVC...
-
-
+The application is composed of the following packages:
+* ***GUI***: Implementing the Graphical User Interface through a web browser.
+* ***Data***:Implementing the model layer in a MVC architecture. It manages and processes all the data.
+* ***Exceptions***:Implementing the exceptions handler, triggered by the user.
+* 
 ```plantuml
 @startuml
-package it.company.ezwe.gui as GUI
-package it.company.ezwe as application
-package it.company.ezwe.exceptions as exceptions
-package it.company.ezwe.data as data
+package it.company.ezwh.gui as GUI
+package it.company.ezwh as application
+package it.company.ezwh.exceptions as exceptions
+package it.company.ezwh.data as data
 GUI - application
 application - exceptions
 data - application
@@ -357,15 +362,15 @@ N3 .. ReturnOrder
 
 # Verification traceability matrix
 
-|   | EzWh |User| Supplier | Customer  | Item | A | RestockOrder | TranportNote | ReturnOrder | SKU | Inventory | SKUItem | AA | TestDescriptor | AAA | TestResult | Position | InternalOrder |  
-| ----------------- |:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|
-|  FR1     |X|X|||||||||||||||||
-| FR2    |X|||||||||X||X|||||||
-| FR3    |X|||||||||X|X|X||X||X|X||
-| FR4     |X|||X|||||||||||||||
-| FR5    |X||X||X||X|X|||||||X||||
-| FR6  | X |||||X|X||||||X|||||X|
-| FR7  | X |||||||||X|X|X|||||||
+|   | DataImpl |User| Supplier | Customer  | Item | A | RestockOrder | TranportNote | ReturnOrder | SKU | Inventory | SKUItem | AA | TestDescriptor | TestResult | Position | InternalOrder |  
+| ----------------- |:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|
+|  FR1     |X|X||||||||||||||||
+| FR2    |X|||||||||X||X||||||
+| FR3    |X|||||||||X|X|X||X|X|X||
+| FR4     |X|||X||||||||||||||
+| FR5    |X||X||X||X|X||||||||||
+| FR6  | X |||||X|X||||||X||||X|
+| FR7  | X |||||||||X|X|X||||||
 
 
 
