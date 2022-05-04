@@ -5,6 +5,21 @@ class SkuDAO{
             if(err) throw err
         })
     }
+    printSku(rows){
+        const skus = rows.map((r) => (
+            {
+                description: r.DESCRIPTION,
+                weight: r.WEIGHT,
+                volume: r.VOLUME,
+                notes: r.NOTES,
+                price: r.PRICE,
+                availableQuantity: r.AVAILABLEQUANTITY
+            }
+            
+        ));
+        return skus;
+    }
+
     newTableSku(){
         return new Promise((resolve, reject) => {
             const sql = 'CREATE TABLE IF NOT EXISTS SKU(ID INTEGER PRIMARY KEY AUTOINCREMENT, DESCRIPTION VARCHAR, WEIGHT INTEGER , VOLUME INTEGER, NOTES VARCHAR, PRICE FLOAT, AVAILABLEQUANTITY INTEGER)';
@@ -23,7 +38,6 @@ class SkuDAO{
             const sql = 'INSERT INTO SKU(DESCRIPTION, WEIGHT, VOLUME, NOTES, PRICE, AVAILABLEQUANTITY) VALUES (?,?,?,?,?,?)';
             this.db.run(sql, [data.description, data.weight, data.volume, data.notes, data.price, data.availableQuantity] , (err) => {
                 if(err){
-                    console.log(err);
                     reject(err);
                     return;
                 }
@@ -40,18 +54,7 @@ class SkuDAO{
                     reject(err);
                     return;
                 }
-                const skus = rows.map((r) => (
-                    {
-                        description: r.DESCRIPTION,
-                        weight: r.WEIGHT,
-                        volume: r.VOLUME,
-                        notes: r.NOTES,
-                        price: r.PRICE,
-                        availableQuantity: r.AVAILABLEQUANTITY
-                    }
-                    
-                ));
-                resolve(skus)
+                resolve(this.printSku(rows))
             })
         })
     }
@@ -64,7 +67,6 @@ class SkuDAO{
                     reject(err);
                     return;
                 }
-                console.log(rows)
                 const count = rows.map((r) => (
                     r.COUNT 
                 ));

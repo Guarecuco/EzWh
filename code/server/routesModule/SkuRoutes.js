@@ -26,12 +26,9 @@ router.post('/api/sku', async (req,res)=>{
     if (!( sku && sku.description && sku.weight && sku.volume && sku.price && sku.availableQuantity!==undefined )) {
       return res.status(422).json({error: `Invalid sku data`});
     }
-    console.log(sku.description);
     await db.newTableSku();
-    console.log(sku);
     //Check if sku exist
     let count = await db.checkIfStored(sku);
-    console.log(count==0);
     if (count == 0){
       await db.storeSku(sku);
       return res.status(201).end(); 
