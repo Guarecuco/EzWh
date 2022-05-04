@@ -100,9 +100,9 @@ router.post('/api/customerSessions', async (req,res)=>{
                 return res.status(422).json({error: `Invalid user data`});
         }
 
-        //Check if password is the same as stored
         let storedUser = await db.getUserByEmailType(user);
-
+        
+        //Check if password is the same as stored
         if (user.password == storedUser[0].password){
             userinfo = {
                 id : storedUser[0].id,
@@ -110,6 +110,10 @@ router.post('/api/customerSessions', async (req,res)=>{
                 name: storedUser[0].name,
                 //surname: storedUser[0].surname
             }
+            //Flag as logged in
+            await db.newTableLoggedUsers();
+            await db.loginUser(storedUser[0]);
+            //Return
             return res.status(200).json(userinfo); 
         }   
         return res.status(401).json({error: `Wrong username or password`});
@@ -132,6 +136,42 @@ router.post('/api/customerSessions', async (req,res)=>{
 //POST /api/logout
 
 //PUT /api/users/:username
+router.put('/api/users/:username', async (req,res)=>{
+    try{
+        //Check if body is empty
+        if (Object.keys(req.body).length === 0) {
+            return res.status(422).json({error: `Empty body request`});
+        }
+        const user = {
+            username : req.params.username,
+            type : req.body.oldType,
+            newType : req.body.newType
+        }
+
+        //Check old type is correct
+        if (user.type !== 'customer' && user.type !== 'qualityEmployee' && user.type !== 'clerk' && 
+        user.type !== 'deliveryEmployee' && user.type !== 'supplier') {
+            return res.status(404).end();
+        }
+        //Check new type is correct
+        if (user.newType !== 'customer' && user.newType !== 'qualityEmployee' && user.newType !== 'clerk' && 
+        user.newType !== 'deliveryEmployee' && user.newType !== 'supplier') {
+            return res.status(404).end();
+        }
+        //Check if user exist
+        let count = await db.checkIfStored(user);
+        if (count == 0){
+            return res.status(404).end();
+        }
+        //Update user
+        await db.updateUser(user);   
+        return res.status(200).end();
+    }
+    catch(err){
+        res.status(503).end();
+    }
+
+}); 
 
 //DELETE /api/users/:username/:type
 router.delete('/api/users/:username/:type', async (req,res)=>{

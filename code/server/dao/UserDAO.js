@@ -5,6 +5,19 @@ class UserDAO{
             if(err) throw err
         })
     }
+
+    newTableLoggedUsers(){
+        return new Promise((resolve, reject) => {
+            const sql = 'CREATE TABLE IF NOT EXISTS LOGGED_USERS(ID INTEGER, NAME VARCHAR, SURNAME VARCHAR, EMAIL VARCHAR, TYPE VARCHAR)';
+            this.db.run(sql, (err) => {
+                if(err){
+                    reject(err);
+                    return;
+                }
+                resolve(this.lastID)
+            })
+        })
+    }
     newTableUsers(){
         return new Promise((resolve, reject) => {
             const sql = 'CREATE TABLE IF NOT EXISTS USERS(ID INTEGER PRIMARY KEY AUTOINCREMENT, NAME VARCHAR, SURNAME VARCHAR, EMAIL VARCHAR, PASSWORD VARCHAR, TYPE VARCHAR)';
@@ -20,7 +33,7 @@ class UserDAO{
 
     getLoggedUsers() {
         return new Promise((resolve, reject) => {
-            const sql = 'SELECT * FROM USERS'           //Add condition to check if online
+            const sql = 'SELECT * FROM LOGGED_USERS'
             this.db.all(sql, [], (err, rows) => {
                 if(err){
                     reject(err);
@@ -29,9 +42,9 @@ class UserDAO{
                 const names = rows.map((r) => (
                     {
                         id: r.ID,
+                        username: r.EMAIL,
                         name: r.NAME,
                         surname: r.SURNAME,
-                        email: r.EMAIL,
                         type: r.TYPE
                     }
                     
@@ -166,6 +179,45 @@ class UserDAO{
         return new Promise((resolve, reject) => {
             const sql = 'DELETE FROM USERS WHERE EMAIL = ? AND TYPE = ?'
             this.db.run(sql, [data.username, data.type] , (err) => {
+                if(err){
+                    reject(err);
+                    return;
+                }
+                resolve(this.lastID)
+            })
+        })
+    }
+
+    updateUser(data){
+        return new Promise((resolve, reject) => {
+            const sql = 'UPDATE USERS SET TYPE = ? WHERE EMAIL = ? AND TYPE = ?'
+            this.db.run(sql, [data.newType, data.username, data.type] , (err) => {
+                if(err){
+                    reject(err);
+                    return;
+                }
+                resolve(this.lastID)
+            })
+        })
+    }
+
+    loginUser(data){
+        return new Promise((resolve, reject) => {
+            const sql = 'INSERT INTO LOGGED_USERS(ID, NAME, SURNAME, EMAIL, TYPE) VALUES (?,?,?,?,?)'
+            this.db.run(sql, [data.id, data.name, data.surname, data.email, data.type] , (err) => {
+                if(err){
+                    reject(err);
+                    return;
+                }
+                resolve(this.lastID)
+            })
+        })
+    }
+
+    logoutUser(data){
+        return new Promise((resolve, reject) => {
+            const sql = 'DELETE FROM LOGGED_USERS WHERE '
+            this.db.run(sql, [data.id, data.name, data.surname, data.email, data.type] , (err) => {
                 if(err){
                     reject(err);
                     return;
