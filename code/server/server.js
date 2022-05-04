@@ -2,12 +2,20 @@
 
 const userRouter = require('./routesModule/UserRoutes.js')
 const skuRouter = require('./routesModule/SkuRoutes.js')
+const positionRouter = require('./routesModule/PositionRoutes.js')
+const restockOrderRouter = require('./routesModule/RestockOrderRoutes.js')
+const returnOrderRouter = require('./routesModule/ReturnOrderRoutes.js')
+const internalOrderRouter = require('./routesModule/InternalOrderRoutes.js')
 
 const express = require('express');
 // init express
 const app = new express();
 app.use(userRouter)
 app.use(skuRouter)
+app.use(positionRouter)
+app.use(restockOrderRouter)
+app.use(returnOrderRouter)
+app.use(internalOrderRouter)
 
 const port = 3001;
 
