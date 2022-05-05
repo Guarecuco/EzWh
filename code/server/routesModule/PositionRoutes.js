@@ -106,7 +106,7 @@ router.delete('/api/position/:positionID', async (req,res)=>{
             return res.status(422).json({error: `no position associated to positionID`});
         }
         await db.deletePosition(positionID);
-        return res.status(200).end(); 
+        return res.status(204).end(); 
     }
     catch(err){
       res.status(503).end();
