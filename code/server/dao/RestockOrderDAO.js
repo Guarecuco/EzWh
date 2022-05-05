@@ -123,8 +123,8 @@ class RestockOrderDAO{
 
     addRestockOrder(order){
         return new Promise((resolve, reject) => {
-            const sql = 'INSERT INTO RESTOCK_ORDERS(ISSUE_DATE, SUPPLIER_ID) VALUES (?,?)'
-            this.db.run(sql, [data.issueDate, data.supplierId] , (err) => {
+            const sql = 'INSERT INTO RESTOCK_ORDERS(ISSUE_DATE, SUPPLIER_ID, STATE) VALUES (?,?, "ISSUED")'
+            this.db.run(sql, [order.issueDate, order.supplierId] , (err) => {
                 if(err){
                     reject(err);
                     return;

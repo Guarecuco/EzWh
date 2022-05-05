@@ -56,13 +56,15 @@ router.get('/api/restockOrders/:id/returnItems', async (req,res)=>{
 //POST /api/restockOrder
 router.post('/api/restockOrder', async (req,res)=>{
     try{
+        console.log(req.body)
+
         //Check if body is empty
         if (Object.keys(req.body).length === 0) {
             return res.status(422).json({error: `Empty body request`});
           }
         let order = req.body;
           //Check if any field is empty
-        if (order === undefined || order.issueDate === undefined || order.products === undefined ||  
+        if (order === undefined || order.issueDate === undefined ||
             order.supplierId === undefined) {
                 return res.status(422).json({error: `Invalid order data`});
         }
