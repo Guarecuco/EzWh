@@ -78,19 +78,41 @@ class PositionDAO{
 
     updatePositionID(oldPosID,pos){
         return new Promise((resolve, reject) => {
-            const sql = `UPDATE SET (POSITIONID, AISLEID, ROW, COL, MAXWEIGHT, MAXVOLUME, OCCUPIEDWEIGHT, OCCUPIEDVOLUME) 
-            FROM POSITION
-            WHERE POSITIONID = ?
-            `
-            this.db.all(sql , positionID, (err, rows) => {
+            const sql = `UPDATE POSITION SET POSITIONID=?, AISLEID=?, ROW=?, COL=?, MAXWEIGHT=?, MAXVOLUME=?, OCCUPIEDWEIGHT=?, OCCUPIEDVOLUME=? 
+            WHERE POSITIONID = ?`
+            this.db.run(sql , [ pos.newAisleID+pos.newRow+pos.newCol, pos.newAisleID, pos.newRow, pos.newCol,
+                pos.newMaxWeight, pos.newMaxVolume, pos.newOccupiedWeight, pos.newOccupiedVolume, oldPosID ], (err) => {
                 if(err){
                     reject(err);
                     return;
                 }
-                const count = rows.map((r) => (
-                    r.COUNT 
-                ));
-                resolve(count)
+                resolve(this.lastID)
+            })
+        })
+    }
+
+    changePositionID(oldPosID,newPosID){
+        return new Promise((resolve, reject) => {
+            const sql = `UPDATE POSITION SET POSITIONID=?, AISLEID=?, ROW=?, COL=? WHERE POSITIONID = ?`
+            this.db.run(sql , [ newPosID, newPosID.slice(0,4), newPosID.slice(4,8), newPosID.slice(8,12), oldPosID ], (err) => {
+                if(err){
+                    reject(err);
+                    return;
+                }
+                resolve(this.lastID)
+            })
+        })
+    }
+
+    deletePosition(positionID){
+        return new Promise((resolve, reject) => {
+            const sql = `DELETE FROM POSITION WHERE POSITIONID = ?`
+            this.db.run(sql, positionID, (err) => {
+                if(err){
+                    reject(err);
+                    return;
+                }
+                resolve(this.lastID)
             })
         })
     }
