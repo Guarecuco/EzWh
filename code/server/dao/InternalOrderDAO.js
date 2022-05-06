@@ -34,7 +34,7 @@ class InternalOrderDAO{
 
     storeInternalOrder(data){
         return new Promise((resolve, reject) => {
-            const sql = 'INSERT INTO INTERNAL_ORDERS(ISSUEDATE,STATE,CUSTOMERID) VALUES (?,?,?) RETURNING ID'
+            const sql = 'INSERT INTO INTERNAL_ORDERS(ISSUEDATE,STATE,CUSTOMERID) VALUES (?,?,?)'
             this.db.run(sql, [data.issueDate, data.state, data.customerId] , function (err) {
                 if(err){
                     reject(err);
@@ -96,6 +96,164 @@ class InternalOrderDAO{
                     return;
                 }
                 resolve(this.lastID)
+            })
+        })
+    }
+
+    deleteInternalOrder(data){
+        return new Promise((resolve, reject) => {
+            const sql = 'DELETE FROM INTERNAL_ORDERS WHERE ID = ?'
+            this.db.run(sql, [data.orderId] , (err) => {
+                if(err){
+                    reject(err);
+                    return;
+                }
+                resolve(this.lastID)
+            })
+        })
+    }
+
+    deleteInternalOrderProducts(data){
+        return new Promise((resolve, reject) => {
+            const sql = 'DELETE FROM INTERNAL_ORDERS_PRODUCTS WHERE ORDERID = ?'
+            this.db.run(sql, [data.orderId] , (err) => {
+                if(err){
+                    reject(err);
+                    return;
+                }
+                resolve(this.lastID)
+            })
+        })
+    }
+
+    getInternalOrders() {
+        return new Promise((resolve, reject) => {
+            const sql = 'SELECT * FROM INTERNAL_ORDERS'
+            this.db.all(sql, [], (err, rows) => {
+                if(err){
+                    reject(err);
+                    return;
+                }
+                const orders = rows.map((r) => (
+                    {
+                        id: r.ID,
+                        issueDate: r.ISSUEDATE,
+                        state: r.STATE,
+                        customerId: r.CUSTOMERID
+                    }
+                    
+                ));
+                resolve(orders)
+            })
+        })
+    }
+
+    getInternalOrdersProducts(data) {
+        return new Promise((resolve, reject) => {
+            const sql = 'SELECT * FROM INTERNAL_ORDERS_PRODUCTS WHERE ORDERID = ?'
+            this.db.all(sql, [data.id], (err, rows) => {
+                if(err){
+                    reject(err);
+                    return;
+                }
+                const orders = rows.map((r) => (
+                    {
+                        SKUId: r.SKUID,
+                        description: r.DESCRIPTION,
+                        price: r.PRICE,
+                        qty: r.QTY
+                    }
+                    
+                ));
+                resolve(orders)
+            })
+        })
+    }
+
+    getInternalOrdersProductsCompleted(data) {
+        return new Promise((resolve, reject) => {
+            const sql = 'SELECT * FROM INTERNAL_ORDERS_PRODUCTS WHERE ORDERID = ?'
+            this.db.all(sql, [data.id], (err, rows) => {
+                if(err){
+                    reject(err);
+                    return;
+                }
+                const orders = rows.map((r) => (
+                    {
+                        SKUId: r.SKUID,
+                        description: r.DESCRIPTION,
+                        price: r.PRICE,
+                        RFID: r.RFID
+                    }
+                    
+                ));
+                resolve(orders)
+            })
+        })
+    }
+
+    getInternalOrdersIssued() {
+        return new Promise((resolve, reject) => {
+            const sql = 'SELECT * FROM INTERNAL_ORDERS WHERE STATE = "ISSUED"' 
+            this.db.all(sql, [], (err, rows) => {
+                if(err){
+                    reject(err);
+                    return;
+                }
+                const orders = rows.map((r) => (
+                    {
+                        id: r.ID,
+                        issueDate: r.ISSUEDATE,
+                        state: r.STATE,
+                        customerId: r.CUSTOMERID
+                    }
+                    
+                ));
+                resolve(orders)
+            })
+        })
+    }
+
+    getInternalOrdersAccepted() {
+        return new Promise((resolve, reject) => {
+            const sql = 'SELECT * FROM INTERNAL_ORDERS WHERE STATE = "ACCEPTED"' 
+            this.db.all(sql, [], (err, rows) => {
+                if(err){
+                    reject(err);
+                    return;
+                }
+                const orders = rows.map((r) => (
+                    {
+                        id: r.ID,
+                        issueDate: r.ISSUEDATE,
+                        state: r.STATE,
+                        customerId: r.CUSTOMERID
+                    }
+                    
+                ));
+                resolve(orders)
+            })
+        })
+    }
+
+    getInternalOrdersbyID(data) {
+        return new Promise((resolve, reject) => {
+            const sql = 'SELECT * FROM INTERNAL_ORDERS WHERE ID = ?'
+            this.db.all(sql, [data.orderId], (err, rows) => {
+                if(err){
+                    reject(err);
+                    return;
+                }
+                const orders = rows.map((r) => (
+                    {
+                        id: r.ID,
+                        issueDate: r.ISSUEDATE,
+                        state: r.STATE,
+                        customerId: r.CUSTOMERID
+                    }
+                    
+                ));
+                resolve(orders)
             })
         })
     }

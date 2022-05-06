@@ -82,7 +82,44 @@ router.post('/api/newUser', async (req,res)=>{
 }); 
 
 //POST /api/managerSessions
-  
+router.post('/api/managerSessions', async (req,res)=>{
+    try{
+        //Check if body is empty
+        if (Object.keys(req.body).length === 0) {
+            return res.status(422).json({error: `Empty body request`});
+            }
+        let user = req.body;
+        user.type = 'manager';
+
+        //Check if any field is empty
+        if (user === undefined || user.username === undefined || user.password === undefined ||
+            user.username == '' || user.password == '') {
+                return res.status(422).json({error: `Invalid user data`});
+        }
+
+        let storedUser = await db.getUserByEmailType(user);
+        
+        //Check if password is the same as stored
+        if (user.password == storedUser[0].password){
+            userinfo = {
+                id : storedUser[0].id,
+                username: storedUser[0].email,
+                name: storedUser[0].name,
+                //surname: storedUser[0].surname
+            }
+            //Flag as logged in
+            await db.newTableLoggedUsers();
+            await db.loginUser(storedUser[0]);
+            //Return
+            return res.status(200).json(userinfo); 
+        }   
+        return res.status(401).json({error: `Wrong username or password`});
+    }
+    catch(err){
+        res.status(500).end();
+    }
+    
+}); 
 
 //POST /api/customerSessions
 router.post('/api/customerSessions', async (req,res)=>{
@@ -126,12 +163,167 @@ router.post('/api/customerSessions', async (req,res)=>{
     
 
 //POST /api/supplierSessions
+router.post('/api/supplierSessions', async (req,res)=>{
+    try{
+        //Check if body is empty
+        if (Object.keys(req.body).length === 0) {
+            return res.status(422).json({error: `Empty body request`});
+            }
+        let user = req.body;
+        user.type = 'supplier';
+
+        //Check if any field is empty
+        if (user === undefined || user.username === undefined || user.password === undefined ||
+            user.username == '' || user.password == '') {
+                return res.status(422).json({error: `Invalid user data`});
+        }
+
+        let storedUser = await db.getUserByEmailType(user);
+        
+        //Check if password is the same as stored
+        if (user.password == storedUser[0].password){
+            userinfo = {
+                id : storedUser[0].id,
+                username: storedUser[0].email,
+                name: storedUser[0].name,
+                //surname: storedUser[0].surname
+            }
+            //Flag as logged in
+            await db.newTableLoggedUsers();
+            await db.loginUser(storedUser[0]);
+            //Return
+            return res.status(200).json(userinfo); 
+        }   
+        return res.status(401).json({error: `Wrong username or password`});
+    }
+    catch(err){
+        res.status(500).end();
+    }
+    
+}); 
+
 
 //POST /api/clerkSessions
+router.post('/api/clerkSessions', async (req,res)=>{
+    try{
+        //Check if body is empty
+        if (Object.keys(req.body).length === 0) {
+            return res.status(422).json({error: `Empty body request`});
+            }
+        let user = req.body;
+        user.type = 'clerk';
+
+        //Check if any field is empty
+        if (user === undefined || user.username === undefined || user.password === undefined ||
+            user.username == '' || user.password == '') {
+                return res.status(422).json({error: `Invalid user data`});
+        }
+
+        let storedUser = await db.getUserByEmailType(user);
+        
+        //Check if password is the same as stored
+        if (user.password == storedUser[0].password){
+            userinfo = {
+                id : storedUser[0].id,
+                username: storedUser[0].email,
+                name: storedUser[0].name,
+                //surname: storedUser[0].surname
+            }
+            //Flag as logged in
+            await db.newTableLoggedUsers();
+            await db.loginUser(storedUser[0]);
+            //Return
+            return res.status(200).json(userinfo); 
+        }   
+        return res.status(401).json({error: `Wrong username or password`});
+    }
+    catch(err){
+        res.status(500).end();
+    }
+    
+}); 
 
 //POST /api/qualityEmployeeSessions
+router.post('/api/qualityEmployeeSessions', async (req,res)=>{
+    try{
+        //Check if body is empty
+        if (Object.keys(req.body).length === 0) {
+            return res.status(422).json({error: `Empty body request`});
+            }
+        let user = req.body;
+        user.type = 'qualityEmployee';
+
+        //Check if any field is empty
+        if (user === undefined || user.username === undefined || user.password === undefined ||
+            user.username == '' || user.password == '') {
+                return res.status(422).json({error: `Invalid user data`});
+        }
+
+        let storedUser = await db.getUserByEmailType(user);
+        
+        //Check if password is the same as stored
+        if (user.password == storedUser[0].password){
+            userinfo = {
+                id : storedUser[0].id,
+                username: storedUser[0].email,
+                name: storedUser[0].name,
+                //surname: storedUser[0].surname
+            }
+            //Flag as logged in
+            await db.newTableLoggedUsers();
+            await db.loginUser(storedUser[0]);
+            //Return
+            return res.status(200).json(userinfo); 
+        }   
+        return res.status(401).json({error: `Wrong username or password`});
+    }
+    catch(err){
+        res.status(500).end();
+    }
+    
+}); 
+
 
 //POST /api/deliveryEmployeeSessions
+router.post('/api/deliveryEmployeeSessions', async (req,res)=>{
+    try{
+        //Check if body is empty
+        if (Object.keys(req.body).length === 0) {
+            return res.status(422).json({error: `Empty body request`});
+            }
+        let user = req.body;
+        user.type = 'deliveryEmployee';
+
+        //Check if any field is empty
+        if (user === undefined || user.username === undefined || user.password === undefined ||
+            user.username == '' || user.password == '') {
+                return res.status(422).json({error: `Invalid user data`});
+        }
+
+        let storedUser = await db.getUserByEmailType(user);
+        
+        //Check if password is the same as stored
+        if (user.password == storedUser[0].password){
+            userinfo = {
+                id : storedUser[0].id,
+                username: storedUser[0].email,
+                name: storedUser[0].name,
+                //surname: storedUser[0].surname
+            }
+            //Flag as logged in
+            await db.newTableLoggedUsers();
+            await db.loginUser(storedUser[0]);
+            //Return
+            return res.status(200).json(userinfo); 
+        }   
+        return res.status(401).json({error: `Wrong username or password`});
+    }
+    catch(err){
+        res.status(500).end();
+    }
+    
+}); 
+
 
 //POST /api/logout
 
