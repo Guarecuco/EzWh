@@ -1,5 +1,6 @@
 const express = require("express");
 const UserDAO = require('../dao/UserDAO.js')
+const bcrypt = require('bcryptjs')
 const db = new UserDAO('EzWh')
 
 const router = express.Router()
@@ -70,6 +71,8 @@ router.post('/api/newUser', async (req,res)=>{
         //Check if user exist
         let count = await db.checkIfStored(user);
         if (count == 0){
+
+            user.password = await bcrypt.hash(user.password, 5);
             await db.storeUser(user);
             return res.status(201).end(); 
         }   
@@ -100,7 +103,8 @@ router.post('/api/managerSessions', async (req,res)=>{
         let storedUser = await db.getUserByEmailType(user);
         
         //Check if password is the same as stored
-        if (user.password == storedUser[0].password){
+        const validPassword = await bcrypt.compare(user.password,storedUser[0].password);
+        if (validPassword){
             userinfo = {
                 id : storedUser[0].id,
                 username: storedUser[0].email,
@@ -140,7 +144,8 @@ router.post('/api/customerSessions', async (req,res)=>{
         let storedUser = await db.getUserByEmailType(user);
         
         //Check if password is the same as stored
-        if (user.password == storedUser[0].password){
+        const validPassword = await bcrypt.compare(user.password,storedUser[0].password);
+        if (validPassword){
             userinfo = {
                 id : storedUser[0].id,
                 username: storedUser[0].email,
@@ -181,7 +186,8 @@ router.post('/api/supplierSessions', async (req,res)=>{
         let storedUser = await db.getUserByEmailType(user);
         
         //Check if password is the same as stored
-        if (user.password == storedUser[0].password){
+        const validPassword = await bcrypt.compare(user.password,storedUser[0].password);
+        if (validPassword){
             userinfo = {
                 id : storedUser[0].id,
                 username: storedUser[0].email,
@@ -222,7 +228,8 @@ router.post('/api/clerkSessions', async (req,res)=>{
         let storedUser = await db.getUserByEmailType(user);
         
         //Check if password is the same as stored
-        if (user.password == storedUser[0].password){
+        const validPassword = await bcrypt.compare(user.password,storedUser[0].password);
+        if (validPassword){
             userinfo = {
                 id : storedUser[0].id,
                 username: storedUser[0].email,
@@ -262,7 +269,8 @@ router.post('/api/qualityEmployeeSessions', async (req,res)=>{
         let storedUser = await db.getUserByEmailType(user);
         
         //Check if password is the same as stored
-        if (user.password == storedUser[0].password){
+        const validPassword = await bcrypt.compare(user.password,storedUser[0].password);
+        if (validPassword){
             userinfo = {
                 id : storedUser[0].id,
                 username: storedUser[0].email,
@@ -303,7 +311,8 @@ router.post('/api/deliveryEmployeeSessions', async (req,res)=>{
         let storedUser = await db.getUserByEmailType(user);
         
         //Check if password is the same as stored
-        if (user.password == storedUser[0].password){
+        const validPassword = await bcrypt.compare(user.password,storedUser[0].password);
+        if (validPassword){
             userinfo = {
                 id : storedUser[0].id,
                 username: storedUser[0].email,
