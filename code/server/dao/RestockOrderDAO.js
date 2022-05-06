@@ -106,6 +106,11 @@ class RestockOrderDAO{
                     reject(err);
                     return;
                 }
+                if (r === undefined){
+                    resolve(undefined);
+                    return;
+                }
+
                 let order = {
                     id: r.ID,
                     issueDate: r.ISSUE_DATE,

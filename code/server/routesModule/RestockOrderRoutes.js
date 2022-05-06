@@ -29,11 +29,16 @@ router.get('/api/restockOrdersIssued', async (req,res)=>{
   
 });
 
-//GET /api/restockOrdersIssued
+//GET /api/restockOrders/:id
 router.get('/api/restockOrders/:id', async (req,res)=>{
     try{
-        const orders = await db.getRestockOrder(req.params.id);
-        return res.status(200).json(orders);
+        if (req.params.id === undefined || isNaN(parseInt(req.params.id)))
+            return res.status(422).json({error: `Unprocessable Entity`})
+
+        const order = await db.getRestockOrder(req.params.id);
+        if (order === undefined)
+            return res.status(404).json({error: `No restock order associated to id`})
+        return res.status(200).json(order);
     }
     catch(err){
         res.status(500).end();
@@ -56,12 +61,10 @@ router.get('/api/restockOrders/:id/returnItems', async (req,res)=>{
 //POST /api/restockOrder
 router.post('/api/restockOrder', async (req,res)=>{
     try{
-        console.log(req.body)
-
         //Check if body is empty
         if (Object.keys(req.body).length === 0) {
             return res.status(422).json({error: `Empty body request`});
-          }
+        }
         let order = req.body;
           //Check if any field is empty
         if (order === undefined || order.issueDate === undefined ||
@@ -171,11 +174,8 @@ router.put('/api/restockOrder/:id/transportNote', async (req,res)=> {
 router.delete('/api/restockOrder/:id', async (req,res)=>{
     try{
         const id = req.params.id
-        
-        let count = await db.checkIfStored(id);
-        if (count == 0){
+        if(isNaN(parseInt(req.params.id)))
             return res.status(422).json({error: `Provided ID is invalid`});
-        }
 
         //Delete Restock Order
         await db.deleteRestockOrder(id);   
