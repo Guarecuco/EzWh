@@ -19,7 +19,7 @@ router.get('/api/returnOrders', async (req,res)=>{
 //GET /api/returnOrders/:id
 router.get('/api/returnOrders/:id', async (req,res)=> {
     try{
-    if (req.params.id === undefined || isNaN(parseInt(req.params.id)))
+    if (req.params.id === undefined || !Number.isInteger(+req.params.id))
         return res.status(422).json({error: `Unprocessable Entity`})
 
     const order = await db.getReturnOrder(req.params.id);
@@ -53,6 +53,7 @@ router.post('/api/returnOrder', async (req,res)=>{
         }
         await db.newTableReturnOrders();
         await db.addReturnOrder(order);
+        //for each skuItem -> look at sequence diagram
 
         return res.status(201).end();
 
@@ -67,7 +68,7 @@ router.post('/api/returnOrder', async (req,res)=>{
 router.delete('/api/returnOrder/:id', async (req,res)=>{
     try{
         const id = req.params.id
-        if(isNaN(parseInt(req.params.id)))
+        if(!Number.isInteger(+req.params.id))
             return res.status(422).json({error: `Provided ID is invalid`});
 
         //Delete Restock Order

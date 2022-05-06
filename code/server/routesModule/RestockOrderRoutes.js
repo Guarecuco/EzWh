@@ -32,7 +32,7 @@ router.get('/api/restockOrdersIssued', async (req,res)=>{
 //GET /api/restockOrders/:id
 router.get('/api/restockOrders/:id', async (req,res)=>{
     try{
-        if (req.params.id === undefined || isNaN(parseInt(req.params.id)))
+        if (req.params.id === undefined || !Number.isInteger(+req.params.id))
             return res.status(422).json({error: `Unprocessable Entity`})
 
         const order = await db.getRestockOrder(req.params.id);
@@ -49,7 +49,19 @@ router.get('/api/restockOrders/:id', async (req,res)=>{
 //GET /api/restockOrders/:id/returnItems
 router.get('/api/restockOrders/:id/returnItems', async (req,res)=>{
     try{
-        const items = await db.getReturnableItems(req.body);
+        if (req.params.id === undefined || !Number.isInteger(+(req.params.id)))
+            return res.status(422).json({error: `Unprocessable Entity`})
+
+        const order = await db.getRestockOrder(req.params.id);
+        if (order === undefined)
+            return res.status(404).json({error: `No restock order associated to id`})
+
+
+        const items = await db.getReturnableItems(order.skuItems);
+        for (let item of items){
+            //TODO
+            //look at sequence diagram
+        }
         return res.status(200).json(items);
     }
     catch(err){
@@ -92,6 +104,9 @@ router.put('/api/restockOrder/:id', async (req,res)=> {
             return res.status(422).json({error: `Empty body request`});
         }
         const id = req.params.id
+        if(!Number.isInteger(+req.params.id))
+            return res.status(422).json({error: `Provided ID is invalid`});
+
         const newState = req.body.newState
 
         let count = await db.checkIfStored(id);
@@ -115,6 +130,8 @@ router.put('/api/restockOrder/:id/skuItems', async (req,res)=> {
             return res.status(422).json({error: `Empty body request`});
         }
         const id = req.params.id
+        if(!Number.isInteger(+req.params.id))
+            return res.status(422).json({error: `Provided ID is invalid`});
         const newSkuItems = req.body.skuItems
 
         let order = await db.getRestockOrder(id);
@@ -150,6 +167,8 @@ router.put('/api/restockOrder/:id/transportNote', async (req,res)=> {
             return res.status(422).json({error: `Empty body request`});
         }
         const id = req.params.id
+        if(!Number.isInteger(+req.params.id))
+            return res.status(422).json({error: `Provided ID is invalid`});
         const transportNote = req.body.transportNote
         const deliveryDate = transportNote.deliveryDate
 
@@ -174,7 +193,7 @@ router.put('/api/restockOrder/:id/transportNote', async (req,res)=> {
 router.delete('/api/restockOrder/:id', async (req,res)=>{
     try{
         const id = req.params.id
-        if(isNaN(parseInt(req.params.id)))
+        if(!Number.isInteger(+req.params.id))
             return res.status(422).json({error: `Provided ID is invalid`});
 
         //Delete Restock Order
