@@ -8,7 +8,7 @@ router.use(express.json());
 //GET /api/restockOrders
 router.get('/api/restockOrders', async (req,res)=>{
     try{
-        const orders = await db.getAllRestockOrders();
+        const orders = await db.getAllRestockOrders()
         return res.status(200).json(orders);
     }
     catch(err){
@@ -32,7 +32,7 @@ router.get('/api/restockOrdersIssued', async (req,res)=>{
 //GET /api/restockOrdersIssued
 router.get('/api/restockOrders/:id', async (req,res)=>{
     try{
-        const orders = await db.getRestockOrder(req.body);
+        const orders = await db.getRestockOrder(req.params.id);
         return res.status(200).json(orders);
     }
     catch(err){
@@ -65,14 +65,12 @@ router.post('/api/restockOrder', async (req,res)=>{
         let order = req.body;
           //Check if any field is empty
         if (order === undefined || order.issueDate === undefined ||
-            order.supplierId === undefined) {
+            order.supplierId === undefined || order.products === undefined) {
                 return res.status(422).json({error: `Invalid order data`});
         }
 
         await db.newTableRestockOrders();
 
-        
-        
         await db.addRestockOrder(order);
         return res.status(201).end(); 
 
@@ -107,10 +105,67 @@ router.put('/api/restockOrder/:id', async (req,res)=> {
 });
 
 //PUT /api/restockOrder/:id/skuItems
+router.put('/api/restockOrder/:id/skuItems', async (req,res)=> {
+    try {
+        //Check if body is empty
+        if (Object.keys(req.body).length === 0) {
+            return res.status(422).json({error: `Empty body request`});
+        }
+        const id = req.params.id
+        const newSkuItems = req.body.skuItems
+
+        let order = await db.getRestockOrder(id);
+        if (order === undefined) {
+            return res.status(404).json({error: `No restock order associated to id`});
+        }
+        if (order.state !== 'DELIVERED')
+            return res.status(422).json({error: `Order state is not DELIVERED`});
+
+        let finalSkuItems = []
+        if (order.skuItems.length === 0 || order.skuItems === undefined )
+            finalSkuItems = newSkuItems
+        else{
+            finalSkuItems = [...newSkuItems]
+            for (let item of order.skuItems){
+                finalSkuItems.push(item)
+            }
+        }
+        //Update Restock Order
+        await db.updateRestockOrderSKUItems(finalSkuItems, order.id);
+        return res.status(200).end();
+    } catch (err) {
+        res.status(503).end();
+    }
+});
 
 
 //PUT /api/restockOrder/:id/transportNote
+router.put('/api/restockOrder/:id/transportNote', async (req,res)=> {
+    try {
+        //Check if body is empty
+        if (Object.keys(req.body).length === 0) {
+            return res.status(422).json({error: `Empty body request`});
+        }
+        const id = req.params.id
+        const transportNote = req.body.transportNote
+        const deliveryDate = transportNote.deliveryDate
 
+        let order = await db.getRestockOrder(id);
+        if (order === undefined) {
+            return res.status(404).json({error: `No restock order associated to id`});
+        }
+        if (order.state !== 'DELIVERY')
+            return res.status(422).json({error: `Order state is not DELIVERY`});
+        if(Date.parse(deliveryDate) < Date.parse(order.issueDate))
+            return res.status(422).json({error: `Delivery date is before issue date`});
+
+        //Update Restock Order
+        await db.updateRestockOrderTransportNote(transportNote, order.id);
+        return res.status(200).end();
+    } catch (err) {
+        res.status(503).end();
+    }
+});
 
 //DELETE /api/restockOrder/:id
 router.delete('/api/restockOrder/:id', async (req,res)=>{

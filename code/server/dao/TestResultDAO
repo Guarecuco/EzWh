@@ -1,13 +1,13 @@
-class TestDescriptorDAO{
+class TestResultDAO{
     sqlite3 = require('sqlite3')
     constructor(dbname){
         this.db = new this.sqlite3.Database(dbname, (err) => {
             if(err) throw err
         })
     }
-    newTableTests(){
+    newResultTests(){
         return new Promise((resolve, reject) => {
-            const sql = 'CREATE TABLE IF NOT EXISTS TESTS(id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR, procedureDescriptor VARCHAR, idSKU INTEGER';
+            const sql = 'CREATE TABLE IF NOT EXISTS RESULTS(id INTEGER PRIMARY KEY AUTOINCREMENT, idTestDescriptor INTEGER, Date DATE, result BOOL';
             this.db.run(sql, (err) => {
                 if(err){
                     reject(err);
@@ -133,4 +133,4 @@ class TestDescriptorDAO{
         })
     }
 }
-module.exports = TestDescriptorDAO;
+module.exports = TestResultDAO;

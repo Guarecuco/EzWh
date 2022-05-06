@@ -7,7 +7,7 @@ class RestockOrderDAO{
     }
     newTableRestockOrders(){
         return new Promise((resolve, reject) => {
-            const sql = 'CREATE TABLE IF NOT EXISTS RESTOCK_ORDERS(ID INTEGER PRIMARY KEY AUTOINCREMENT, ISSUE_DATE VARCHAR, STATE VARCHAR, SUPPLIER_ID INTEGER)';
+            const sql = 'CREATE TABLE IF NOT EXISTS RESTOCK_ORDERS(ID INTEGER PRIMARY KEY AUTOINCREMENT, ISSUE_DATE VARCHAR, STATE VARCHAR, SUPPLIER_ID INTEGER, TRANSPORT_NOTE VARCHAR, PRODUCTS VARCHAR, SKU_ITEMS VARCHAR)';
             this.db.run(sql, (err) => {
                 if(err){
                     reject(err);
@@ -19,44 +19,63 @@ class RestockOrderDAO{
     }
 
     getAllRestockOrders() {
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             const sql = 'SELECT * FROM RESTOCK_ORDERS'
-            this.db.all(sql, [], (err, rows) => {
-                if(err){
+            let orders = []
+            await this.db.all(sql, [], async (err, rows) => {
+                if (err) {
                     reject(err);
                     return;
                 }
-                const orders = rows.map((r) => (
+                orders = rows.map((r) =>
                     {
+                        let order = {
                         id: r.ID,
                         issueDate: r.ISSUE_DATE,
                         state: r.STATE,
-                        supplierId: r.SUPPLIER_ID               
-                    }
-                    
-                ));
+                        supplierId: r.SUPPLIER_ID,
+                        products: JSON.parse(r.PRODUCTS)
+                        }
+                        let skuItems = []
+                        if (order.state !== 'ISSUED')
+                            order.transportNote = JSON.parse(r.TRANSPORT_NOTE)
+
+                        if (order.state === 'ISSUED' || order.state === 'DELIVERY')
+                            skuItems = []
+                        else{
+                            skuItems = JSON.parse(r.SKU_ITEMS)
+                        }
+                        order.skuItems = skuItems
+                        return order
+
+                    });
                 resolve(orders)
             })
         })
     }
 
+
     getAllRestockOrdersIssued() {
         return new Promise((resolve, reject) => {
             const sql = 'SELECT * FROM RESTOCK_ORDERS WHERE STATE="ISSUED"'
-            this.db.all(sql, [], (err, rows) => {
-                if(err){
+            this.db.all(sql, [], async (err, rows) => {
+                if (err) {
                     reject(err);
                     return;
                 }
-                const orders = rows.map((r) => (
-                    {
+                let orders = rows.map((r) =>
+                {
+                    let order = {
                         id: r.ID,
                         issueDate: r.ISSUE_DATE,
                         state: r.STATE,
-                        supplierId: r.SUPPLIER_ID               
+                        supplierId: r.SUPPLIER_ID,
+                        products: JSON.parse(r.PRODUCTS)
                     }
-                    
-                ));
+                    order.skuItems = []
+                    return order
+
+                });
                 resolve(orders)
             })
         })
@@ -79,52 +98,48 @@ class RestockOrderDAO{
     }
 
 
-
     getRestockOrder(id){
         return new Promise((resolve, reject) => {
             const sql = 'SELECT * FROM RESTOCK_ORDERS WHERE ID=' + id
-            this.db.get(sql, [], (err, rows) => {
-                if(err){
+            this.db.get(sql, [], async (err, r) => {
+                if (err) {
                     reject(err);
                     return;
                 }
-                const order = rows.map((r) => (
-                    {
-                        issueDate: r.ISSUE_DATE,
-                        state: r.STATE,
-                        supplierId: r.SUPPLIER_ID               
-                    }
-                    
-                ));
+                let order = {
+                    id: r.ID,
+                    issueDate: r.ISSUE_DATE,
+                    state: r.STATE,
+                    supplierId: r.SUPPLIER_ID,
+                    products: JSON.parse(r.PRODUCTS)
+                }
+                let skuItems = []
+                if (order.state !== 'ISSUED')
+                    order.transportNote = JSON.parse(r.TRANSPORT_NOTE)
+
+                if (order.state === 'ISSUED' || order.state === 'DELIVERY')
+                    skuItems = []
+                else{
+                    skuItems = JSON.parse(r.SKU_ITEMS)
+                }
+                order.skuItems = skuItems
+
                 resolve(order)
             })
-        })  
+        })
     }
 
     getReturnableItems(id) {
         return new Promise((resolve, reject) => {
-            const sql = ''
-            this.db.all(sql, [], (err, rows) => {
-                if(err){
-                    reject(err);
-                    return;
-                }
-                const items = rows.map((r) => (
-                    {
-                        id: r.ID,
-              
-                    }
-                    
-                ));
-                resolve(orders)
-            })
+            const skuItems = []
+            resolve(skuItems)
         })
     }
 
     addRestockOrder(order){
         return new Promise((resolve, reject) => {
-            const sql = 'INSERT INTO RESTOCK_ORDERS(ISSUE_DATE, SUPPLIER_ID, STATE) VALUES (?,?, "ISSUED")'
-            this.db.run(sql, [order.issueDate, order.supplierId] , (err) => {
+            const sql = 'INSERT INTO RESTOCK_ORDERS(ISSUE_DATE, SUPPLIER_ID, STATE, PRODUCTS) VALUES (?,?, "ISSUED", ?)'
+            this.db.run(sql, [order.issueDate, order.supplierId, JSON.stringify(order.products)] , (err) => {
                 if(err){
                     reject(err);
                     return;
@@ -138,6 +153,33 @@ class RestockOrderDAO{
         return new Promise((resolve, reject) => {
             const sql = 'UPDATE RESTOCK_ORDERS SET STATE = ? WHERE ID = ?'
             this.db.run(sql, [newState, id] , (err) => {
+                if(err){
+                    reject(err);
+                    return;
+                }
+                resolve(this.lastID)
+            })
+        })
+    }
+
+    updateRestockOrderSKUItems(newSKUitems, id){
+        return new Promise((resolve, reject) => {
+            const sql = 'UPDATE RESTOCK_ORDERS SET SKU_ITEMS = ? WHERE ID = ?'
+            this.db.run(sql, [JSON.stringify(newSKUitems), id] , async (err) => {
+                console.log(id)
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve(this.lastID)
+            })
+        })
+    }
+
+    updateRestockOrderTransportNote(transportNote, id){
+        return new Promise((resolve, reject) => {
+            const sql = 'UPDATE RESTOCK_ORDERS SET TRANSPORT_NOTE = ? WHERE ID == ?'
+            this.db.run(sql, [JSON.stringify(transportNote), id] , (err) => {
                 if(err){
                     reject(err);
                     return;
