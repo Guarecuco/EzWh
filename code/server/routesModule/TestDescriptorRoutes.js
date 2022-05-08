@@ -51,7 +51,7 @@ router.get('/api/testDescriptors', (req,res)=>{
         return res.status(422).json({error: `Invalid test descriptor data`});
       }
       //TODO: check existance of test
-      await db.newTableSkuitem();
+      await db.newTableTests();
       //Check if test exists
       let count = await db.findTestName(newTest.name);
       if (count == 0){
