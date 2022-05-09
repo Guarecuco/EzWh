@@ -7,7 +7,7 @@ class TestDescriptorDAO{
     }
     newTableTests(){
         return new Promise((resolve, reject) => {
-            const sql = 'CREATE TABLE IF NOT EXISTS TESTS(id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR, procedureDescriptor VARCHAR, idSKU INTEGER';
+            const sql = 'CREATE TABLE IF NOT EXISTS TESTS(ID INTEGER PRIMARY KEY AUTOINCREMENT, NAME VARCHAR, PROCEDUREDESCRIPTOR VARCHAR, IDSKU INTEGER';
             this.db.run(sql, (err) => {
                 if(err){
                     reject(err);
@@ -28,10 +28,10 @@ class TestDescriptorDAO{
                 }
                 const tests = rows.map((r) => (
                     {
-                        id: r.id,
-                        name: r.name,
-                        procedureDescriptor: r.procedureDescriptor,
-                        idSKU: r.idSKU
+                        id: r.ID,
+                        name: r.NAME,
+                        procedureDescriptor: r.PROCEDUREDESCRIPTOR,
+                        idSKU: r.IDSKU
                     }
                     
                 ));
