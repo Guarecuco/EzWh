@@ -8,6 +8,22 @@ class SkuDAO{
     printSku(rows){
         const skus = rows.map((r) => (
             {
+                id: r.ID,
+                description: r.DESCRIPTION,
+                weight: r.WEIGHT,
+                volume: r.VOLUME,
+                notes: r.NOTES,
+                price: r.PRICE,
+                availableQuantity: r.AVAILABLEQUANTITY
+            }
+            
+        ));
+        return skus;
+    }
+
+    printSkuLess(rows){
+        const skus = rows.map((r) => (
+            {
                 description: r.DESCRIPTION,
                 weight: r.WEIGHT,
                 volume: r.VOLUME,
@@ -71,6 +87,19 @@ class SkuDAO{
                     r.COUNT 
                 ));
                 resolve(count)
+            })
+        })
+    }
+
+    getSku(id){
+        return new Promise((resolve, reject) => {
+            const sql = 'SELECT * FROM SKU WHERE ID = ?'
+            this.db.all(sql, id, (err, rows) => {
+                if(err){
+                    reject(err);
+                    return;
+                }
+                resolve(this.printSkuLess(rows))
             })
         })
     }

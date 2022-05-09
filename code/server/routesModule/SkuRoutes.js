@@ -15,6 +15,23 @@ router.get('/api/skus', async (req,res)=>{
   }
 });
 
+router.get('/api/skus/:id', async (req,res)=>{
+  try{
+    const id=req.params.id;
+    if(!id){
+      return res.status(422).json({error: `Invalid id`});
+    }
+    const sku = await db.getSku(id);
+    if(sku.length <= 0){
+      return res.status(404).json({error: `Sku not found`});
+    }
+    return res.status(200).json(sku);
+  }
+  catch(err){
+    res.status(500).end();
+  }
+});
+
 router.post('/api/sku', async (req,res)=>{
   try{
     //Check if body is empty
