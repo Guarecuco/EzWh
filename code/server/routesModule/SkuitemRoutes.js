@@ -22,7 +22,9 @@ router.get('/api/skuitems/sku/:id', async (req,res)=>{
         return res.status(422).json({error: `Invalid SKUId`});
       }
       const skuitems = await db.getAvailableSkuitems(SKUId);
-      //zero check
+      if(skuitems.length <= 0){
+        return res.status(404).json({error: `skuItem not found`});
+      }
       return res.status(200).json(skuitems);
     }
     catch(err){

@@ -1,6 +1,15 @@
 const express = require("express");
 const ReturnOrderDAO = require('../dao/ReturnOrderDAO.js')
+const SKUitemDAO = require('../dao/SkuitemDAO.js')
+const SkuDAO = require('../dao/SkuDAO.js')
+const PositionDAO = require('../dao/PositionDAO.js')
+
+
 const db = new ReturnOrderDAO('EzWh')
+const skuitemdb= new SKUitemDAO('EzWh')
+const skudb = new SkuDAO('EzWh')
+const positiondb = new PositionDAO('EzWh')
+
 
 const router = express.Router()
 router.use(express.json());
@@ -53,7 +62,16 @@ router.post('/api/returnOrder', async (req,res)=>{
         }
         await db.newTableReturnOrders();
         await db.addReturnOrder(order);
-        //for each skuItem -> look at sequence diagram
+
+        for (let item of order.products){
+            await skuitemdb.setAvailabilityByRFID(item.RFID, 0)
+            const sku = await skudb.getSku(item.SKUId)
+            if (sku.length > 0){
+                const newQty = sku[0].availableQuantity === 0 ? 0 : sku[0].availableQuantity - 1
+                await skudb.setAvailableQuantityById(item.SKUId, newQty)
+                // increase Position ???
+            }
+        }
 
         return res.status(201).end();
 
