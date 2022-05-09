@@ -7,6 +7,8 @@ const restockOrderRouter = require('./routesModule/RestockOrderRoutes.js')
 const returnOrderRouter = require('./routesModule/ReturnOrderRoutes.js')
 const internalOrderRouter = require('./routesModule/InternalOrderRoutes.js')
 const skuitemRouter = require('./routesModule/SkuitemRoutes.js')
+//const testDescriptorRouter = require('./routesModule/TestDescriptorRoutes.js')
+//const testResultRouter = require('./routesModule/TestResultRoutes.js')
 
 const express = require('express');
 // init express
@@ -18,6 +20,8 @@ app.use(restockOrderRouter)
 app.use(returnOrderRouter)
 app.use(internalOrderRouter)
 app.use(skuitemRouter)
+//app.use(testDescriptorRouter)
+//app.use(testResultRouter)
 
 const port = 3001;
 
