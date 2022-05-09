@@ -58,7 +58,7 @@ router.post('/api/newUser', async (req,res)=>{
         }
         //Check type is correct
         if (user.type !== 'customer' && user.type !== 'qualityEmployee' && user.type !== 'clerk' && 
-            user.type !== 'deliveryEmployee' && user.type !== 'supplier') {
+            user.type !== 'deliveryEmployee' && user.type !== 'supplier' && user.type !== 'manager') {
             return res.status(422).json({error: `Invalid user data`});
         }
 
