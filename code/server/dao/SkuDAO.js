@@ -160,6 +160,21 @@ class SkuDAO{
             })
         })
     }
+    
+    setAvailableQuantityById(id, newQty) {
+        return new Promise((resolve, reject) => {
+            const sql = `UPDATE SKU
+                         SET AVAILABLEQUANTITY = ?
+                         WHERE ID == ?`
+            this.db.run(sql, [newQty, id], (err) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve(this.lastID)
+            })
+        })
+    }
 }
 
 module.exports = SkuDAO;

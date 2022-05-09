@@ -135,6 +135,19 @@ class SkuitemDAO{
             })
         })
     }
+
+    setAvailabilityByRFID(rfid, newQty){
+        return new Promise((resolve, reject) => {
+            const sql = `UPDATE SKUITEM SET AVAILABLE = ? WHERE RFID == ?`
+            this.db.run(sql, [newQty, rfid], (err) => {
+                if(err){
+                    reject(err);
+                    return;
+                }
+                resolve(this.lastID)
+            })
+        })
+    }
 }
 
 module.exports = SkuitemDAO;

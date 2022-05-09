@@ -64,10 +64,13 @@ router.post('/api/returnOrder', async (req,res)=>{
         await db.addReturnOrder(order);
 
         for (let item of order.products){
-            //await skuitemdb.setAvailabilityByRFID(item.RFID, 0)
-            //let sku = await skudb.getStoredSku(item.SKUId)
-            //await skudb.setAvailableQuantityById(item.SKUId, sku.availableQuantity-1)
-            // increase Position ???
+            await skuitemdb.setAvailabilityByRFID(item.RFID, 0)
+            const sku = await skudb.getSku(item.SKUId)
+            if (sku.length > 0){
+                const newQty = sku[0].availableQuantity === 0 ? 0 : sku[0].availableQuantity - 1
+                await skudb.setAvailableQuantityById(item.SKUId, newQty)
+                // increase Position ???
+            }
         }
 
         return res.status(201).end();
