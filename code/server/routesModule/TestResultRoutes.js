@@ -4,6 +4,7 @@ const db = new TestResultDAO('EzWh')
 const TestDescriptorDAO = require('../dao/TestDescriptorDAO.js')
 const dbT = new TestDescriptorDAO('EzWh')
 const router = express.Router()
+router.use(express.json());
 
 
 //GET

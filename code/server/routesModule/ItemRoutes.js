@@ -6,6 +6,7 @@ const SKUDAO = require('../dao/SkuDAO.js')
 const dbSKU = new SKUDAO('EzWh')
 
 const router = express.Router()
+router.use(express.json());
 
 
 //GET

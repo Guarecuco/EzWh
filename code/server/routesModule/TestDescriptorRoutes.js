@@ -3,18 +3,15 @@ const TestDescriptorDAO = require('../dao/TestDescriptorDAO.js')
 const db = new TestDescriptorDAO('EzWh')
 
 const router = express.Router()
+router.use(express.json());
 
 
 //GET
 router.get('/api/testDescriptors', (req,res)=>{
     try{
-        if (/*test se manager o quality emp*/'')
-        {
-            const tests = await db.getTestsDescriptors();
+        const tests = await db.getTestsDescriptors();
             return res.status(200).json(tests);
-        }
-        else
-            return res.status(401).end();
+        
     }
     catch(err){
         res.status(500).end();
