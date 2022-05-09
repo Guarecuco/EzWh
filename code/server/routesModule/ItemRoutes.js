@@ -10,7 +10,7 @@ router.use(express.json());
 
 
 //GET
-router.get('/api/items', (req,res)=>{
+router.get('/api/items', async (req,res)=>{
     try{
         if (/*test se manager o quality emp*/'')
         {
@@ -26,7 +26,7 @@ router.get('/api/items', (req,res)=>{
   }); 
 
 
-  router.get('/api/items/:id', (req,res)=>{
+  router.get('/api/items/:id', async (req,res)=>{
     try{
         if (/*test se manager o quality emp*/'')
         {

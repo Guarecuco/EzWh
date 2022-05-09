@@ -8,7 +8,7 @@ router.use(express.json());
 
 //GET
 
-router.get('/api/testDescriptors', (req,res)=>{
+router.get('/api/testDescriptors', async (req,res)=>{
     console.log("entrato");
     try{
         const tests = await db.getTestsDescriptors();
@@ -22,7 +22,7 @@ router.get('/api/testDescriptors', (req,res)=>{
   }); 
 
 
-  router.get('/api/testDescriptors/:id', (req,res)=>{
+  router.get('/api/testDescriptors/:id', async (req,res)=>{
     try{
         if (/*test se manager o quality emp*/'')
         {
