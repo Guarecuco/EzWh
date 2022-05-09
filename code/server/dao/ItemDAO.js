@@ -63,43 +63,11 @@ class ItemDAO{
             })
         })
     }
-//-----------------------------
-    findTestName(data){
-        return new Promise((resolve, reject) => {
-            const sql = "SELECT COUNT(*) as COUNT FROM TESTS WHERE NAME = ?"
-            this.db.all(sql , data, (err, rows) => {
-                if(err){
-                    reject(err);
-                    return;
-                }
-                const count = rows.map((r) => (
-                    r.COUNT 
-                ));
-                resolve(count)
-            })
-        })
-    }
 
-    findTestId(data){
+    addItem(data){
         return new Promise((resolve, reject) => {
-            const sql = "SELECT COUNT(*) as COUNT FROM TESTS WHERE id = ?"
-            this.db.all(sql , data, (err, rows) => {
-                if(err){
-                    reject(err);
-                    return;
-                }
-                const count = rows.map((r) => (
-                    r.COUNT 
-                ));
-                resolve(count)
-            })
-        })
-    }
-
-    addTest(data){
-        return new Promise((resolve, reject) => {
-            const sql = 'INSERT INTO TEST(name, procedureDescriptor, idSKU) VALUES (?,?,?)';
-            this.db.run(sql, [data.name, data.procedureDescriptor, data.idSKU] , (err) => {
+            const sql = 'INSERT INTO ITEMS( description, price, SKUId, supplierId) VALUES (?,?,?,?)';
+            this.db.run(sql, [data.description, data.price, data.SKUId, data.supplierId] , (err) => {
                 if(err){
                     reject(err);
                     return;
@@ -109,10 +77,10 @@ class ItemDAO{
         })
     }
 
-    updateTest(data){
+    updateItem(data){
         return new Promise((resolve, reject) => {
-            const sql = 'UPDATE TESTS SET name = ? AND procedureDescription =? AND idSKU =? WHERE id = ? '
-            this.db.run(sql, [data.nname, data.ndescr,data.nsku, data.nid] , (err) => {
+            const sql = 'UPDATE ITEMS SET description = ? AND price = ? WHERE id = ? '
+            this.db.run(sql, [data.ndescr, data.nprice,data.nid] , (err) => {
                 if(err){
                     reject(err);
                     return;
@@ -122,9 +90,9 @@ class ItemDAO{
         })
     }
 
-    deleteTest(data){
+    deleteItem(data){
         return new Promise((resolve, reject) => {
-            const sql = 'DELETE FROM TESTS WHERE id = ?'
+            const sql = 'DELETE FROM ITEMS WHERE id = ?'
             this.db.run(sql, [data] , (err) => {
                 if(err){
                     reject(err);
