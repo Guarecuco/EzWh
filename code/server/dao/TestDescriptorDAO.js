@@ -132,5 +132,23 @@ class TestDescriptorDAO{
             })
         })
     }
+
+    getSKUDescriptors(idSKU) {
+        return new Promise((resolve, reject) => {
+            const sql = 'SELECT id FROM TESTS WHERE idSKU = ?'
+            this.db.all(sql, [idSKU], (err, rows) => {
+                if(err){
+                    reject(err);
+                    return;
+                }
+                const results = rows.map((r) => (
+                    {
+                        id: r.id,
+                    }
+                ));
+                resolve(results)
+            })
+        })
+    }
 }
 module.exports = TestDescriptorDAO;

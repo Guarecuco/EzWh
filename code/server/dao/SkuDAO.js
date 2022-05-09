@@ -1,3 +1,5 @@
+const TestDescriptorDAO = require('../dao/TestDescriptorDAO.js');
+const dbT = new TestDescriptorDAO('EzWh');
 class SkuDAO{
     sqlite3 = require('sqlite3')
     constructor(dbname){
@@ -14,8 +16,9 @@ class SkuDAO{
                 volume: r.VOLUME,
                 notes: r.NOTES,
                 price: r.PRICE,
+                position: r.POSITION,
                 availableQuantity: r.AVAILABLEQUANTITY,
-                position: r.POSITION
+                //testDescriptors: dbT.getSKUDescriptors(r.ID)
             }
         ));
         return skus;
@@ -29,8 +32,9 @@ class SkuDAO{
                 volume: r.VOLUME,
                 notes: r.NOTES,
                 price: r.PRICE,
+                position: r.POSITION,
                 availableQuantity: r.AVAILABLEQUANTITY,
-                position: r.POSITION
+                //testDescriptors: dbT.getSKUDescriptors(r.ID)
             }
         ));
         return skus;
@@ -160,7 +164,7 @@ class SkuDAO{
             })
         })
     }
-    
+
     setAvailableQuantityById(id, newQty) {
         return new Promise((resolve, reject) => {
             const sql = `UPDATE SKU
