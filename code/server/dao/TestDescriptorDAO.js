@@ -20,7 +20,7 @@ class TestDescriptorDAO{
 
     getTestsDescriptors() {
         return new Promise((resolve, reject) => {
-            const sql = 'SELECT * FROM TESTS'           //Add condition to check if online
+            const sql = 'SELECT * FROM TESTS'          
             this.db.all(sql, [], (err, rows) => {
                 if(err){
                     reject(err);

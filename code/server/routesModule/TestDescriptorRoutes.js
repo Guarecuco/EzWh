@@ -7,18 +7,12 @@ router.use(express.json());
 
 
 //GET
-router.get('/api/hithere', (req,res)=>{
-    try{
-            return res.status(200).json("hello");
-        
-    }
-    catch(err){
-        res.status(500).end();
-    }
-  }); 
+
 router.get('/api/testDescriptors', (req,res)=>{
+    console.log("entrato");
     try{
         const tests = await db.getTestsDescriptors();
+        console.log("entrato");
         return res.status(200).json(tests);
         
     }
