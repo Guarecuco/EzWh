@@ -9,7 +9,7 @@ router.use(express.json());
 //GET
 
 router.get('/api/testDescriptors', async (req,res)=>{
-    console.log("entrato");
+    
     try{
         const tests = await db.getTestsDescriptors();
         console.log("entrato");
@@ -59,6 +59,7 @@ router.get('/api/testDescriptors', async (req,res)=>{
         return res.status(201).end(); 
       }   
       return res.status(503).json({error: `Test name already exists`});
+      
     }
     catch(err){
         res.status(503).end();

@@ -7,7 +7,7 @@ class TestDescriptorDAO{
     }
     newTableTests(){
         return new Promise((resolve, reject) => {
-            const sql = 'CREATE TABLE IF NOT EXISTS TESTS(ID INTEGER PRIMARY KEY AUTOINCREMENT, NAME VARCHAR, PROCEDUREDESCRIPTOR VARCHAR, IDSKU INTEGER';
+            const sql = 'CREATE TABLE IF NOT EXISTS TESTS(ID INTEGER PRIMARY KEY AUTOINCREMENT, NAME VARCHAR, PROCEDUREDESCRIPTION VARCHAR, IDSKU INTEGER)';
             this.db.run(sql, (err) => {
                 if(err){
                     reject(err);
@@ -30,7 +30,7 @@ class TestDescriptorDAO{
                     {
                         id: r.ID,
                         name: r.NAME,
-                        procedureDescriptor: r.PROCEDUREDESCRIPTOR,
+                        procedureDescription: r.PROCEDUREDESCRIPTION,
                         idSKU: r.IDSKU
                     }
                     
@@ -52,7 +52,7 @@ class TestDescriptorDAO{
                     {
                         id: r.id,
                         name: r.name,
-                        procedureDescriptor: r.procedureDescriptor,
+                        procedureDescription: r.procedureDescription,
                         idSKU: r.idSKU
                     }
                     
@@ -96,8 +96,8 @@ class TestDescriptorDAO{
 
     addTest(data){
         return new Promise((resolve, reject) => {
-            const sql = 'INSERT INTO TEST(name, procedureDescriptor, idSKU) VALUES (?,?,?)';
-            this.db.run(sql, [data.name, data.procedureDescriptor, data.idSKU] , (err) => {
+            const sql = 'INSERT INTO TESTS(name, procedureDescription, idSKU) VALUES (?,?,?)';
+            this.db.run(sql, [data.name, data.procedureDescription, data.idSKU] , (err) => {
                 if(err){
                     reject(err);
                     return;
