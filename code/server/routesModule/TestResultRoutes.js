@@ -4,18 +4,14 @@ const db = new TestResultDAO('EzWh')
 const TestDescriptorDAO = require('../dao/TestDescriptorDAO.js')
 const dbT = new TestDescriptorDAO('EzWh')
 const router = express.Router()
+router.use(express.json());
 
 
 //GET
-router.get('/api/skuitems/:rfid/testResults', (req,res)=>{
+router.get('/api/skuitems/:rfid/testResults', async (req,res)=>{
     try{
-        if (/*test se manager o quality emp*/'')
-        {
             const results = await db.getSKUResults(req.params.rfid);
             return res.status(200).json(results);
-        }
-        else
-            return res.status(401).end();
     }
     catch(err){
         res.status(500).end();
@@ -23,7 +19,7 @@ router.get('/api/skuitems/:rfid/testResults', (req,res)=>{
   }); 
 
 
-  router.get('/api/skuitems/:rfid/testResults/:id', (req,res)=>{
+  router.get('/api/skuitems/:rfid/testResults/:id', async (req,res)=>{
     try{
         if (/*test se manager o quality emp*/'')
         {
