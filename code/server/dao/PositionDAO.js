@@ -60,6 +60,19 @@ class PositionDAO{
         })
     }
 
+    getPosition(id) {
+        return new Promise((resolve, reject) => {
+            const sql = "SELECT * FROM POSITION WHERE POSITIONID = ?"
+            this.db.all(sql, [id], (err, rows) => {
+                if(err){
+                    reject(err);
+                    return;
+                }
+                resolve(this.printPositions(rows))
+            })
+        })
+    }
+
     checkIfStored(positionID){
         return new Promise((resolve, reject) => {
             const sql = "SELECT COUNT(*) as COUNT FROM POSITION WHERE POSITIONID = ?"
@@ -98,6 +111,29 @@ class PositionDAO{
                 if(err){
                     reject(err);
                     return;
+                }
+                resolve(this.lastID)
+            })
+        })
+    }
+
+    updateDimensions(volume,weight,availableQuantity,pos){
+        return new Promise((resolve, reject) => {
+            if(!( volume && weight && availableQuantity!==undefined && pos && pos.occupiedVolume!==undefined && pos.occupiedWeight!==undefined && pos.maxVolume && pos.maxWeight && pos.positionID)){
+                reject();
+                return 0;
+            }
+            const v=volume*availableQuantity;
+            const w=weight*availableQuantity;
+            if( w>pos.maxWeight || v>pos.maxVolume ){
+                reject();
+                return 0;
+            }
+            const sql = `UPDATE POSITION SET OCCUPIEDWEIGHT=?, OCCUPIEDVOLUME=? WHERE POSITIONID=?`
+            this.db.run(sql, [v,w,pos.positionID], (err) => {
+                if (err) {
+                    reject(err);
+                    return 0;
                 }
                 resolve(this.lastID)
             })

@@ -134,6 +134,7 @@ class TestDescriptorDAO{
     }
 
     getSKUDescriptors(idSKU) {
+        this.newTableTests();
         return new Promise((resolve, reject) => {
             const sql = 'SELECT id FROM TESTS WHERE idSKU = ?'
             this.db.all(sql, [idSKU], (err, rows) => {
@@ -141,11 +142,7 @@ class TestDescriptorDAO{
                     reject(err);
                     return;
                 }
-                const results = rows.map((r) => (
-                    {
-                        id: r.id,
-                    }
-                ));
+                const results = rows.map((r) => (r.id));
                 resolve(results)
             })
         })

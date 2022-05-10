@@ -1,6 +1,8 @@
 const express = require("express");
 const SkuDAO = require('../dao/SkuDAO.js')
 const db = new SkuDAO('EzWh')
+const PositionDAO = require('../dao/PositionDAO.js');
+const dbP = new PositionDAO('EzWh');
 
 const router = express.Router()
 router.use(express.json());
@@ -68,11 +70,22 @@ router.put('/api/sku/:id', async (req,res)=>{
     }
     //Check if sku exist
     let count = await db.checkIfStored(id);
-    if (count != 0){
-      await db.updateSku(id,sku);
-      return res.status(200).end();
-    }   
-    return res.status(503).json({error: `SKU does not exists`});
+    if (count == 0){
+      return res.status(404).json({error: `SKU does not exists`});
+    }
+    try{
+      let oldSku = (await db.getSku(id))[0];
+      
+      if( oldSku && oldSku.position){
+        let pos = (await dbP.getPosition(oldSku.position))[0];
+        await dbP.updateDimensions(sku.newVolume,sku.newWeight,sku.newAvailableQuantity,pos);
+      }
+    }
+    catch(err){
+      return res.status(422).json({error: `Unable to Update position:`+err});
+    }
+    await db.updateSku(id,sku);
+    return res.status(200).end();
   }
   catch(err){
       res.status(503).end();
@@ -93,12 +106,19 @@ router.put('/api/sku/:id/position', async (req,res)=>{
     }
     //Check if sku exist
     let count = await db.checkIfStored(id);
-    console.log(count);
-    if (count != 0){
-      await db.updatePositionSku(id,item.position);
-      return res.status(200).end();
-    }   
-    return res.status(503).json({error: `SKU does not exists`});
+    if (count == 0){
+      return res.status(404).json({error: `SKU does not exists`});
+    }
+    try{
+      let sku = (await db.getSku(id))[0];
+      let pos = (await dbP.getPosition(item.position))[0];
+      await dbP.updateDimensions(sku.volume,sku.weight,sku.availableQuantity,pos);
+    }
+    catch(err){
+      return res.status(422).json({error: `Unable to Update position:`+err});
+    }
+    await db.setPosition(id,item.position);
+    return res.status(200).end();
   }
   catch(err){
       res.status(503).end();

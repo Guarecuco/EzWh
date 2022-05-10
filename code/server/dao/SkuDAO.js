@@ -1,5 +1,6 @@
 const TestDescriptorDAO = require('../dao/TestDescriptorDAO.js');
 const dbT = new TestDescriptorDAO('EzWh');
+
 class SkuDAO{
     sqlite3 = require('sqlite3')
     constructor(dbname){
@@ -139,7 +140,7 @@ class SkuDAO{
         })
     }
 
-    updatePositionSku(id,pos){
+    setPosition(id,pos){
         return new Promise((resolve, reject) => {
             const sql = `UPDATE SKU SET POSITION=? WHERE ID = ?`
             this.db.run(sql , [ pos, id ], (err) => {
