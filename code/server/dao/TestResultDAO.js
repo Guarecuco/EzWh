@@ -7,7 +7,7 @@ class TestResultDAO{
     }
     newResultTests(){
         return new Promise((resolve, reject) => {
-            const sql = 'CREATE TABLE IF NOT EXISTS RESULTS(id INTEGER PRIMARY KEY AUTOINCREMENT, INTEGER idSKU, idTestDescriptor INTEGER, Date DATE, Result BOOL';
+            const sql = 'CREATE TABLE IF NOT EXISTS RESULTS(id INTEGER PRIMARY KEY AUTOINCREMENT, INTEGER rfid, idTestDescriptor INTEGER, Date DATE, Result BOOL';
             this.db.run(sql, (err) => {
                 if(err){
                     reject(err);
@@ -18,10 +18,10 @@ class TestResultDAO{
         })
     }
 
-    getSKUResults(idSKU) {
+    getSKUResults(data) {
         return new Promise((resolve, reject) => {
-            const sql = 'SELECT * FROM RESULTS WHERE idSKU = ?'           //Add condition to check if online
-            this.db.all(sql, [idSKU], (err, rows) => {
+            const sql = 'SELECT * FROM RESULTS WHERE  rfid = ?'           //Add condition to check if online
+            this.db.all(sql, [data], (err, rows) => {
                 if(err){
                     reject(err);
                     return;
@@ -29,6 +29,7 @@ class TestResultDAO{
                 const results = rows.map((r) => (
                     {
                         rid: r.id,
+                        rrfid: r.rfid,
                         rdescr: r.idTestDescriptor,
                         rdate: r.Date,
                         rresult: r.Result
@@ -42,7 +43,7 @@ class TestResultDAO{
 
     getSKUResult(data) {
         return new Promise((resolve, reject) => {
-            const sql = 'SELECT * FROM RESULTS WHERE idSKU = ? AND id = ?'           //Add condition to check if online
+            const sql = 'SELECT * FROM RESULTS WHERE rfid = ? AND id = ?'           //Add condition to check if online
             this.db.all(sql, [data.rfid, data.id], (err, rows) => {
                 if(err){
                     reject(err);
@@ -51,6 +52,7 @@ class TestResultDAO{
                 const results = rows.map((r) => (
                     {
                         rid: r.id,
+                        rrfid: r.rfid,
                         rdescr: r.idTestDescriptor,
                         rdate: r.Date,
                         rresult: r.Result
@@ -64,7 +66,7 @@ class TestResultDAO{
 
     addTest(data){
         return new Promise((resolve, reject) => {
-            const sql = 'INSERT INTO RESULTS(idSKU, idTestDescriptor, Date, Result) VALUES (?,?,?,?)';
+            const sql = 'INSERT INTO RESULTS(rfid, idTestDescriptor, Date, Result) VALUES (?,?,?,?)';
             this.db.run(sql, [data.rfid, data.idTestDescriptor, data.Date, data.Result] , (err) => {
                 if(err){
                     reject(err);
@@ -77,8 +79,8 @@ class TestResultDAO{
 
     updateResult(data){
         return new Promise((resolve, reject) => {
-            const sql = 'UPDATE RESULT SET idTestDescriptor = ? AND Date =? AND Result =? WHERE id = ? AND idSKU = ? '
-            this.db.run(sql, [data.etest, data.edate,data.eresult, data.eid, data.esku] , (err) => {
+            const sql = 'UPDATE RESULT SET idTestDescriptor = ? AND Date =? AND Result =? WHERE id = ? AND rfid = ? '
+            this.db.run(sql, [data.etest, data.edate,data.eresult, data.eid, data.erfid] , (err) => {
                 if(err){
                     reject(err);
                     return;
@@ -90,8 +92,8 @@ class TestResultDAO{
 
     deleteTest(data){
         return new Promise((resolve, reject) => {
-            const sql = 'DELETE FROM RESULTS WHERE id = ? AND idSKU = ?'
-            this.db.run(sql, [data.eid, data.esku] , (err) => {
+            const sql = 'DELETE FROM RESULTS WHERE id = ? AND rfid = ?'
+            this.db.run(sql, [data.eid, data.erfid] , (err) => {
                 if(err){
                     reject(err);
                     return;

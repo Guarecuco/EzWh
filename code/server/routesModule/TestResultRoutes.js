@@ -70,7 +70,7 @@ router.put('/api/skuitems/:rfid/testResult/:id', async (req,res)=>{
             return res.status(422).json({error: `Empty body request`});
         }
         const eresult = {
-            esku : req.params.rfid,
+            erfid : req.params.rfid,
             eid: req.params.id,
             etest: req.body.newIdTestDescriptor,
             edate : req.body.newDate,
@@ -103,7 +103,7 @@ router.delete('/api/skuitems/:rfid/testResult/:id', async (req,res)=>{
     try{
         //Check if test exist
         const eresult = {
-            esku : req.params.rfid,
+            erfid : req.params.rfid,
             eid: req.params.id,
         }
             let tests = await dbT.getSKUResult(eresult);
