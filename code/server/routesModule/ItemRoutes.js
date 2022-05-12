@@ -50,20 +50,21 @@ router.get('/api/items', async (req,res)=>{
       }
       let newItem = req.body;
         //Check if any field is empty
-      if (!( newItem && newItem.description && newItem.price && newItem.SKUId && newItem.supplierId )) {
+      if (!( newItem )) {
         return res.status(422).json({error: `Invalid item data`});
       }
-      
-      //Check if sku exists
-      let count = await dbSKU.getSKU(newItem.SKUId);
-      if (count > 0){
+
+      await db.newTableItems();
+      //TODO Check if sku exists
+      //let sku = await dbSKU.getSKU(newItem.SKUId);
+     // if (sku){
         await db.addItem(newItem);
         return res.status(201).end(); 
-      }   
-      return res.status(503).json({error: `SKU does not exists`});
+     // }   
+      return res.status(500).json({error: `SKU does not exists`});
     }
     catch(err){
-        res.status(503).end();
+        res.status(500).end();
     }
 });
 
@@ -82,7 +83,7 @@ router.put('/api/item/:id', async (req,res)=>{
         }
 
         //Check if item exist
-        let count = await db.getItem(nid);
+        let count = await db.getItem(item.nid);
         if (count == 0){
             return res.status(404).end();
         }
