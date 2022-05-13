@@ -59,16 +59,13 @@ router.get('/api/restockOrders/:id/returnItems', async (req,res)=>{
             return res.status(404).json({error: `No restock order associated to id`})
 
         let returnable = []
-        /*
+
         for (let item of order.skuItems){
             const count = await testdb.countFailedTest(item.rfid)
             if (count > 0 )
                 returnable.push(item)
         }
-        */
 
-
-        //let items = await db.getReturnableItems(order.skuItems);
         return res.status(200).json(returnable);
     }
     catch(err){

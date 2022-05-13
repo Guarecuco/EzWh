@@ -101,5 +101,21 @@ class TestResultDAO{
             })
         })
     }
+
+    countFailedTest(rfid){
+        return new Promise((resolve, reject) => {
+            const sql = 'SELECT COUNT(*) as COUNT FROM RESULTS WHERE RFID == ? AND RESULT == TRUE'
+            this.db.all(sql, rfid , (err, rows) => {
+                if(err){
+                    reject(err);
+                    return;
+                }
+                const count = rows.map((r) => (
+                    r.COUNT
+                ));
+                resolve(count)
+            })
+        })
+    }
 }
 module.exports = TestResultDAO;
