@@ -192,32 +192,10 @@ class InternalOrderDAO{
         })
     }
 
-    getInternalOrdersIssued() {
+    getInternalOrdersByState(state) {
         return new Promise((resolve, reject) => {
-            const sql = 'SELECT * FROM INTERNAL_ORDERS WHERE STATE = "ISSUED"' 
-            this.db.all(sql, [], (err, rows) => {
-                if(err){
-                    reject(err);
-                    return;
-                }
-                const orders = rows.map((r) => (
-                    {
-                        id: r.ID,
-                        issueDate: r.ISSUEDATE,
-                        state: r.STATE,
-                        customerId: r.CUSTOMERID
-                    }
-                    
-                ));
-                resolve(orders)
-            })
-        })
-    }
-
-    getInternalOrdersAccepted() {
-        return new Promise((resolve, reject) => {
-            const sql = 'SELECT * FROM INTERNAL_ORDERS WHERE STATE = "ACCEPTED"' 
-            this.db.all(sql, [], (err, rows) => {
+            const sql = 'SELECT * FROM INTERNAL_ORDERS WHERE STATE = ?' 
+            this.db.all(sql, [state], (err, rows) => {
                 if(err){
                     reject(err);
                     return;
