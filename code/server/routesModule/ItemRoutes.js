@@ -12,13 +12,9 @@ router.use(express.json());
 //GET
 router.get('/api/items', async (req,res)=>{
     try{
-        if (/*test se manager o quality emp*/'')
-        {
-            const items = await db.getItems();
+         const items = await db.getItems();
             return res.status(200).json(items);
-        }
-        else
-            return res.status(401).end();
+       
     }
     catch(err){
         res.status(500).end();
@@ -28,13 +24,9 @@ router.get('/api/items', async (req,res)=>{
 
   router.get('/api/items/:id', async (req,res)=>{
     try{
-        if (/*test se manager o quality emp*/'')
-        {
-            const item = await db.getItem(req.params.id);
+         const item = await db.getItem(req.params.id);
             return res.status(200).json(item);
-        }
-        else
-            return res.status(401).end();
+        
     }
     catch(err){
         res.status(500).end();
@@ -84,7 +76,7 @@ router.put('/api/item/:id', async (req,res)=>{
 
         //Check if item exist
         let count = await db.getItem(item.nid);
-        if (count == 0){
+        if (!count){
             return res.status(404).end();
         }
         //Update test
@@ -104,7 +96,7 @@ router.delete('/api/items/:id', async (req,res)=>{
 
         //Check if test exist
         let count = await db.getItem(nid);
-        if (count == 0){
+        if (!count){
             return res.status(404).end();
         }
 

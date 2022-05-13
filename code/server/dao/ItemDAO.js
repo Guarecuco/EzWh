@@ -79,7 +79,7 @@ class ItemDAO{
 
     updateItem(data){
         return new Promise((resolve, reject) => {
-            const sql = 'UPDATE ITEMS SET description = ? AND price = ? WHERE id = ? '
+            const sql = 'UPDATE ITEMS SET description = ?, price = ? WHERE id = ? '
             this.db.run(sql, [data.ndescr, data.nprice,data.nid] , (err) => {
                 if(err){
                     reject(err);
