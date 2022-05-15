@@ -81,39 +81,6 @@ class SkuDAO{
         })
     }
 
-    checkIfStored(id){
-        return new Promise((resolve, reject) => {
-            const sql = "SELECT COUNT(*) as COUNT FROM SKU WHERE ID = ?"
-            this.db.all(sql , id, (err, rows) => {
-                if(err){
-                    reject(err);
-                    return;
-                }
-                const count = rows.map((r) => (
-                    r.COUNT 
-                ));
-                resolve(count)
-            })
-        })
-    }
-/*
-    checkIfStored(data){
-        return new Promise((resolve, reject) => {
-            const sql = "SELECT COUNT(*) as COUNT FROM SKU WHERE DESCRIPTION = ?"
-            this.db.all(sql , data.description, (err, rows) => {
-                if(err){
-                    reject(err);
-                    return;
-                }
-                const count = rows.map((r) => (
-                    r.COUNT 
-                ));
-                resolve(count)
-            })
-        })
-    }
-*/
-
     getSku(id){
         return new Promise((resolve, reject) => {
             const sql = 'SELECT * FROM SKU WHERE ID = ?'

@@ -49,7 +49,7 @@ router.post('/api/sku', async (req,res)=>{
 
     await db.storeSku(sku);
 
-    return res.status(200).end();
+    return res.status(201).end();
   }
   catch(err){
       res.status(503).end();
@@ -69,12 +69,12 @@ router.put('/api/sku/:id', async (req,res)=>{
       return res.status(422).json({error: `Invalid sku data`});
     }
     //Check if sku exist
-    let count = await db.checkIfStored(id);
-    if (count == 0){
+    let get = await db.getSku(id);
+    if (get.length <= 0){
       return res.status(404).json({error: `SKU does not exists`});
     }
     try{
-      let oldSku = (await db.getSku(id))[0];
+      let oldSku = get[0];
       
       if( oldSku && oldSku.position){
         let pos = (await dbP.getPosition(oldSku.position))[0];
@@ -105,12 +105,12 @@ router.put('/api/sku/:id/position', async (req,res)=>{
       return res.status(422).json({error: `Invalid sku data`});
     }
     //Check if sku exist
-    let count = await db.checkIfStored(id);
-    if (count == 0){
+    let get = await db.getSku(id);
+    if (get <= 0){
       return res.status(404).json({error: `SKU does not exists`});
     }
     try{
-      let sku = (await db.getSku(id))[0];
+      let sku = get[0];
       let pos = (await dbP.getPosition(item.position))[0];
       await dbP.updateDimensions(sku.volume,sku.weight,sku.availableQuantity,pos);
     }
@@ -131,8 +131,8 @@ router.delete('/api/skus/:id', async (req,res)=>{
       if (!id) {
           return res.status(422).json({error: `Invalid id`});
       }
-      let count = await db.checkIfStored(id);
-      if (count==0){
+      let get = await db.getSku(id);
+      if (get<=0){
           return res.status(422).json({error: `no sku associated to id`});
       }
       await db.deleteSku(id);

@@ -73,22 +73,6 @@ class PositionDAO{
         })
     }
 
-    checkIfStored(positionID){
-        return new Promise((resolve, reject) => {
-            const sql = "SELECT COUNT(*) as COUNT FROM POSITION WHERE POSITIONID = ?"
-            this.db.all(sql , positionID, (err, rows) => {
-                if(err){
-                    reject(err);
-                    return;
-                }
-                const count = rows.map((r) => (
-                    r.COUNT 
-                ));
-                resolve(count)
-            })
-        })
-    }
-
     updatePositionID(oldPosID,pos){
         return new Promise((resolve, reject) => {
             const sql = `UPDATE POSITION SET POSITIONID=?, AISLEID=?, ROW=?, COL=?, MAXWEIGHT=?, MAXVOLUME=?, OCCUPIEDWEIGHT=?, OCCUPIEDVOLUME=? 

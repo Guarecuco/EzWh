@@ -32,8 +32,8 @@ router.post('/api/position', async (req,res)=>{
     }
     await db.newTablePosition();
     //Check if position exist
-    let count = await db.checkIfStored(pos.positionID);
-    if (count == 0){
+    let res = await db.getPosition(pos.positionID);
+    if (res.length <= 0){
       await db.storePosition(pos);
       return res.status(201).end(); 
     }   
@@ -56,8 +56,8 @@ router.put('/api/position/:positionID', async (req,res)=>{
                 return res.status(422).json({error: `Invalid position data`});
         }
 
-        let count = await db.checkIfStored(oldPosID);
-        if (count==0){
+        let res = await db.getPosition(oldPosID);
+        if (res.length<=0){
             return res.status(404).json({error: `no position associated to positionID`});
         }
         await db.updatePositionID(oldPosID,pos);
@@ -78,13 +78,13 @@ router.put('/api/position/:positionID/changeID', async (req,res)=>{
         if (!( oldPosID && newPosID )) {
             return res.status(422).json({error: `Invalid position data`});
         }
-        let count = await db.checkIfStored(oldPosID);
-        if (count==0){
+        let res = await db.getPosition(oldPosID);
+        if (res.length<=0){
             return res.status(404).json({error: `no position associated to positionID`});
         }
-        count = await db.checkIfStored(newPosID);
-        if (count!=0){
-            return res.status(404).json({error: `newPositionID already exists`});
+        res = await db.getPosition(newPosID);
+        if (res.length>0){
+            return res.status(422).json({error: `newPositionID already exists`});
         }
         await db.changePositionID(oldPosID,newPosID);
         return res.status(200).end(); 
@@ -101,8 +101,8 @@ router.delete('/api/position/:positionID', async (req,res)=>{
         if (!positionID) {
             return res.status(422).json({error: `Invalid position data`});
         }
-        let count = await db.checkIfStored(positionID);
-        if (count==0){
+        let res = await db.getPosition(positionID);
+        if (res.length<=0){
             return res.status(422).json({error: `no position associated to positionID`});
         }
         await db.deletePosition(positionID);

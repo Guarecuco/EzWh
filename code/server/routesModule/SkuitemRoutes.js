@@ -38,11 +38,10 @@ router.get('/api/skuitems/:rfid', async (req,res)=>{
       if(!rfid){
         return res.status(422).json({error: `Invalid rfid`});
       }
-      let count = await db.checkIfStored(rfid);
-      if (count==0){
+      const skuitem = await db.getStoredSkuitem(rfid);
+      if (skuitem.length<=0){
         return res.status(404).json({error: `no skuitem associated to rfid`});
       }
-      const skuitem = await db.getStoredSkuitem(rfid);
       return res.status(200).json(skuitem);
     }
     catch(err){
@@ -64,12 +63,12 @@ router.post('/api/skuitem', async (req,res)=>{
       //TODO: check existance of SKU
       await db.newTableSkuitem();
       //Check if Skuitem exists
-      let count = await db.checkIfStored(item.RFID);
-      if (count == 0){
+      let skuitem = await db.getStoredSkuitem(item.RFID);
+      if (skuitem.length <= 0){
         await db.storeSkuitem(item);
         return res.status(201).end(); 
       }   
-      return res.status(503).json({error: `Skuitem already exists`});
+      return res.status(404).json({error: `Skuitem already exists`});
     }
     catch(err){
         res.status(503).end();
@@ -87,9 +86,9 @@ router.put('/api/skuitems/:rfid', async (req,res)=>{
             return res.status(422).json({error: `Invalid skuitem data`});
         }
 
-        let count = await db.checkIfStored(rfid);
-        if (count==0){
-            return res.status(404).json({error: `no skuitem associated to rfid`});
+        const skuitem = await db.getStoredSkuitem(rfid);
+        if (skuitem.length<=0){
+          return res.status(404).json({error: `no skuitem associated to rfid`});
         }
         await db.updateSkuitem(rfid,item);
         return res.status(200).end(); 
@@ -105,9 +104,9 @@ router.delete('/api/skuitems/:rfid', async (req,res)=>{
         if (!rfid) {
             return res.status(422).json({error: `Invalid rfid`});
         }
-        let count = await db.checkIfStored(rfid);
-        if (count==0){
-            return res.status(422).json({error: `no skuitem associated to rfid`});
+        const skuitem = await db.getStoredSkuitem(rfid);
+        if (skuitem.length<=0){
+          return res.status(422).json({error: `no skuitem associated to rfid`});
         }
         await db.deleteSkuitem(rfid);
         return res.status(204).end();

@@ -68,22 +68,6 @@ class SkuitemDAO{
         })
     }
 
-    checkIfStored(rfid){
-        return new Promise((resolve, reject) => {
-            const sql = "SELECT COUNT(*) as COUNT FROM SKUITEM WHERE RFID = ?"
-            this.db.all(sql, rfid, (err, rows) => {
-                if(err){
-                    reject(err);
-                    return;
-                }
-                const count = rows.map((r) => (
-                    r.COUNT 
-                ));
-                resolve(count)
-            })
-        })
-    }
-
     getStoredSkuitem(rfid) {
         return new Promise((resolve, reject) => {
             const sql = 'SELECT * FROM SKUITEM WHERE RFID = ?'
