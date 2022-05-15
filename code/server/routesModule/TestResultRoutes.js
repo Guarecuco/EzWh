@@ -10,8 +10,8 @@ router.use(express.json());
 //GET
 router.get('/api/skuitems/:rfid/testResults', async (req,res)=>{
     try{
-            const results = await db.getSKUResults(req.params.rfid);
-            return res.status(200).json(results);
+        const results = await db.getSKUResults(req.params.rfid);
+        return res.status(200).json(results);
     }
     catch(err){
         res.status(500).end();
@@ -21,13 +21,10 @@ router.get('/api/skuitems/:rfid/testResults', async (req,res)=>{
 
   router.get('/api/skuitems/:rfid/testResults/:id', async (req,res)=>{
     try{
-        if (/*test se manager o quality emp*/'')
-        {
+        
             const results = await db.getSKUResult(req.params);
             return res.status(200).json(results);
-        }
-        else
-            return res.status(401).end();
+        
     }
     catch(err){
         res.status(500).end();
@@ -44,12 +41,13 @@ router.get('/api/skuitems/:rfid/testResults', async (req,res)=>{
       }
       let newResult = req.body;
         //Check if any field is empty
-      if (!( newResult && newResult.rfid && newResult.idTestDescriptor && newResult.Date && newResult.Result )) {
+      if (!( newResult && newResult.rfid && newResult.idTestDescriptor && newResult.Date )) {
         return res.status(422).json({error: `Invalid test result data`});
       }
-      
+
+      await db.newResultTests();
       //Check if test exists
-      let count = await dbT.getTestDescriptor(newResult.idTestDescriptor);
+      let count = await dbT.findTestId(newResult.idTestDescriptor);
       if (count > 0){
         await db.addResult(newResult);
         return res.status(201).end(); 
@@ -70,18 +68,20 @@ router.put('/api/skuitems/:rfid/testResult/:id', async (req,res)=>{
             return res.status(422).json({error: `Empty body request`});
         }
         const eresult = {
-            esku : req.params.rfid,
-            eid: req.params.id,
+            rfid : req.params.rfid,
+            id: req.params.id,
             etest: req.body.newIdTestDescriptor,
             edate : req.body.newDate,
-            eresult : req.body.newResult,
+            eresult : req.body.newResult
             
         }
 
         //Check if test exist
-        let count = await dbT.getTestDescriptor(eresult.etest);
+        let count = await dbT.findTestId(eresult.etest);
         if (count > 0){
-            let tests = await dbT.getSKUResult(eresult);
+            
+            let tests = await db.getSKUResult(eresult);
+           
             if(tests)
             {
                 await db.updateResult(eresult);
@@ -103,14 +103,14 @@ router.delete('/api/skuitems/:rfid/testResult/:id', async (req,res)=>{
     try{
         //Check if test exist
         const eresult = {
-            esku : req.params.rfid,
-            eid: req.params.id,
+            rfid : req.params.rfid,
+            id: req.params.id
         }
-            let tests = await dbT.getSKUResult(eresult);
+            let tests = await db.getSKUResult(eresult);
             if(tests)
             {
                 await db.deleteResult(eresult);
-                return res.status(201).end();
+                return res.status(204).end();
             }
             
             return res.status(404).json({error: `Test does not exists`});

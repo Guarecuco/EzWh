@@ -1,9 +1,9 @@
 const express = require("express");
-const UserDAO = require('../dao/UserDAO.js')
-const bcrypt = require('bcryptjs')
-const db = new UserDAO('EzWh')
+const UserDAO = require('../dao/UserDAO.js');
+const bcrypt = require('bcryptjs');
+const db = new UserDAO('EzWh');
 
-const router = express.Router()
+const router = express.Router();
 router.use(express.json());
 
 //GET /api/userinfo
@@ -15,7 +15,6 @@ router.get('/api/userinfo', async (req,res)=>{
     catch(err){
         res.status(500).end();
     }
-  
 }); 
 
 //GET /api/suppliers
@@ -26,8 +25,7 @@ router.get('/api/suppliers', async (req,res)=>{
     }
     catch(err){
         res.status(500).end();
-    }
-  
+    } 
 }); 
 
 //GET /api/users
@@ -39,7 +37,6 @@ router.get('/api/users', async (req,res)=>{
     catch(err){
         res.status(500).end();
     }
-    
 }); 
   
 //POST /api/newUser
@@ -57,31 +54,36 @@ router.post('/api/newUser', async (req,res)=>{
                 return res.status(422).json({error: `Invalid user data`});
         }
         //Check type is correct
+        //manager should not be in the list, but otherwise we cannot create manager users since the
+        //password is passed through a hash function.
         if (user.type !== 'customer' && user.type !== 'qualityEmployee' && user.type !== 'clerk' && 
             user.type !== 'deliveryEmployee' && user.type !== 'supplier' && user.type !== 'manager') {
-            return res.status(422).json({error: `Invalid user data`});
+            return res.status(422).json({error: `Invalid type`});
         }
 
         //Check password if greater than 8 chars
         if (user.password.length < 8) {
-            return res.status(422).json({error: `Invalid user data`});
+            return res.status(422).json({error: `Invalid password length`});
         }
+
+        //Create table if doesn't exist
         await db.newTableUsers();
 
         //Check if user exist
         let count = await db.checkIfStored(user);
         if (count == 0){
 
+            //Apply hash function to password with 5 rounds
             user.password = await bcrypt.hash(user.password, 5);
+            //Store user with hashed password
             await db.storeUser(user);
             return res.status(201).end(); 
         }   
         return res.status(409).json({error: `User already exists`});
     }
     catch(err){
-        res.status(500).end();
+        res.status(503).end();
     }
- 
 }); 
 
 //POST /api/managerSessions
@@ -89,17 +91,17 @@ router.post('/api/managerSessions', async (req,res)=>{
     try{
         //Check if body is empty
         if (Object.keys(req.body).length === 0) {
-            return res.status(422).json({error: `Empty body request`});
-            }
+            return res.status(500).json({error: `Empty body request`});
+        }
         let user = req.body;
         user.type = 'manager';
 
         //Check if any field is empty
         if (user === undefined || user.username === undefined || user.password === undefined ||
             user.username == '' || user.password == '') {
-                return res.status(422).json({error: `Invalid user data`});
+                return res.status(500).json({error: `Invalid user data`});
         }
-
+        //Retrieve user from database
         let storedUser = await db.getUserByEmailType(user);
         
         //Check if password is the same as stored
@@ -122,7 +124,6 @@ router.post('/api/managerSessions', async (req,res)=>{
     catch(err){
         res.status(500).end();
     }
-    
 }); 
 
 //POST /api/customerSessions
@@ -130,17 +131,17 @@ router.post('/api/customerSessions', async (req,res)=>{
     try{
         //Check if body is empty
         if (Object.keys(req.body).length === 0) {
-            return res.status(422).json({error: `Empty body request`});
-            }
+            return res.status(500).json({error: `Empty body request`});
+        }
         let user = req.body;
         user.type = 'customer';
 
         //Check if any field is empty
         if (user === undefined || user.username === undefined || user.password === undefined ||
             user.username == '' || user.password == '') {
-                return res.status(422).json({error: `Invalid user data`});
+                return res.status(500).json({error: `Invalid user data`});
         }
-
+        //Retrieve user from database
         let storedUser = await db.getUserByEmailType(user);
         
         //Check if password is the same as stored
@@ -163,26 +164,24 @@ router.post('/api/customerSessions', async (req,res)=>{
     catch(err){
         res.status(500).end();
     }
-    
 }); 
     
-
 //POST /api/supplierSessions
 router.post('/api/supplierSessions', async (req,res)=>{
     try{
         //Check if body is empty
         if (Object.keys(req.body).length === 0) {
-            return res.status(422).json({error: `Empty body request`});
-            }
+            return res.status(500).json({error: `Empty body request`});
+        }
         let user = req.body;
         user.type = 'supplier';
 
         //Check if any field is empty
         if (user === undefined || user.username === undefined || user.password === undefined ||
             user.username == '' || user.password == '') {
-                return res.status(422).json({error: `Invalid user data`});
+                return res.status(500).json({error: `Invalid user data`});
         }
-
+        //Retrieve user from database
         let storedUser = await db.getUserByEmailType(user);
         
         //Check if password is the same as stored
@@ -205,26 +204,24 @@ router.post('/api/supplierSessions', async (req,res)=>{
     catch(err){
         res.status(500).end();
     }
-    
 }); 
-
 
 //POST /api/clerkSessions
 router.post('/api/clerkSessions', async (req,res)=>{
     try{
         //Check if body is empty
         if (Object.keys(req.body).length === 0) {
-            return res.status(422).json({error: `Empty body request`});
-            }
+            return res.status(500).json({error: `Empty body request`});
+        }
         let user = req.body;
         user.type = 'clerk';
 
         //Check if any field is empty
         if (user === undefined || user.username === undefined || user.password === undefined ||
             user.username == '' || user.password == '') {
-                return res.status(422).json({error: `Invalid user data`});
+                return res.status(500).json({error: `Invalid user data`});
         }
-
+        //Retrieve user from database
         let storedUser = await db.getUserByEmailType(user);
         
         //Check if password is the same as stored
@@ -246,8 +243,7 @@ router.post('/api/clerkSessions', async (req,res)=>{
     }
     catch(err){
         res.status(500).end();
-    }
-    
+    }   
 }); 
 
 //POST /api/qualityEmployeeSessions
@@ -255,17 +251,17 @@ router.post('/api/qualityEmployeeSessions', async (req,res)=>{
     try{
         //Check if body is empty
         if (Object.keys(req.body).length === 0) {
-            return res.status(422).json({error: `Empty body request`});
-            }
+            return res.status(500).json({error: `Empty body request`});
+        }
         let user = req.body;
         user.type = 'qualityEmployee';
 
         //Check if any field is empty
         if (user === undefined || user.username === undefined || user.password === undefined ||
             user.username == '' || user.password == '') {
-                return res.status(422).json({error: `Invalid user data`});
+                return res.status(500).json({error: `Invalid user data`});
         }
-
+        //Retrieve user from database
         let storedUser = await db.getUserByEmailType(user);
         
         //Check if password is the same as stored
@@ -288,26 +284,24 @@ router.post('/api/qualityEmployeeSessions', async (req,res)=>{
     catch(err){
         res.status(500).end();
     }
-    
 }); 
-
 
 //POST /api/deliveryEmployeeSessions
 router.post('/api/deliveryEmployeeSessions', async (req,res)=>{
     try{
         //Check if body is empty
         if (Object.keys(req.body).length === 0) {
-            return res.status(422).json({error: `Empty body request`});
-            }
+            return res.status(500).json({error: `Empty body request`});
+        }
         let user = req.body;
         user.type = 'deliveryEmployee';
 
         //Check if any field is empty
         if (user === undefined || user.username === undefined || user.password === undefined ||
             user.username == '' || user.password == '') {
-                return res.status(422).json({error: `Invalid user data`});
+                return res.status(500).json({error: `Invalid user data`});
         }
-
+        //Retrieve user from database
         let storedUser = await db.getUserByEmailType(user);
         
         //Check if password is the same as stored
@@ -330,11 +324,10 @@ router.post('/api/deliveryEmployeeSessions', async (req,res)=>{
     catch(err){
         res.status(500).end();
     }
-    
 }); 
 
-
 //POST /api/logout
+    //NOT to be implemented yet
 
 //PUT /api/users/:username
 router.put('/api/users/:username', async (req,res)=>{
@@ -352,17 +345,17 @@ router.put('/api/users/:username', async (req,res)=>{
         //Check old type is correct
         if (user.type !== 'customer' && user.type !== 'qualityEmployee' && user.type !== 'clerk' && 
         user.type !== 'deliveryEmployee' && user.type !== 'supplier') {
-            return res.status(404).end();
+            return res.status(404).json({error: `Wrong type`});
         }
         //Check new type is correct
         if (user.newType !== 'customer' && user.newType !== 'qualityEmployee' && user.newType !== 'clerk' && 
         user.newType !== 'deliveryEmployee' && user.newType !== 'supplier') {
-            return res.status(404).end();
+            return res.status(404).json({error: `Wrong type`});
         }
         //Check if user exist
         let count = await db.checkIfStored(user);
         if (count == 0){
-            return res.status(404).end();
+            return res.status(404).json({error: `User does not exist`});
         }
         //Update user
         await db.updateUser(user);   
@@ -371,7 +364,6 @@ router.put('/api/users/:username', async (req,res)=>{
     catch(err){
         res.status(503).end();
     }
-
 }); 
 
 //DELETE /api/users/:username/:type
@@ -384,12 +376,12 @@ router.delete('/api/users/:username/:type', async (req,res)=>{
         //Check type is correct
         if (user.type !== 'customer' && user.type !== 'qualityEmployee' && user.type !== 'clerk' && 
         user.type !== 'deliveryEmployee' && user.type !== 'supplier') {
-            return res.status(422).json({error: `Invalid user data`});
+            return res.status(422).json({error: `Invalid type`});
         }
         //Check if user exist
         let count = await db.checkIfStored(user);
         if (count == 0){
-            return res.status(422).json({error: `Invalid user data`});
+            return res.status(422).json({error: `User does not exist`});
         }
         //Delete user
         await db.deleteUser(user);   
@@ -398,7 +390,6 @@ router.delete('/api/users/:username/:type', async (req,res)=>{
     catch(err){
         res.status(503).end();
     }
-
 }); 
 
 

@@ -1,6 +1,8 @@
 const express = require("express");
 const RestockOrderDAO = require('../dao/RestockOrderDAO.js')
+const TestResultDAO = require('../dao/TestResultDAO.js')
 const db = new RestockOrderDAO('EzWh')
+const testdb = new TestResultDAO('EzWh')
 
 const router = express.Router()
 router.use(express.json());
@@ -56,13 +58,15 @@ router.get('/api/restockOrders/:id/returnItems', async (req,res)=>{
         if (order === undefined)
             return res.status(404).json({error: `No restock order associated to id`})
 
+        let returnable = []
 
-        const items = await db.getReturnableItems(order.skuItems);
-        for (let item of items){
-            //TODO
-            //look at sequence diagram
+        for (let item of order.skuItems){
+            const count = await testdb.countFailedTest(item.rfid)
+            if (count > 0 )
+                returnable.push(item)
         }
-        return res.status(200).json(items);
+
+        return res.status(200).json(returnable);
     }
     catch(err){
         res.status(500).end();

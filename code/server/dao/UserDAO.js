@@ -6,9 +6,9 @@ class UserDAO{
         })
     }
 
-    newTableLoggedUsers(){
+    newTableUsers(){
         return new Promise((resolve, reject) => {
-            const sql = 'CREATE TABLE IF NOT EXISTS LOGGED_USERS(ID INTEGER, NAME VARCHAR, SURNAME VARCHAR, EMAIL VARCHAR, TYPE VARCHAR)';
+            const sql = 'CREATE TABLE IF NOT EXISTS USERS(ID INTEGER PRIMARY KEY AUTOINCREMENT, NAME VARCHAR, SURNAME VARCHAR, EMAIL VARCHAR, PASSWORD VARCHAR, TYPE VARCHAR)';
             this.db.run(sql, (err) => {
                 if(err){
                     reject(err);
@@ -18,9 +18,10 @@ class UserDAO{
             })
         })
     }
-    newTableUsers(){
+
+    newTableLoggedUsers(){
         return new Promise((resolve, reject) => {
-            const sql = 'CREATE TABLE IF NOT EXISTS USERS(ID INTEGER PRIMARY KEY AUTOINCREMENT, NAME VARCHAR, SURNAME VARCHAR, EMAIL VARCHAR, PASSWORD VARCHAR, TYPE VARCHAR)';
+            const sql = 'CREATE TABLE IF NOT EXISTS LOGGED_USERS(ID INTEGER, NAME VARCHAR, SURNAME VARCHAR, EMAIL VARCHAR, TYPE VARCHAR)';
             this.db.run(sql, (err) => {
                 if(err){
                     reject(err);

@@ -9,10 +9,10 @@ router.use(express.json());
 //GET
 
 router.get('/api/testDescriptors', async (req,res)=>{
-    console.log("entrato");
+    
     try{
         const tests = await db.getTestsDescriptors();
-        console.log("entrato");
+        
         return res.status(200).json(tests);
         
     }
@@ -24,13 +24,10 @@ router.get('/api/testDescriptors', async (req,res)=>{
 
   router.get('/api/testDescriptors/:id', async (req,res)=>{
     try{
-        if (/*test se manager o quality emp*/'')
-        {
-            const tests = await db.getTestDescriptor(req.body);
-            return res.status(200).json(tests);
-        }
-        else
-            return res.status(401).end();
+        
+            const test = await db.getTestDescriptor(req.params.id);
+            return res.status(200).json(test);
+        
     }
     catch(err){
         res.status(500).end();
@@ -39,7 +36,7 @@ router.get('/api/testDescriptors', async (req,res)=>{
 
 
   //POST
-  router.post('/api/testDescriptor', async (req,res)=>{
+  router.post('/api/testDescriptor', async (req,res)=>{ //check if  idsku exist
     try{
       //Check if body is empty
       if (Object.keys(req.body).length === 0) {
@@ -50,7 +47,7 @@ router.get('/api/testDescriptors', async (req,res)=>{
       if (!( newTest && newTest.name && newTest.procedureDescription && newTest.idSKU )) {
         return res.status(422).json({error: `Invalid test descriptor data`});
       }
-      //TODO: check existance of test
+      
       await db.newTableTests();
       //Check if test exists
       let count = await db.findTestName(newTest.name);
@@ -59,6 +56,7 @@ router.get('/api/testDescriptors', async (req,res)=>{
         return res.status(201).end(); 
       }   
       return res.status(503).json({error: `Test name already exists`});
+      
     }
     catch(err){
         res.status(503).end();
@@ -69,24 +67,26 @@ router.get('/api/testDescriptors', async (req,res)=>{
 //PUT
 router.put('/api/testDescriptor/:id', async (req,res)=>{
     try{
+        
         //Check if body is empty
         if (Object.keys(req.body).length === 0) {
             return res.status(422).json({error: `Empty body request`});
         }
+        
         const test = {
             nid: req.params.id,
             nname : req.body.newName,
             ndescr : req.body.newProcedureDescription,
             nsku : req.body.newIdSKU
         }
-
         //Check if test exist
-        let count = await db.findTestId(nid);
+        
+        let count = await db.findTestId(test.nid);
         if (count == 0){
             return res.status(404).end();
         }
         //Update test
-        await db.updateTest(test);   
+        await db.updateTest(test);  
         return res.status(200).end();
     }
     catch(err){
@@ -101,13 +101,13 @@ router.delete('/api/testDescriptor/:id', async (req,res)=>{
         const test = {nid: req.params.id}
 
         //Check if test exist
-        let count = await db.findTestId(nid);
+        let count = await db.findTestId(test.nid);
         if (count == 0){
             return res.status(404).end();
         }
 
         //Delete test
-        await db.deleteTest(nid);   
+        await db.deleteTest(test.nid);   
         return res.status(204).end();
     }
     catch(err){

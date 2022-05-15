@@ -7,7 +7,7 @@ class TestDescriptorDAO{
     }
     newTableTests(){
         return new Promise((resolve, reject) => {
-            const sql = 'CREATE TABLE IF NOT EXISTS TESTS(ID INTEGER PRIMARY KEY AUTOINCREMENT, NAME VARCHAR, PROCEDUREDESCRIPTOR VARCHAR, IDSKU INTEGER';
+            const sql = 'CREATE TABLE IF NOT EXISTS TESTS(ID INTEGER PRIMARY KEY AUTOINCREMENT, NAME VARCHAR, PROCEDUREDESCRIPTION VARCHAR, IDSKU INTEGER)';
             this.db.run(sql, (err) => {
                 if(err){
                     reject(err);
@@ -30,7 +30,7 @@ class TestDescriptorDAO{
                     {
                         id: r.ID,
                         name: r.NAME,
-                        procedureDescriptor: r.PROCEDUREDESCRIPTOR,
+                        procedureDescription: r.PROCEDUREDESCRIPTION,
                         idSKU: r.IDSKU
                     }
                     
@@ -40,24 +40,25 @@ class TestDescriptorDAO{
         })
     }
 
-    getTestDescriptor(id) {
+    getTestDescriptor(data) {
         return new Promise((resolve, reject) => {
-            const sql = 'SELECT * FROM TESTS WHERE id= ?'           //Add condition to check if online
-            this.db.all(sql, [id], (err, rows) => {
+            const sql = 'SELECT * FROM TESTS WHERE ID = ?'           //Add condition to check if online
+            this.db.get(sql, [data], (err, row) => {
                 if(err){
                     reject(err);
                     return;
                 }
-                const test = rows.map((r) => (
+                else{
+                const test = 
                     {
-                        id: r.id,
-                        name: r.name,
-                        procedureDescriptor: r.procedureDescriptor,
-                        idSKU: r.idSKU
-                    }
+                        id: row.ID,
+                        name: row.NAME,
+                        procedureDescription: row.PROCEDUREDESCRIPTION,
+                        idSKU: row.IDSKU
+                    };
                     
-                ));
-                resolve(test)
+                resolve(test);
+                }
             })
         })
     }
@@ -80,15 +81,16 @@ class TestDescriptorDAO{
 
     findTestId(data){
         return new Promise((resolve, reject) => {
-            const sql = "SELECT COUNT(*) as COUNT FROM TESTS WHERE id = ?"
-            this.db.all(sql , data, (err, rows) => {
+           
+            const sql = "SELECT COUNT(*) as COUNTED FROM TESTS WHERE ID = ?"
+            this.db.get(sql , [data], (err, row) => {
+                
                 if(err){
                     reject(err);
                     return;
                 }
-                const count = rows.map((r) => (
-                    r.COUNT 
-                ));
+                const count = row.COUNTED;
+               
                 resolve(count)
             })
         })
@@ -96,8 +98,8 @@ class TestDescriptorDAO{
 
     addTest(data){
         return new Promise((resolve, reject) => {
-            const sql = 'INSERT INTO TEST(name, procedureDescriptor, idSKU) VALUES (?,?,?)';
-            this.db.run(sql, [data.name, data.procedureDescriptor, data.idSKU] , (err) => {
+            const sql = 'INSERT INTO TESTS(name, procedureDescription, idSKU) VALUES (?,?,?)';
+            this.db.run(sql, [data.name, data.procedureDescription, data.idSKU] , (err) => {
                 if(err){
                     reject(err);
                     return;
@@ -109,7 +111,7 @@ class TestDescriptorDAO{
 
     updateTest(data){
         return new Promise((resolve, reject) => {
-            const sql = 'UPDATE TESTS SET name = ? AND procedureDescription =? AND idSKU =? WHERE id = ? '
+            const sql = 'UPDATE TESTS SET NAME = ?, PROCEDUREDESCRIPTION =?, IDSKU =? WHERE ID = ? '
             this.db.run(sql, [data.nname, data.ndescr,data.nsku, data.nid] , (err) => {
                 if(err){
                     reject(err);
