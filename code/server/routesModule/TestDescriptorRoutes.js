@@ -24,7 +24,11 @@ router.get('/api/testDescriptors', async (req,res)=>{
 
   router.get('/api/testDescriptors/:id', async (req,res)=>{
     try{
-        
+            let count = await db.findTestId(req.params.id);
+            if (count == 0){
+            
+            return res.status(404).end(); 
+            }   
             const test = await db.getTestDescriptor(req.params.id);
             return res.status(200).json(test);
         
@@ -55,7 +59,7 @@ router.get('/api/testDescriptors', async (req,res)=>{
         await db.addTest(newTest);
         return res.status(201).end(); 
       }   
-      return res.status(503).json({error: `Test name already exists`});
+      return res.status(422).json({error: `Test name already exists`});
       
     }
     catch(err){
@@ -103,7 +107,7 @@ router.delete('/api/testDescriptor/:id', async (req,res)=>{
         //Check if test exist
         let count = await db.findTestId(test.nid);
         if (count == 0){
-            return res.status(404).end();
+            return res.status(422).end();
         }
 
         //Delete test

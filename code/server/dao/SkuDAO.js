@@ -94,6 +94,22 @@ class SkuDAO{
         })
     }
 
+    countSku(id){
+        return new Promise((resolve, reject) => {
+            const sql = "SELECT COUNT(*) as COUNTED FROM SKU WHERE ID = ?"
+            this.db.get(sql , [id], (err, row) => {
+                
+                if(err){
+                    reject(err);
+                    return;
+                }
+                const count = row.COUNTED;
+               
+                resolve(count)
+            })
+        })
+    }
+
     updateSku(id,sku){
         return new Promise((resolve, reject) => {
             const sql = `UPDATE SKU SET DESCRIPTION=?, WEIGHT=?, VOLUME=?, NOTES=?, PRICE=?, AVAILABLEQUANTITY=? WHERE ID = ?`

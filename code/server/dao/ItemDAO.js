@@ -41,6 +41,23 @@ class ItemDAO{
         })
     }
 
+    countItems(data){
+        return new Promise((resolve, reject) => {
+           
+            const sql = "SELECT COUNT(*) as COUNTED FROM ITEMS WHERE ID = ?"
+            this.db.get(sql , [data], (err, row) => {
+                
+                if(err){
+                    reject(err);
+                    return;
+                }
+                const count = row.COUNTED;
+               
+                resolve(count)
+            })
+        })
+    }
+
     getItem(id) {
         return new Promise((resolve, reject) => {
             const sql = 'SELECT * FROM ITEMS WHERE id= ?'           //Add condition to check if online
