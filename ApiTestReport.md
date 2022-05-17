@@ -32,7 +32,7 @@ Version:
     
 
 
-#  Tests
+#  Integration Tests
 
    <define below a table for each integration step. For each integration step report the group of classes under test, and the names of
      Jest test cases applied to them, and the mock ups used, if any> Jest test cases should be here src/test/java/it/polito/ezshop
