@@ -35,7 +35,7 @@ Version:
 #  Integration Tests
 
    <define below a table for each integration step. For each integration step report the group of classes under test, and the names of
-     Jest test cases applied to them, and the mock ups used, if any> Jest test cases should be here src/test/java/it/polito/ezshop
+     Jest test cases applied to them, and the mock ups used, if any> Jest test cases should be here code/server/unit_test
 
 ## Step 1
 | Classes  | mock up used |Jest test cases |
@@ -81,7 +81,7 @@ Version:
 
 
 <Report in the following table the coverage of  scenarios (from official requirements and from above) vs FR. 
-Report also for each of the scenarios the (one or more) API Mocha tests that cover it. >
+Report also for each of the scenarios the (one or more) API Mocha tests that cover it. >  Mocha test cases should be here code/server/test
 
 
 
