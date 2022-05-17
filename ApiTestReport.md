@@ -59,7 +59,7 @@ Version:
 
 
 
-# Scenarios
+# API testing - Scenarios
 
 
 <If needed, define here additional scenarios for the application. Scenarios should be named
@@ -81,12 +81,12 @@ Version:
 
 
 <Report in the following table the coverage of  scenarios (from official requirements and from above) vs FR. 
-Report also for each of the scenarios the (one or more) API Jest tests that cover it. >
+Report also for each of the scenarios the (one or more) API Mocha tests that cover it. >
 
 
 
 
-| Scenario ID | Functional Requirements covered | Jest  Test(s) | 
+| Scenario ID | Functional Requirements covered | Mocha  Test(s) | 
 | ----------- | ------------------------------- | ----------- | 
 |  ..         | FRx                             |             |             
 |  ..         | FRy                             |             |             
