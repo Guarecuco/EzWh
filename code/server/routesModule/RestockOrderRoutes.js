@@ -208,7 +208,20 @@ router.delete('/api/restockOrder/:id', async (req,res)=>{
         res.status(503).end();
     }
 
-}); 
+});
+
+//DELETE /restockOrders/deleteRestockOrders
+router.delete('/restockOrders/deleteRestockOrders', async (req,res)=>{
+    try{
+        //Delete All Restock Order
+        await db.deleteRestockOrderData();
+        return res.status(204).end();
+    }
+    catch(err){
+        res.status(503).end();
+    }
+
+});
 
 
 module.exports = router

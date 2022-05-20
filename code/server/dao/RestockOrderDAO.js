@@ -112,7 +112,6 @@ class RestockOrderDAO{
                 }
 
                 let order = {
-                    id: r.ID,
                     issueDate: r.ISSUE_DATE,
                     state: r.STATE,
                     supplierId: r.SUPPLIER_ID,
@@ -134,17 +133,11 @@ class RestockOrderDAO{
         })
     }
 
-    getReturnableItems(id) {
-        return new Promise((resolve, reject) => {
-            const skuItems = []
-            resolve(skuItems)
-        })
-    }
 
     addRestockOrder(order){
         return new Promise((resolve, reject) => {
             const sql = 'INSERT INTO RESTOCK_ORDERS(ISSUE_DATE, SUPPLIER_ID, STATE, PRODUCTS) VALUES (?,?, "ISSUED", ?)'
-            this.db.run(sql, [order.issueDate, order.supplierId, JSON.stringify(order.products)] , (err) => {
+            this.db.run(sql, [order.issueDate, order.supplierId, JSON.stringify(order.products)] , function(err){
                 if(err){
                     reject(err);
                     return;
@@ -207,6 +200,18 @@ class RestockOrderDAO{
         })
     }
 
+    deleteRestockOrderData(){
+        return new Promise((resolve, reject) => {
+            const sql = 'DELETE FROM RESTOCK_ORDERS'
+            this.db.run(sql, (err) => {
+                if(err){
+                    reject(err);
+                    return;
+                }
+                resolve(true)
+            })
+        })
+    }
     
 }
 
