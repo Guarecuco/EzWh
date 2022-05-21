@@ -54,10 +54,8 @@ router.post('/api/newUser', async (req,res)=>{
                 return res.status(422).json({error: `Invalid user data`});
         }
         //Check type is correct
-        //manager should not be in the list, but otherwise we cannot create manager users since the
-        //password is passed through a hash function.
         if (user.type !== 'customer' && user.type !== 'qualityEmployee' && user.type !== 'clerk' && 
-            user.type !== 'deliveryEmployee' && user.type !== 'supplier' && user.type !== 'manager') {
+            user.type !== 'deliveryEmployee' && user.type !== 'supplier') {
             return res.status(422).json({error: `Invalid type`});
         }
 
@@ -341,7 +339,15 @@ router.put('/api/users/:username', async (req,res)=>{
             type : req.body.oldType,
             newType : req.body.newType
         }
-
+        //Check if any field is empty
+        if (user.username === undefined || user.type === undefined || user.newType === undefined ||
+            user.username == '' || user.type == '' || user.newType == '') {
+            return res.status(422).end();
+        }
+        //Check new or old type is not manager
+        if (user.type == 'manager' || user.newType == 'manager') {
+            return res.status(422).end();
+        }
         //Check old type is correct
         if (user.type !== 'customer' && user.type !== 'qualityEmployee' && user.type !== 'clerk' && 
         user.type !== 'deliveryEmployee' && user.type !== 'supplier') {
@@ -391,6 +397,20 @@ router.delete('/api/users/:username/:type', async (req,res)=>{
         res.status(503).end();
     }
 }); 
+
+
+//DELETE/api/users
+//Drop users table, not part of official APIs
+router.delete('/api/users', async (req,res)=>{
+    try{
+        await db.dropUsers();
+        return res.status(204).end();
+    }
+    catch(err){
+        res.status(503).end();
+    }
+
+});
 
 
 module.exports = router;

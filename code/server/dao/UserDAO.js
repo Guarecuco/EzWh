@@ -189,6 +189,19 @@ class UserDAO{
         })
     }
 
+    dropUsers(){
+        return new Promise((resolve, reject) => {
+            const sql = 'DROP TABLE USERS'
+            this.db.run(sql, [] , (err) => {
+                if(err){
+                    reject(err);
+                    return;
+                }
+                resolve(this.lastID)
+            })
+        })
+    }
+
     updateUser(data){
         return new Promise((resolve, reject) => {
             const sql = 'UPDATE USERS SET TYPE = ? WHERE EMAIL = ? AND TYPE = ?'
