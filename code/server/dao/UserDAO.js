@@ -69,7 +69,6 @@ class UserDAO{
                         name: r.NAME,
                         surname: r.SURNAME,
                         email: r.EMAIL,
-                        type: r.TYPE
                     }
                     
                 ));

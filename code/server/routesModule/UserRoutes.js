@@ -101,7 +101,10 @@ router.post('/api/managerSessions', async (req,res)=>{
         }
         //Retrieve user from database
         let storedUser = await db.getUserByEmailType(user);
-        
+        //Check if user exist
+        if (storedUser == ""){
+            return res.status(401).end();
+        }
         //Check if password is the same as stored
         const validPassword = await bcrypt.compare(user.password,storedUser[0].password);
         if (validPassword){
@@ -141,7 +144,10 @@ router.post('/api/customerSessions', async (req,res)=>{
         }
         //Retrieve user from database
         let storedUser = await db.getUserByEmailType(user);
-        
+        //Check if user exist
+        if (storedUser == ""){
+            return res.status(401).end();
+        }
         //Check if password is the same as stored
         const validPassword = await bcrypt.compare(user.password,storedUser[0].password);
         if (validPassword){
@@ -181,7 +187,10 @@ router.post('/api/supplierSessions', async (req,res)=>{
         }
         //Retrieve user from database
         let storedUser = await db.getUserByEmailType(user);
-        
+        //Check if user exist
+        if (storedUser == ""){
+            return res.status(401).end();
+        }
         //Check if password is the same as stored
         const validPassword = await bcrypt.compare(user.password,storedUser[0].password);
         if (validPassword){
@@ -221,7 +230,10 @@ router.post('/api/clerkSessions', async (req,res)=>{
         }
         //Retrieve user from database
         let storedUser = await db.getUserByEmailType(user);
-        
+        //Check if user exist
+        if (storedUser == ""){
+            return res.status(401).end();
+        }
         //Check if password is the same as stored
         const validPassword = await bcrypt.compare(user.password,storedUser[0].password);
         if (validPassword){
@@ -261,7 +273,10 @@ router.post('/api/qualityEmployeeSessions', async (req,res)=>{
         }
         //Retrieve user from database
         let storedUser = await db.getUserByEmailType(user);
-        
+        //Check if user exist
+        if (storedUser == ""){
+            return res.status(401).end();
+        }
         //Check if password is the same as stored
         const validPassword = await bcrypt.compare(user.password,storedUser[0].password);
         if (validPassword){
@@ -301,7 +316,10 @@ router.post('/api/deliveryEmployeeSessions', async (req,res)=>{
         }
         //Retrieve user from database
         let storedUser = await db.getUserByEmailType(user);
-        
+        //Check if user exist
+        if (storedUser == ""){
+            return res.status(401).end();
+        }
         //Check if password is the same as stored
         const validPassword = await bcrypt.compare(user.password,storedUser[0].password);
         if (validPassword){
