@@ -120,4 +120,16 @@ router.delete('/api/testDescriptor/:id', async (req,res)=>{
 
 }); 
 
+//DELETE
+router.delete('/testDescriptor/deleteAll', async (req,res)=>{
+    try{
+        //Delete All Tests
+        await db.deleteAllTests();
+        return res.status(204).end();
+    }
+    catch(err){
+        res.status(503).end();
+    }
+
+});
 module.exports = router

@@ -117,5 +117,18 @@ class TestResultDAO{
             })
         })
     }
+
+    deleteAllResults(){
+        return new Promise((resolve, reject) => {
+            const sql = 'DELETE FROM RESULTS'
+            this.db.run(sql, (err) => {
+                if(err){
+                    reject(err);
+                    return;
+                }
+                resolve(true)
+            })
+        })
+    }
 }
 module.exports = TestResultDAO;

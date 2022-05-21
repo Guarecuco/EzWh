@@ -120,4 +120,17 @@ router.delete('/api/items/:id', async (req,res)=>{
 
 }); 
 
+//DELETE
+router.delete('/items/deleteAll', async (req,res)=>{
+    try{
+        //Delete All Tests
+        await db.deleteAllItems();
+        return res.status(204).end();
+    }
+    catch(err){
+        res.status(503).end();
+    }
+
+});
+
 module.exports = router

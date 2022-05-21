@@ -119,5 +119,18 @@ class ItemDAO{
             })
         })
     }
+
+    deleteAllItems(){
+        return new Promise((resolve, reject) => {
+            const sql = 'DELETE FROM ITEMS'
+            this.db.run(sql, (err) => {
+                if(err){
+                    reject(err);
+                    return;
+                }
+                resolve(true)
+            })
+        })
+    }
 }
 module.exports = ItemDAO;

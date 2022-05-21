@@ -121,4 +121,17 @@ router.delete('/api/skuitems/:rfid/testResult/:id', async (req,res)=>{
 
 }); 
 
+//DELETE
+router.delete('/skuItems/deleteAll', async (req,res)=>{
+    try{
+        //Delete All Tests
+        await db.deleteAllResults();
+        return res.status(204).end();
+    }
+    catch(err){
+        res.status(503).end();
+    }
+
+});
+
 module.exports = router
