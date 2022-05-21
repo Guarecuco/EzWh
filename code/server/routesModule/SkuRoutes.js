@@ -143,4 +143,16 @@ router.delete('/api/skus/:id', async (req,res)=>{
   }
 });
 
+//for testing only
+router.delete('/api/skus/', async (req,res)=>{
+  try{
+    await db.newTableSku();
+    await db.deleteAllSkus();
+    return res.status(204).end();
+  }
+  catch(err){
+    res.status(503).send(err);
+  }
+});
+
 module.exports = router

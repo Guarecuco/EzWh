@@ -163,6 +163,20 @@ class SkuDAO{
             })
         })
     }
+
+    //for testing only
+    deleteAllSkus(){
+        return new Promise((resolve, reject) => {
+            const sql = `DELETE FROM SKU`
+            this.db.run(sql, [], (err) => {
+                if(err){
+                    reject(err);
+                    return;
+                }
+                resolve(this.lastID)
+            })
+        })
+    }
 }
 
 module.exports = SkuDAO;
