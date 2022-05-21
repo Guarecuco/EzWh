@@ -213,6 +213,19 @@ class RestockOrderDAO{
         })
     }
 
+    dropRestockOrders(){
+        return new Promise((resolve, reject) => {
+            const sql = 'DROP TABLE RESTOCK_ORDERS'
+            this.db.run(sql, (err) => {
+                if(err){
+                    reject(err);
+                    return;
+                }
+                resolve(true)
+            })
+        })
+    }
+
 }
 
 module.exports = RestockOrderDAO;

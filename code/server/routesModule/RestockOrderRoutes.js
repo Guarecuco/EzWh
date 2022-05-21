@@ -91,7 +91,7 @@ router.post('/api/restockOrder', async (req,res)=>{
         await db.newTableRestockOrders();
         const lastID = await db.addRestockOrder(order);
         res.status(201);
-        res.json(lastID);
+        //res.json(lastID);
         return res.end();
 
     
@@ -223,6 +223,20 @@ router.delete('/restockOrders/deleteRestockOrders', async (req,res)=>{
     }
 
 });
+
+//DELETE /restockOrders/deletetable
+router.delete('/restockOrders/deletetable', async (req,res)=>{
+    try{
+        //Delete All Restock Order
+        await db.dropRestockOrders();
+        return res.status(204).end();
+    }
+    catch(err){
+        res.status(503).end();
+    }
+
+});
+
 
 
 module.exports = router
