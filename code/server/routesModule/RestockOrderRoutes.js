@@ -89,9 +89,10 @@ router.post('/api/restockOrder', async (req,res)=>{
         }
 
         await db.newTableRestockOrders();
-
-        await db.addRestockOrder(order);
-        return res.status(201).end(); 
+        const lastID = await db.addRestockOrder(order);
+        res.status(201);
+        res.json(lastID);
+        return res.end();
 
     
     }catch(err){

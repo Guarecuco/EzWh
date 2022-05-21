@@ -212,7 +212,7 @@ class RestockOrderDAO{
             })
         })
     }
-    
+
 }
 
 module.exports = RestockOrderDAO;

@@ -98,6 +98,18 @@ router.delete('/api/returnOrder/:id', async (req,res)=>{
     }
 });
 
+//DELETE /returnOrders/deleteReturnOrders
+router.delete('/returnOrders/deleteReturnOrders', async (req,res)=>{
+    try{
+        //Delete All Return Orders
+        await db.deleteReturnOrderData();
+        return res.status(204).end();
+    }
+    catch(err){
+        res.status(503).end();
+    }
+
+});
 
 
 
