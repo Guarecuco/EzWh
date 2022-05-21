@@ -105,9 +105,19 @@ class ReturnOrderDAO{
         })
     }
 
-    
 
-    
+    deleteReturnOrderData(){
+        return new Promise((resolve, reject) => {
+            const sql = 'DELETE FROM RETURN_ORDERS'
+            this.db.run(sql, (err) => {
+                if(err){
+                    reject(err);
+                    return;
+                }
+                resolve(true)
+            })
+        })
+    }
 }
 
 module.exports = ReturnOrderDAO;
