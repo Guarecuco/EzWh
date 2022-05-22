@@ -22,7 +22,7 @@ function deleteAllData(expectedHTTPStatus){
     })
 }
 
-function addTest(expectedHTTPStatus, order){
+function addTest(expectedHTTPStatus, item){
     it('Adding a new test', function (done){
         if (item !== undefined && true ){ //TODO the if condition
             //let order = ...
@@ -45,7 +45,7 @@ function addTest(expectedHTTPStatus, order){
 
 describe('test Item apis', () => {
     deleteAllData(204);
-    addTest(201, order);
+    addTest(201, item);
     addTest(422);
 })
 
