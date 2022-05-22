@@ -52,7 +52,7 @@ function addItem(expectedHTTPStatus, item){
 }
 
 //PUT
-function modTest(expectedHTTPStatus, id, modification){
+function modItem(expectedHTTPStatus, id, modification){
     it('Modifying an item', function (done){
         agent.put('/api/item/' + id)
                 .send(modification)
@@ -80,15 +80,15 @@ describe('test Items apis', () => {
     }
 
     //deleteAllData(204);
-    dropItemssTable(204);
-    addTest(201, test);
-    addTest(422);
+    dropItemsTable(204);
+    addItem(201, item);
+    addItem(422);
 
-    getAllItems(200, test);
+    getAllItems(200, item);
 
-    getTest(200, 1, test);
+    getItem(200, 1, item);
     
-    modTest(200, 1, modbody)
+    modItem(200, 1, modbody)
     
 })
 

@@ -90,14 +90,16 @@ describe('test testDescriptor apis', () => {
 
     addTest(201, test);
     addTest(422, test); //already existing
-    addTest(201, testfail422);
+    addTest(422, testfail422);
     addTest(422);
 
     getAllTests(200, test);
 
     getTest(200, 1, test);
+    getTest(404, 5); //test not exist
     
     modTest(200, 1, modbody)
+    modTest(200, 1, modbody) //same as before
     
 })
 
