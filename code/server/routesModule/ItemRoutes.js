@@ -49,19 +49,19 @@ router.get('/api/items', async (req,res)=>{
       }
       let newItem = req.body;
         //Check if any field is empty
-      if (!( newItem && newItem.description && newItem.price && newItem.price>=0 && newItem.SKUId && newItem.supplierId )) {
-        return res.status(422).json({error: `Invalid item data`});
-      }
-
-      await db.newTableItems();
-      //Check if sku exist
-        
-      let count = await dbSKU.countSku(test.nid);
-      if (count == 0){
-              
-      return res.status(422).json({error: `SKU not exist`});
-      }
-        await db.addItem(newItem);
+        if (!( newItem && newItem.description && newItem.price && newItem.price>=0 && newItem.SKUId && newItem.supplierId )) {
+            return res.status(422).json({error: `Invalid item data`});
+          }
+    
+          await db.newTableItems();
+          //Check if sku exist
+            
+          let count = await dbSKU.countSku(newItem.SKUId);
+          if (count == 0){
+                  
+            return res.status(422).json({error: `SKU not exist`});
+            }
+              await db.addItem(newItem);
         return res.status(201).end(); 
     
     }
