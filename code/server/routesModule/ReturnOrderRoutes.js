@@ -63,10 +63,11 @@ router.post('/api/returnOrder', async (req,res)=>{
         await db.newTableReturnOrders();
         await db.addReturnOrder(order);
 
-        for (let item of order.products){
+
+        for (let item of order.products) {
             await skuitemdb.setAvailabilityByRFID(item.RFID, 0)
             const sku = await skudb.getSku(item.SKUId)
-            if (sku.length > 0){
+            if (sku.length > 0) {
                 const newQty = sku[0].availableQuantity === 0 ? 0 : sku[0].availableQuantity - 1
                 await skudb.setAvailableQuantityById(item.SKUId, newQty)
                 // increase Position ???
@@ -98,11 +99,11 @@ router.delete('/api/returnOrder/:id', async (req,res)=>{
     }
 });
 
-//DELETE /returnOrders/deleteReturnOrders
-router.delete('/returnOrders/deleteReturnOrders', async (req,res)=>{
+//DELETE /returnOrders/deletetable
+router.delete('/returnOrders/deletetable', async (req,res)=>{
     try{
-        //Delete All Return Orders
-        await db.deleteReturnOrderData();
+        //Delete return orders table
+        await db.dropReturnOrders();
         return res.status(204).end();
     }
     catch(err){

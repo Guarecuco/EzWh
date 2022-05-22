@@ -106,9 +106,9 @@ class ReturnOrderDAO{
     }
 
 
-    deleteReturnOrderData(){
+    dropReturnOrders(){
         return new Promise((resolve, reject) => {
-            const sql = 'DELETE FROM RETURN_ORDERS'
+            const sql = 'DROP TABLE IF EXISTS RETURN_ORDERS'
             this.db.run(sql, (err) => {
                 if(err){
                     reject(err);

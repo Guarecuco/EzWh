@@ -19,7 +19,7 @@ function addRestockOrder(expectedHTTPStatus, order){
 }
 
 function dropRestockOrders(expectedHTTPStatus){
-    it('Deleting data', function ( done){
+    it('Dropping table', function ( done){
         agent.delete('/restockOrders/deletetable')
             .then(function (res){
                 res.should.have.status(expectedHTTPStatus);
@@ -40,7 +40,7 @@ function getAllRestockOrders(expectedHTTPStatus, expectedJSON){
 }
 
 function getAllRestockOrdersIssued(expectedHTTPStatus, expectedJSON){
-    it('Get all issued restock order', function (done){
+    it('Get all issued restock orders', function (done){
         agent.get('/api/restockOrdersIssued')
             .then(function (res) {
                 res.should.have.status(expectedHTTPStatus);
@@ -227,6 +227,8 @@ describe('test restock order apis', () => {
     //DELETE /api/restockOrder/:id
     deleteRestockOrder(204, 1) //ok
     deleteRestockOrder(422, 'aa') //validation of id failed
+    deleteRestockOrder(422, undefined) //validation of id failed
+
 
     //GET /api/restockOrders
     order = {
