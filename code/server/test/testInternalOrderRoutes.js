@@ -11,9 +11,9 @@ const agent = chai.request.agent(app);
 
 
 // Delete all user NOT official API
-function dropUsers(expectedHTTPStatus){
-    it('Deleting all users (Not official API)', function ( done){
-        agent.delete('/api/users')
+function dropInternalOrders(expectedHTTPStatus){
+    it('Deleting all internal orders (Not official API)', function ( done){
+        agent.delete('/api/internalOrdersAll')
             .then(function (res){
                 res.should.have.status(expectedHTTPStatus);
                 done();
@@ -48,18 +48,16 @@ function getUsers(expectedHTTPStatus, expectedJSON){
     })
 }
 
-//POST /api/newUser
-function newUser(expectedHTTPStatus, username, name, surname, password, type){
-    it('POST /api/newUser', function (done){
-        let user = {
-            username: username,
-            name: name,
-            surname: surname,
-            password: password,
-            type: type
+//POST /api/internalOrders
+function newInternalOrder(expectedHTTPStatus, issueDate, products, customerId){
+    it('POST /api/internalOrders', function (done){
+        let order = {
+            issueDate: issueDate,
+            products: products,
+            customerId: customerId
         }
-        agent.post('/api/newUser')
-            .send(user)    
+        agent.post('/api/internalOrders')
+            .send(order)    
             .then(function (res){
                 res.should.have.status(expectedHTTPStatus);
                 done();
@@ -214,10 +212,19 @@ function deleteUser(expectedHTTPStatus, username,type){
 //*********************************************************************************************** */
 //Call to testing functions
 
-describe('Test user APIs', () => {
-    dropUsers(204);
+describe('Test internalOrder APIs', () => {
+    dropInternalOrders(204);
 
-    newUser(201,"user1@ezwh.com", "Milton","Carman","testpassword","customer");    //New
+    newInternalOrder(201,"2021/11/29 09:33", [{"SKUId":1,"description":"ACME Laptop","price":1000,"qty":3},
+    {"SKUId":2,"description":"ACME Mouse","price":50.99,"qty":3}], 1);    //New order with 2 produtcs
+    newInternalOrder(201,"2022/05/10 09:33", [{"SKUId":50,"description":"ACME phone","price":800,"qty":3}], 1);    //New order with 1 product
+    newInternalOrder(422,"2022/05/10 09:33", "", 1);    //Empty product array
+    newInternalOrder(422,"05/10/2022 09:33", "", 1);    //Wrong date format
+    newInternalOrder(422,"2022/05/10 09:33", [{"SKUId":"abc","description":"ACME phone","price":800,"qty":3}], 1);    //Wrong skuid - not an integer
+    newInternalOrder(422,"2022/05/10 09:33", [{"SKUId":40,"description":"ACME phone","price":800,"qty":3.5}], 1);   //Wrong qty - not an integer
+    newInternalOrder(422,"2022/05/10 09:33", [{"SKUId":40,"description":"ACME phone","price":800,"qty":3}], 1.3);    //Wrong customerID - not an integer
+    newInternalOrder(422,"2022/05/10 09:33", [{"SKUId":40,"description":"ACME phone","price":"price","qty":3}], 1);    //Wrong price, not number
+/*    
     newUser(201,"supplier1@ezwh.com", "Margaret","Ford","testpassword","supplier");    //New supplier
     newUser(201,"supplier2@ezwh.com", "Ferne","Hayter","testpassword","supplier");    //New supplier
     newUser(201,"qualityEmployee1@ezwh.com", "Ardath","Hancock","testpassword","qualityEmployee");  //New qualityEmployee
@@ -344,4 +351,5 @@ describe('Test user APIs', () => {
     deleteUser(422,"qualityEmployee1@ezwh.com")                         //Missing type
     
     //deleteAllUsers(204);
+    */
 })

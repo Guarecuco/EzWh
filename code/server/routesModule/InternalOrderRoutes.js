@@ -6,7 +6,7 @@ const router = express.Router()
 router.use(express.json());
 
 //Regular expression to check date. Format : yyyy/mm/dd hh:mm
-const date_regex = /^(19|20)\d{2}\/([1-9]|1[0-2])\/([1-9]|1\d|2\d|3[01]) (0[0-9]|1[0-9]|2[0-3]):(0[0-9]|1[0-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9]|)$/;
+const date_regex = /^(19|20)\d{2}\/(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01]) (0[0-9]|1[0-9]|2[0-3]):(0[0-9]|1[0-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9]|)$/;
 
 //GET /api/internalOrders
 router.get('/api/internalOrders', async (req,res)=>{
@@ -29,7 +29,7 @@ router.get('/api/internalOrders', async (req,res)=>{
         return res.status(200).json(orders);
     }
     catch(err){
-        res.status(500).end();
+        res.status(500).json({error: `generic error`});
     } 
 });
 
@@ -46,7 +46,7 @@ router.get('/api/internalOrdersIssued', async (req,res)=>{
         return res.status(200).json(orders);
     }
     catch(err){
-        res.status(500).end();
+        res.status(500).json({error: `generic error`});
     }
 }); 
 
@@ -64,7 +64,7 @@ router.get('/api/internalOrdersAccepted', async (req,res)=>{
         return res.status(200).json(orders);
     }
     catch(err){
-        res.status(500).end();
+        res.status(500).json({error: `generic error`});
     }
   
 }); 
@@ -73,13 +73,17 @@ router.get('/api/internalOrdersAccepted', async (req,res)=>{
 //GET /api/internalOrders/:id
 router.get('/api/internalOrders/:id', async (req,res)=>{
     try{
+        //Check if id is not null
+        if (req.params.id === undefined || req.params.id == "") {
+            return res.status(422).json({error: `validation of id failed`});
+        }
         var order = {
             orderId : req.params.id
         }
         //Check if orderId exist
         let count = await db.checkIfOrderExists(order);
         if (count == 0){
-            return res.status(404).end();
+            return res.status(404).json({error: `no internal order associated to id`});
         }
 
         //Get order using orderId
@@ -98,7 +102,7 @@ router.get('/api/internalOrders/:id', async (req,res)=>{
         return res.status(200).json(order[0]);
     }
     catch(err){
-        res.status(500).end();
+        res.status(500).json({error: `generic error`});
     } 
 });
 
@@ -107,14 +111,14 @@ router.post('/api/internalOrders', async (req,res)=>{
     try{
         //Check if body is empty
         if (Object.keys(req.body).length === 0) {
-            return res.status(422).json({error: `Empty body request`});
+            return res.status(422).json({error: `validation of request body failed`});
         }
         let order = req.body;
         //Check if any field is empty
         if (order === undefined || order.issueDate === undefined || order.products === undefined ||  
             order.customerId === undefined || order.issueDate == '' || order.products == '' || 
             order.customerId == '' ) {
-                return res.status(422).json({error: `Invalid data`});
+                return res.status(422).json({error: `validation of request body failed`});
         }
 
         for (var i=0; i<order.products.length; i++){
@@ -123,21 +127,22 @@ router.post('/api/internalOrders', async (req,res)=>{
                 order.products[i].price === undefined || order.products[i].qty === undefined ||
                 order.products[i].SKUId == '' || order.products[i].description == '' || 
                 order.products[i].price == '' || order.products[i].qty == '' ) {
-                    return res.status(422).json({error: `Empty product field`});
+                    return res.status(422).json({error: `validation of request body failed`});
             }
-            //Check if product's SKUI and qty are integer
-            if(!Number.isInteger(order.products[i].SKUId) || !Number.isInteger(order.products[i].qty)){
-                return res.status(422).json({error: `Invalid data`});
+            //Check if product's SKUI and qty and customerid are integer
+            if(!Number.isInteger(order.products[i].SKUId) || !Number.isInteger(order.products[i].qty) ||
+            !Number.isInteger(order.customerId)){
+                return res.status(422).json({error: `validation of request body failed`});
             }
             //Check if price is number
             if(isNaN(order.products[i].price)){
-                return res.status(422).json({error: `Price is not a number`});
+                return res.status(422).json({error: `validation of request body failed`});
             }
         }
 
         //Check date format
         if(!(date_regex.test(order.issueDate))){
-            return res.status(422).json({error: `Invalid date`});
+            return res.status(422).json({error: `validation of request body failed`});
         }
 
         //Creata table if doesn't exist
@@ -157,10 +162,10 @@ router.post('/api/internalOrders', async (req,res)=>{
             //Store products in DB
             await db.storeInternalOrderProducts(product);
         }
-        return res.status(200).end();
+        return res.status(201).end();
     }
     catch(err){
-        res.status(500).end();
+        res.status(503).json({error: `generic error`});
     }
 }); 
 
@@ -169,38 +174,42 @@ router.put('/api/internalOrders/:id', async (req,res)=>{
     try{
          //Check if body is empty
         if (Object.keys(req.body).length === 0) {
-            return res.status(422).json({error: `Empty body request`});
-        }    
+            return res.status(422).json({error: `validation of request body or of id failed`});
+        }   
+        //Check if id is not null
+        if (req.params.id === undefined || req.params.id == "") {
+            return res.status(422).json({error: `validation of request body or of id failed`});
+        } 
         let order = req.body;
         order.orderId = req.params.id;
 
         //Check if state is valid
         if (order.newState !== 'ISSUED' && order.newState !== 'ACCEPTED' && order.newState !== 'REFUSED' && 
             order.newState !== 'CANCELED' && order.newState !== 'COMPLETED') {
-                return res.status(422).json({error: `Invalid state`});
+                return res.status(422).json({error: `validation of request body or of id failed`});
         }
 
         //Check if orderId exist
         let count = await db.checkIfOrderExists(order);
         if (count == 0){
-            return res.status(404).end();
+            return res.status(404).json({error: `no internal order associated to id`});
         }
 
         if (order.newState == 'COMPLETED'){
             //Check product array is not empty
             if(order.products === undefined || order.products == ''){
-                return res.status(422).json({error: `Invalid body request`});  
+                return res.status(422).json({error: `validation of request body or of id failed`});  
             }
 
             for (var i=0; i<order.products.length; i++){
                 //Check product array is not empty
                 if (order.products[i].SKUId === undefined || order.products[i].RFID === undefined || 
                     order.products[i].SKUId == '' || order.products[i].RFID == '' ) {
-                        return res.status(422).json({error: `Empty product field`});
+                        return res.status(422).json({error: `validation of request body or of id failed`});
                 }
                 //Check if product's SKUI is integer
                 if(!Number.isInteger(order.products[i].SKUId)){
-                    return res.status(422).json({error: `Invalid data`});
+                    return res.status(422).json({error: `validation of request body or of id failed`});
                 }
             }
         }
@@ -223,13 +232,17 @@ router.put('/api/internalOrders/:id', async (req,res)=>{
         return res.status(200).end();
     }
     catch(err){
-        res.status(503).end();
+        res.status(503).json({error: `generic error`});
     }
 }); 
 
 //DELETE /api/internalOrders/:id
 router.delete('/api/internalOrders/:id', async (req,res)=>{
     try{ 
+        //Check if id is not null
+        if (req.params.id === undefined || req.params.id == "") {
+            return res.status(422).json({error: `validation of id failed`});
+        }
         let order = {
             orderId : req.params.id
         }
@@ -238,17 +251,31 @@ router.delete('/api/internalOrders/:id', async (req,res)=>{
         let count = await db.checkIfOrderExists(order);
         console.log(count);
         if (count == 0){
-            return res.status(422).end();
+            return res.status(422).json({error: `validation of id failed`});
         }
 
         //Delete
         await db.deleteInternalOrder(order); 
         await db.deleteInternalOrderProducts(order);     
-        return res.status(200).end();
+        return res.status(204).end();
     }
     catch(err){
-        res.status(503).end();
+        res.status(503).json({error: `generic error`});
     }
 }); 
+
+//DELETE/api/internalOrders
+//Drop internal order tables, not part of official APIs
+router.delete('/api/internalOrdersAll', async (req,res)=>{
+    try{
+        await db.dropInternalOrders();
+        await db.dropInternalOrdersProducts();
+        return res.status(204).end();
+    }
+    catch(err){
+        res.status(503).json({error: `generic error`});
+    }
+
+});
 
 module.exports = router;

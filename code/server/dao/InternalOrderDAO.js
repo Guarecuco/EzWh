@@ -126,6 +126,32 @@ class InternalOrderDAO{
         })
     }
 
+    dropInternalOrders(){
+        return new Promise((resolve, reject) => {
+            const sql = 'DROP TABLE IF EXISTS INTERNAL_ORDERS'
+            this.db.run(sql, [] , (err) => {
+                if(err){
+                    reject(err);
+                    return;
+                }
+                resolve(this.lastID)
+            })
+        })
+    }
+
+    dropInternalOrdersProducts(){
+        return new Promise((resolve, reject) => {
+            const sql = 'DROP TABLE IF EXISTS INTERNAL_ORDERS_PRODUCTS'
+            this.db.run(sql, [] , (err) => {
+                if(err){
+                    reject(err);
+                    return;
+                }
+                resolve(this.lastID)
+            })
+        })
+    }
+
     getInternalOrders() {
         return new Promise((resolve, reject) => {
             const sql = 'SELECT * FROM INTERNAL_ORDERS'
