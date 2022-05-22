@@ -22,10 +22,11 @@ function getAllResultsRFID(expectedHTTPStatus, rfid, expectedJSON){
     it('Get a result', function (done){
         agent.get('/api/skuitems/'+rfid+'/testResults')
             .then(function (res){
-                console.log(res.text);
-                console.log('['+JSON.stringify(expectedJSON)+']')
                 res.should.have.status(expectedHTTPStatus);
                 if (expectedHTTPStatus === 200)
+                    if(JSON.stringify(expectedJSON)==='[]')
+                    res.text.should.equal(JSON.stringify(expectedJSON));
+                    else
                     res.text.should.equal('['+JSON.stringify(expectedJSON)+']');
                 done()
             })
@@ -102,9 +103,9 @@ describe('test testResults apis', () => {
     addResult(422);
 
     getAllResultsRFID(200, '12345678901234567890123456789016', output);
-    getAllResultsRFID(200, '76543456765432345654345654', NaN);
+    getAllResultsRFID(200, '76543456765432345654345654', []);
     
     modResult(200,"12345678901234567890123456789016", 1, modbody);
-    modResult(404,"12345678901234567890123456789016", 1, {});
+    modResult(404,"12345678901234567890123456789016", 1, modbodyfail);
     
 })
