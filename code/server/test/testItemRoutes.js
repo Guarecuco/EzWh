@@ -67,16 +67,17 @@ function modItem(expectedHTTPStatus, id, modification){
 describe('test Items apis', () => {
 
     let item = {
-        id: 1,
-        name: 'rig everything',
-        procedureDescription:  'What a beautiful test',
-        idSKU: 1
+        id:1,
+        description : "a new item",
+        price : 10.99,
+        SKUId : 1,
+        supplierId : 2
     }
    
     let modbody={
-        name: 'rig something',
-        procedureDescription:  'What a beautiful test',
-        idSKU: 1
+        newDescription : "a new sku",
+        newPrice : 20
+        
     }
 
     //deleteAllData(204);
