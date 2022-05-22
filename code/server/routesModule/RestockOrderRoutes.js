@@ -58,6 +58,9 @@ router.get('/api/restockOrders/:id/returnItems', async (req,res)=>{
         if (order === undefined)
             return res.status(404).json({error: `No restock order associated to id`})
 
+        if (order.state !== 'COMPLETEDRETURN')
+            return res.status(422).json({error: `Unprocessable Entity`})
+
         let returnable = []
 
         for (let item of order.skuItems){
@@ -91,7 +94,6 @@ router.post('/api/restockOrder', async (req,res)=>{
         await db.newTableRestockOrders();
         const lastID = await db.addRestockOrder(order);
         res.status(201);
-        //res.json(lastID);
         return res.end();
 
     
@@ -112,7 +114,10 @@ router.put('/api/restockOrder/:id', async (req,res)=> {
         if(!Number.isInteger(+req.params.id))
             return res.status(422).json({error: `Provided ID is invalid`});
 
+        const allowedStates = ['ISSUED', 'DELIVERY', 'DELIVERED', 'TESTED', 'COMPLETEDRETURN', 'COMPLETED']
         const newState = req.body.newState
+        if (allowedStates.find((e) => e === newState) === undefined)
+            return res.status(422).json({error: `Provided state is not valid`});
 
         let count = await db.checkIfStored(id);
         if (count == 0) {
@@ -147,7 +152,7 @@ router.put('/api/restockOrder/:id/skuItems', async (req,res)=> {
             return res.status(422).json({error: `Order state is not DELIVERED`});
 
         let finalSkuItems = []
-        if (order.skuItems.length === 0 || order.skuItems === undefined )
+        if (!order.skuItems || order.skuItems.length === 0)
             finalSkuItems = newSkuItems
         else{
             finalSkuItems = [...newSkuItems]
@@ -156,7 +161,7 @@ router.put('/api/restockOrder/:id/skuItems', async (req,res)=> {
             }
         }
         //Update Restock Order
-        await db.updateRestockOrderSKUItems(finalSkuItems, order.id);
+        await db.updateRestockOrderSKUItems(finalSkuItems, id);
         return res.status(200).end();
     } catch (err) {
         res.status(503).end();
@@ -181,13 +186,15 @@ router.put('/api/restockOrder/:id/transportNote', async (req,res)=> {
         if (order === undefined) {
             return res.status(404).json({error: `No restock order associated to id`});
         }
+
         if (order.state !== 'DELIVERY')
             return res.status(422).json({error: `Order state is not DELIVERY`});
+
         if(Date.parse(deliveryDate) < Date.parse(order.issueDate))
             return res.status(422).json({error: `Delivery date is before issue date`});
 
         //Update Restock Order
-        await db.updateRestockOrderTransportNote(transportNote, order.id);
+        await db.updateRestockOrderTransportNote(transportNote, id);
         return res.status(200).end();
     } catch (err) {
         res.status(503).end();

@@ -34,7 +34,6 @@ class RestockOrderDAO{
                         issueDate: r.ISSUE_DATE,
                         state: r.STATE,
                         supplierId: r.SUPPLIER_ID,
-                        products: JSON.parse(r.PRODUCTS)
                         }
                         let skuItems = []
                         if (order.state !== 'ISSUED')
@@ -45,6 +44,7 @@ class RestockOrderDAO{
                         else{
                             skuItems = JSON.parse(r.SKU_ITEMS)
                         }
+                        order.products = JSON.parse(r.PRODUCTS)
                         order.skuItems = skuItems
                         return order
 
@@ -162,9 +162,9 @@ class RestockOrderDAO{
 
     updateRestockOrderSKUItems(newSKUitems, id){
         return new Promise((resolve, reject) => {
-            const sql = 'UPDATE RESTOCK_ORDERS SET SKU_ITEMS = ? WHERE ID = ?'
-            this.db.run(sql, [JSON.stringify(newSKUitems), id] , async (err) => {
-                console.log(id)
+            const sql = 'UPDATE RESTOCK_ORDERS SET SKU_ITEMS = ? WHERE ID == ?'
+            newSKUitems = JSON.stringify(newSKUitems)
+            this.db.run(sql, [newSKUitems, id] , (err) => {
                 if (err) {
                     reject(err);
                     return;

@@ -12,7 +12,7 @@ router.get('/api/testDescriptors', async (req,res)=>{
     
     try{
         const tests = await db.getTestsDescriptors();
-        
+      
         return res.status(200).json(tests);
         
     }
@@ -120,11 +120,23 @@ router.delete('/api/testDescriptor/:id', async (req,res)=>{
 
 }); 
 
-//DELETE
+
 router.delete('/testDescriptor/deleteAll', async (req,res)=>{
     try{
         //Delete All Tests
         await db.deleteAllTests();
+        return res.status(204).end();
+    }
+    catch(err){
+        res.status(503).end();
+    }
+
+});
+
+//droptable
+router.delete('/testDescriptor/dropTable', async (req,res)=>{
+    try{
+        await db.dropTestsTable();
         return res.status(204).end();
     }
     catch(err){
