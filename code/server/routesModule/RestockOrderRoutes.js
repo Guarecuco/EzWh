@@ -58,6 +58,9 @@ router.get('/api/restockOrders/:id/returnItems', async (req,res)=>{
         if (order === undefined)
             return res.status(404).json({error: `No restock order associated to id`})
 
+        if (order.state !== 'COMPLETEDRETURN')
+            return res.status(422).json({error: `Unprocessable Entity`})
+
         let returnable = []
 
         for (let item of order.skuItems){
@@ -191,7 +194,7 @@ router.put('/api/restockOrder/:id/transportNote', async (req,res)=> {
             return res.status(422).json({error: `Delivery date is before issue date`});
 
         //Update Restock Order
-        await db.updateRestockOrderTransportNote(transportNote, order.id);
+        await db.updateRestockOrderTransportNote(transportNote, id);
         return res.status(200).end();
     } catch (err) {
         res.status(503).end();

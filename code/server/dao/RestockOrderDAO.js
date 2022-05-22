@@ -34,7 +34,6 @@ class RestockOrderDAO{
                         issueDate: r.ISSUE_DATE,
                         state: r.STATE,
                         supplierId: r.SUPPLIER_ID,
-                        products: JSON.parse(r.PRODUCTS)
                         }
                         let skuItems = []
                         if (order.state !== 'ISSUED')
@@ -45,6 +44,7 @@ class RestockOrderDAO{
                         else{
                             skuItems = JSON.parse(r.SKU_ITEMS)
                         }
+                        order.products = JSON.parse(r.PRODUCTS)
                         order.skuItems = skuItems
                         return order
 
