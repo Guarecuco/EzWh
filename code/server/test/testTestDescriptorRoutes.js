@@ -6,17 +6,6 @@ const app = require('../server');
 const agent = chai.request.agent(app);
 
 
-
-function deleteAllData(expectedHTTPStatus){
-    it('Deleting data', function ( done){
-        agent.delete('/testDescriptor/deleteAll')
-            .then(function (res){
-                res.should.have.status(expectedHTTPStatus);
-                done();
-            })
-    })
-}
-
 function dropTestsTable(expectedHTTPStatus){
     it('Dropping table', function ( done){
         agent.delete('/testDescriptor/dropTable')
@@ -32,9 +21,6 @@ function getAllTests(expectedHTTPStatus, expectedJSON){
     it('Get a all tests', function (done){
         agent.get('/api/testDescriptors')
             .then(function (res) {
-                console.log('['+JSON.stringify(expectedJSON)+']')
-                console.log(res.text)
-                
                 res.should.have.status(expectedHTTPStatus);
                 res.text.should.equal('['+JSON.stringify(expectedJSON)+']');
                 done();
@@ -66,17 +52,14 @@ function addTest(expectedHTTPStatus, test){
 }
 
 //PUT
-function modTest(expectedHTTPStatus, test, expectedJSON){
+function modTest(expectedHTTPStatus, id, modification){
     it('Modifying a test', function (done){
         agent.put('/api/testDescriptor/' + id)
-                .send(test)
+                .send(modification)
                 .then(function (res){
-                    console.log('['+JSON.stringify(expectedJSON)+']')
-                    console.log(res.text)
-                
+                    
                     res.should.have.status(expectedHTTPStatus);
-                    if (expectedHTTPStatus === 200)
-                        res.text.should.equal(JSON.stringify(expectedJSON));
+                    
                     done()
                 })
     })
@@ -89,12 +72,13 @@ describe('test testDescriptor apis', () => {
         procedureDescription:  'What a beautiful test',
         idSKU: 1
     }
-    let modification = {
-        id: 1,
+   
+    let modbody={
         name: 'rig something',
         procedureDescription:  'What a beautiful test',
         idSKU: 1
     }
+
     //deleteAllData(204);
     dropTestsTable(204);
     addTest(201, test);
@@ -104,7 +88,7 @@ describe('test testDescriptor apis', () => {
 
     getTest(200, 1, test);
     
-    modTest(200, 1, modification)
+    modTest(200, 1, modbody)
     
 })
 
