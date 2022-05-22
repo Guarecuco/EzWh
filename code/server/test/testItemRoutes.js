@@ -5,16 +5,10 @@ chai.should();
 const app = require('../server');
 const agent = chai.request.agent(app);
 
-let item = {
-    description: 'paper',
-    price: 10.99,
-    skuid:  1,
-    supplierid: 2
-}
 
-function deleteAllData(expectedHTTPStatus){
-    it('Deleting data', function ( done){
-        agent.delete('/items/deleteAll')
+function dropItemsTable(expectedHTTPStatus){
+    it('Dropping table', function ( done){
+        agent.delete('/items/dropTable')
             .then(function (res){
                 res.should.have.status(expectedHTTPStatus);
                 done();
@@ -22,31 +16,80 @@ function deleteAllData(expectedHTTPStatus){
     })
 }
 
-function addTest(expectedHTTPStatus, item){
-    it('Adding a new test', function (done){
-        if (item !== undefined && true ){ //TODO the if condition
-            //let order = ...
-            agent.post('/api/item')
-                .send(item)
-                .then(function (res){
-                    res.should.have.status(expectedHTTPStatus);
-                    //res.body.id.should.equal(order.id);
-                    done()
-                })
-        }else{
-            agent.post('/api/item')
-                .then(function (res){
-                    res.should.have.status(expectedHTTPStatus);
-                    done()
-                })
-        }
+//GET
+function getAllItems(expectedHTTPStatus, expectedJSON){
+    it('Get a all items', function (done){
+        agent.get('/api/items')
+            .then(function (res) {
+                res.should.have.status(expectedHTTPStatus);
+                res.text.should.equal('['+JSON.stringify(expectedJSON)+']');
+                done();
+            })
     })
 }
 
-describe('test Item apis', () => {
-    deleteAllData(204);
-    addTest(201, item);
+function getItem(expectedHTTPStatus, id, expectedJSON){
+    it('Get an item', function (done){
+        agent.get('/api/items/' + id)
+            .then(function (res) {
+                res.should.have.status(expectedHTTPStatus);
+                if (expectedHTTPStatus === 200)
+                    res.text.should.equal(JSON.stringify(expectedJSON));
+                done();
+            })
+    })
+}
+//POST
+function addItem(expectedHTTPStatus, item){
+    it('Adding a new item', function (done){
+        agent.post('/api/item')
+                .send(item)
+                .then(function (res){
+                    res.should.have.status(expectedHTTPStatus);
+                    done()
+                })
+    })
+}
+
+//PUT
+function modTest(expectedHTTPStatus, id, modification){
+    it('Modifying an item', function (done){
+        agent.put('/api/item/' + id)
+                .send(modification)
+                .then(function (res){
+                    
+                    res.should.have.status(expectedHTTPStatus);
+                    
+                    done()
+                })
+    })
+}
+describe('test Items apis', () => {
+
+    let item = {
+        id: 1,
+        name: 'rig everything',
+        procedureDescription:  'What a beautiful test',
+        idSKU: 1
+    }
+   
+    let modbody={
+        name: 'rig something',
+        procedureDescription:  'What a beautiful test',
+        idSKU: 1
+    }
+
+    //deleteAllData(204);
+    dropItemssTable(204);
+    addTest(201, test);
     addTest(422);
+
+    getAllItems(200, test);
+
+    getTest(200, 1, test);
+    
+    modTest(200, 1, modbody)
+    
 })
 
 
