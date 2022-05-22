@@ -32,7 +32,7 @@ class TestResultDAO{
                         id: r.ID,
                         idTestDescriptor: r.IDTESTDESCRIPTOR,
                         Date: r.DATA,
-                        Result: r.RESULT = 0 ? false : true
+                        Result: (r.RESULT === 0 ? false : true)
                     }
                     
                 ));
@@ -54,7 +54,7 @@ class TestResultDAO{
                         id: r.ID,
                         idTestDescriptor: r.IDTESTDESCRIPTOR,
                         Date: r.DATA,
-                        Result: r.RESULT
+                        Result: (r.RESULT === 0 ? false : true)
                     }
                     
                 ));
@@ -121,6 +121,19 @@ class TestResultDAO{
     deleteAllResults(){
         return new Promise((resolve, reject) => {
             const sql = 'DELETE FROM RESULTS'
+            this.db.run(sql, (err) => {
+                if(err){
+                    reject(err);
+                    return;
+                }
+                resolve(true)
+            })
+        })
+    }
+
+    dropResultsTable(){
+        return new Promise((resolve, reject) => {
+            const sql = 'DROP TABLE RESULTS'
             this.db.run(sql, (err) => {
                 if(err){
                     reject(err);

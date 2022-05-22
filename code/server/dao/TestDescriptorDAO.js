@@ -162,5 +162,18 @@ class TestDescriptorDAO{
             })
         })
     }
+
+    dropTestsTable(){
+        return new Promise((resolve, reject) => {
+            const sql = 'DROP TABLE TESTS'
+            this.db.run(sql, (err) => {
+                if(err){
+                    reject(err);
+                    return;
+                }
+                resolve(true)
+            })
+        })
+    }
 }
 module.exports = TestDescriptorDAO;

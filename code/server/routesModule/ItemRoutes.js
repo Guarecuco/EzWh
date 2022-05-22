@@ -133,4 +133,16 @@ router.delete('/items/deleteAll', async (req,res)=>{
 
 });
 
+//droptable
+router.delete('/items/dropTable', async (req,res)=>{
+    try{
+        await db.dropItemsTable();
+        return res.status(204).end();
+    }
+    catch(err){
+        res.status(503).end();
+    }
+
+});
+
 module.exports = router

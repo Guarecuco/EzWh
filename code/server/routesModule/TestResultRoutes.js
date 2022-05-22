@@ -85,7 +85,7 @@ router.put('/api/skuitems/:rfid/testResult/:id', async (req,res)=>{
             if(tests)
             {
                 await db.updateResult(eresult);
-                return res.status(201).end();
+                return res.status(200).end();
             }
             
             return res.status(404).json({error: `Test does not exists`});
@@ -134,4 +134,15 @@ router.delete('/skuItems/deleteAll', async (req,res)=>{
 
 });
 
+//droptable
+router.delete('/skuItems/dropTable', async (req,res)=>{
+    try{
+        await db.dropResultsTable();
+        return res.status(204).end();
+    }
+    catch(err){
+        res.status(503).end();
+    }
+
+});
 module.exports = router
