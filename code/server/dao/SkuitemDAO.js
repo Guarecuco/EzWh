@@ -120,6 +120,19 @@ class SkuitemDAO{
         })
     }
 
+    deleteSkuitems(){
+        return new Promise((resolve, reject) => {
+            const sql = `DROP TABLE SKUITEM`
+            this.db.run(sql, (err) => {
+                if(err){
+                    reject(err);
+                    return;
+                }
+                resolve(this.lastID)
+            })
+        })
+    }
+
     setAvailabilityByRFID(rfid, newQty){
         return new Promise((resolve, reject) => {
             const sql = `UPDATE SKUITEM SET AVAILABLE = ? WHERE RFID == ?`

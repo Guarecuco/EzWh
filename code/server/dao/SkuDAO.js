@@ -16,10 +16,10 @@ class SkuDAO{
                 weight: r.WEIGHT,
                 volume: r.VOLUME,
                 notes: r.NOTES,
-                price: r.PRICE,
                 position: r.POSITION,
                 availableQuantity: r.AVAILABLEQUANTITY,
-                //testDescriptors: dbT.getSKUDescriptors(r.ID)
+                price: r.PRICE,
+                testDescriptors: [dbT.getSKUDescriptors(r.ID)]
             }
         ));
         return skus;
@@ -32,10 +32,10 @@ class SkuDAO{
                 weight: r.WEIGHT,
                 volume: r.VOLUME,
                 notes: r.NOTES,
-                price: r.PRICE,
                 position: r.POSITION,
                 availableQuantity: r.AVAILABLEQUANTITY,
-                //testDescriptors: dbT.getSKUDescriptors(r.ID)
+                price: r.PRICE,
+                testDescriptors: [dbT.getSKUDescriptors(r.ID)]
             }
         ));
         return skus;
@@ -167,7 +167,7 @@ class SkuDAO{
     //for testing only
     deleteAllSkus(){
         return new Promise((resolve, reject) => {
-            const sql = `DELETE FROM SKU`
+            const sql = `DROP TABLE SKU`
             this.db.run(sql, [], (err) => {
                 if(err){
                     reject(err);

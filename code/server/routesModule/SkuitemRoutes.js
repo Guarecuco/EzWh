@@ -116,4 +116,15 @@ router.delete('/api/skuitems/:rfid', async (req,res)=>{
     }
 });
 
+router.delete('/api/skuitems', async (res)=>{
+  try{
+      await db.deleteSkuitems();
+      await db.newTableSkuitem();
+      return res.status(204).end();
+  }
+  catch(err){
+    res.status(503).end();
+  }
+});
+
 module.exports = router
