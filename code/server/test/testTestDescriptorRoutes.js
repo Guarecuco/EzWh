@@ -72,6 +72,12 @@ describe('test testDescriptor apis', () => {
         procedureDescription:  'What a beautiful test',
         idSKU: 1
     }
+
+    let testfail422 = {
+        id: 1,
+        procedureDescription:  'What a beautiful test',
+        idSKU: 1
+    }
    
     let modbody={
         name: 'rig something',
@@ -81,7 +87,10 @@ describe('test testDescriptor apis', () => {
 
     //deleteAllData(204);
     dropTestsTable(204);
+
     addTest(201, test);
+    addTest(422, test); //already existing
+    addTest(201, testfail422);
     addTest(422);
 
     getAllTests(200, test);
