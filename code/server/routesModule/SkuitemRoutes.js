@@ -25,7 +25,7 @@ router.get('/api/skuitems/sku/:id', async (req,res)=>{
       }
       const skuitems = await db.getAvailableSkuitems(SKUId);
       if(skuitems.length <= 0){
-        return res.status(404).json({error: `skuItem not found`});
+        return res.status(404).json({error: `sku not found`});
       }
       return res.status(200).json(skuitems);
     }
@@ -44,7 +44,7 @@ router.get('/api/skuitems/:rfid', async (req,res)=>{
       if (skuitem.length<=0){
         return res.status(404).json({error: `no skuitem associated to rfid`});
       }
-      return res.status(200).json(skuitem);
+      return res.status(200).json(skuitem[0]);
     }
     catch(err){
       res.status(500).end();

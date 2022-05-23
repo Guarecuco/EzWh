@@ -61,13 +61,65 @@ function newSkuitem(expectedHTTPStatus, RFID, SKUId, DateOfStock){
     })
 }
 
+//PUT /api/skuitems/:rfid
+function updateSkuitem(expectedHTTPStatus, oldRFID, RFID, Available, DateOfStock){
+    it('PUT /api/skuitems/:rfid', function (done){
+        let skuitem = {
+            newRFID : RFID,
+            newAvailable : Available,
+            newDateOfStock : DateOfStock,
+        }
+        agent.put('/api/skuitems/'+oldRFID)
+            .send(skuitem)    
+            .then(function (res){
+                res.should.have.status(expectedHTTPStatus);
+                done();
+            }).catch((err)=>console.log(err));
+    })
+}
+
 //GET /api/skuitems
-function getSkus(expectedHTTPStatus, expectedJSON){
+function getSkuitems(expectedHTTPStatus, expectedJSON){
     it('GET /api/skuitems', function (done){
         agent.get('/api/skuitems') 
             .then(function (res){
                 res.should.have.status(expectedHTTPStatus);
                 res.text.should.equal(JSON.stringify(expectedJSON));
+                done();
+            }).catch((err)=>console.log(err));
+    })
+}
+
+//GET /api/skuitems/:rfid
+function getSkuitem(expectedHTTPStatus, RFID, expectedJSON){
+    it('GET /api/skuitems/:rfid', function (done){
+        agent.get('/api/skuitems/'+RFID)
+            .then(function (res){
+                res.should.have.status(expectedHTTPStatus);
+                res.text.should.equal(JSON.stringify(expectedJSON));
+                done();
+            }).catch((err)=>console.log(err));
+    })
+}
+
+//GET /api/skuitems/sku/:id
+function getAvailableSkuitem(expectedHTTPStatus, SKUId, expectedJSON){
+    it('GET /api/skuitems/sku/:id', function (done){
+        agent.get('/api/skuitems/sku/'+SKUId)
+            .then(function (res){
+                res.should.have.status(expectedHTTPStatus);
+                res.text.should.equal(JSON.stringify(expectedJSON));
+                done();
+            }).catch((err)=>console.log(err));
+    })
+}
+
+//DELETE /api/skuitems/:rfid
+function deleteSkuitem(expectedHTTPStatus, RFID){
+    it('DELETE /api/skuitems/:rfid', function (done){
+        agent.delete('/api/skuitems/'+RFID)
+            .then(function (res){
+                res.should.have.status(expectedHTTPStatus);
                 done();
             }).catch((err)=>console.log(err));
     })
@@ -84,36 +136,59 @@ describe('Test skuitem APIs', () => {
     newSkuitem(422,"12345678901234567890123456789015","2021/11/29 12:30");    //Empty field
     newSkuitem(422,"12345678901234567890123456789015",1,"");    //Empty field
     newSkuitem(422);    //Empty field
-    newSkuitem(404,"12345678901234567890123456789017",7,"2021/11/29 12:30");    //no SKU associated to id
-    newSkuitem(201,"12345678901234567890123456789016",1,"2021/11/29 12:30");    //New
+    newSkuitem(404,"12345678901234567890123456789015",7,"2021/11/29 12:30");    //no SKU associated to id
+    newSkuitem(201,"12345678901234567890123456789015",1,"2021/11/29 12:30");    //New
 
+    //PUT /api/skuitems/:rfid
+    updateSkuitem(200,"12345678901234567890123456789014","12345678901234567890123456789014",1,"2021/11/29 12:30"); //available to 1
+    updateSkuitem(422,"12345678901234567890123456789015","12345678901234567890123456789015",1,""); //Empty field
+    updateSkuitem(422,"12345678901234567890123456789014","",1,"2021/11/29 12:30"); //Empty field
+    updateSkuitem(200,"12345678901234567890123456789014","12345678901234567890123456789014",0,"2021/11/29 12:30"); //Back to 0
+    updateSkuitem(200,"12345678901234567890123456789015","12345678901234567890123456789016",1,"2021/11/30 12:30"); //available to 1, rfid+1 and date+1
 
-    /*
-    
-    getSkus(200,[
+    //GET /api/skuitems
+    getSkuitems(200,[
         {
-            "id":1,
-            "description" : "a new sku",
-            "weight" : 100,
-            "volume" : 50,
-            "notes" : "first SKU",
-            "position" : "",
-            "availableQuantity" : 50,
-            "price" : 10.99,
-            "testDescriptors" : []
+            "RFID":"12345678901234567890123456789014",
+            "SKUId":1,
+            "Available":0,
+            "DateOfStock":"2021/11/29 12:30"
         },
         {
-            "id":2,
-            "description" : "sku2",
-            "weight" : 100,
-            "volume" : 50,
-            "notes" : "SKU2",
-            "position" : "",
-            "availableQuantity" : 50,
-            "price" : 10.99,
-            "testDescriptors" : []
-        }
+            "RFID":"12345678901234567890123456789016",
+            "SKUId":1,
+            "Available":1,
+            "DateOfStock":"2021/11/30 12:30"
+        },
     ]
     );
-    */
+
+    //GET /api/skuitems/:rfid
+    getSkuitem(200, "12345678901234567890123456789016",{
+        "RFID":"12345678901234567890123456789016",
+        "SKUId":1,
+        "Available":1,
+        "DateOfStock":"2021/11/30 12:30"
+    }); //ok
+    getSkuitem(200, "12345678901234567890123456789014",{
+        "RFID":"12345678901234567890123456789014",
+        "SKUId":1,
+        "Available":0,
+        "DateOfStock":"2021/11/29 12:30"
+    }); //ok
+    getSkuitem(404, "12345678901234567890123456789015",{"error":"no skuitem associated to rfid"});
+
+    //GET /api/skuitems/sku/:id
+    getAvailableSkuitem(200, 1, [{
+        "RFID":"12345678901234567890123456789016",
+        "SKUId":1,
+        "DateOfStock":"2021/11/30 12:30"
+    }]);
+    getAvailableSkuitem(404, 2, {error: `sku not found`});
+    getAvailableSkuitem(404, 0, {error: `sku not found`});
+
+    //DELETE /api/skuitems/:rfid
+    deleteSkuitem(204, "12345678901234567890123456789016");
+    deleteSkuitem(422, "12345678901234567890123456789017");
+    getSkuitem(404, "12345678901234567890123456789016",{"error":"no skuitem associated to rfid"});
 })
