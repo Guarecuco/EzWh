@@ -23,8 +23,6 @@ function testEditUser(input) {
         input.type = input.newType
         let res = await db.getUserByEmailType(input);
 
-        console.log(input)
-        console.log(res[0])
         expect(res[0].name).toStrictEqual(input.name);
         expect(res[0].surname).toStrictEqual(input.surname);
         expect(res[0].username).toStrictEqual(input.email);
