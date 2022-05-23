@@ -67,6 +67,26 @@ function newUser(expectedHTTPStatus, username, name, surname, password, type){
     })
 }
 
+//Internal API used to create new manager for testing
+//POST /api/newManager
+function newManager(expectedHTTPStatus, username, name, surname, password, type){
+    it('POST /api/newManager (Not official API - Used for testing managerSessions)', function (done){
+        let user = {
+            username: username,
+            name: name,
+            surname: surname,
+            password: password,
+            type: type
+        }
+        agent.post('/api/newManager')
+            .send(user)    
+            .then(function (res){
+                res.should.have.status(expectedHTTPStatus);
+                done();
+            })
+    })
+}
+
 //POST /api/managerSessions
 function managerSessions(expectedHTTPStatus,expectedJSON, username, password){
     it('POST /api/managerSessions', function (done){
@@ -232,6 +252,8 @@ describe('Test user APIs', () => {
     newUser(422,"user4@ezwh.com", "","Gonzalez","testpassword");           //Empty Name
     newUser(422);                                                       //Missing body
 
+    newManager(201,"manager1@ezwh.com", "John","Smith","testpassword","manager");    //New manager, needed to test ManagerSessions
+
     getSuppliers(200,[
         {
             "id": 2,
@@ -292,11 +314,11 @@ describe('Test user APIs', () => {
         }
     ]);
 
-    //managerSessions(200,{"id": 2,"username": "supplier1@ezwh.com","name": "Margaret"},"supplier1@ezwh.com","testpassword");  //OK
-    //managerSessions(401,"","supplier1@ezwh.com","wrongpassword");          //Wrong password
-    //managerSessions(401,"","user1@ezwh.com","testpassword");           //Not supplier user
-    //managerSessions(500,"","","testpassword");                         //Empty field
-    //managerSessions(500,"");                                           //Empty body
+    managerSessions(200,{"id": 7,"username": "manager1@ezwh.com","name": "John"},"manager1@ezwh.com","testpassword");  //OK
+    managerSessions(401,"","manager1@ezwh.com","wrongpassword");          //Wrong password
+    managerSessions(401,"","user1@ezwh.com","testpassword");           //Not supplier user
+    managerSessions(500,"","","testpassword");                         //Empty field
+    managerSessions(500,"");                                           //Empty body
 
     customerSessions(200,{"id": 1,"username": "user1@ezwh.com","name": "Milton"},"user1@ezwh.com","testpassword");  //OK
     customerSessions(401,"","user1@ezwh.com","wrongpassword");          //Wrong password
