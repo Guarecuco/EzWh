@@ -123,7 +123,7 @@ class SkuitemDAO{
     deleteSkuitems(){
         return new Promise((resolve, reject) => {
             const sql = `DROP TABLE IF EXISTS SKUITEM`
-            this.db.run(sql, (err) => {
+            this.db.run(sql, [],(err) => {
                 if(err){
                     reject(err);
                     return;

@@ -136,6 +136,20 @@ class PositionDAO{
             })
         })
     }
+
+    //for testing only
+    deleteAllPositions(){
+        return new Promise((resolve, reject) => {
+            const sql = `DROP TABLE IF EXISTS POSITION`
+            this.db.run(sql, [], (err) => {
+                if(err){
+                    reject(err);
+                    return;
+                }
+                resolve(this.lastID)
+            })
+        })
+    }
 }
 
 module.exports = PositionDAO;
