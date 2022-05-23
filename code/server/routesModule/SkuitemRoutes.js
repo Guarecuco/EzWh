@@ -1,6 +1,8 @@
 const express = require("express");
 const SkuitemDAO = require('../dao/SkuitemDAO.js')
 const db = new SkuitemDAO('EzWh')
+const SkuDAO = require('../dao/SkuDAO.js')
+const dbS = new SkuDAO('EzWh')
 
 const router = express.Router()
 router.use(express.json());
@@ -61,6 +63,10 @@ router.post('/api/skuitem', async (req,res)=>{
         return res.status(422).json({error: `Invalid skuitem data`});
       }
       //TODO: check existance of SKU
+      let sku = await dbS.getSku(item.SKUId);
+      if (sku.length <= 0){
+        return res.status(404).json({error: `SKU not found`});
+      } 
       await db.newTableSkuitem();
       //Check if Skuitem exists
       let skuitem = await db.getStoredSkuitem(item.RFID);
@@ -123,7 +129,7 @@ router.delete('/api/skuitems', async (res)=>{
       return res.status(204).end();
   }
   catch(err){
-    res.status(503).end();
+    res.status(503).send(err);
   }
 });
 
