@@ -52,7 +52,7 @@ router.put('/api/position/:positionID', async (req,res)=>{
         const oldPosID=req.params.positionID;
         const pos=req.body;
         if (!( oldPosID && pos && pos.newAisleID && pos.newRow && pos.newCol && pos.newMaxWeight && pos.newMaxVolume &&
-            pos.newOccupiedWeight !== undefined && pos.newOccupiedVolume !== undefined )) {
+            pos.newOccupiedWeight !== undefined && pos.newOccupiedVolume !== undefined && pos.newOccupiedWeight<=pos.newMaxWeight && pos.newOccupiedVolume<=pos.newMaxVolume)) {
                 return res.status(422).json({error: `Invalid position data`});
         }
 
@@ -112,5 +112,18 @@ router.delete('/api/position/:positionID', async (req,res)=>{
       res.status(503).end();
     }
 });
+
+//for testing only
+router.delete('/api/position/', async (req,res)=>{
+  try{
+    await db.deleteAllPositions();
+    await db.newTablePosition();
+    return res.status(204).end();
+  }
+  catch(err){
+    res.status(503).send(err);
+  }
+});
+
 
 module.exports = router

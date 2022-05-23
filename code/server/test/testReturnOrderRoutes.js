@@ -15,18 +15,6 @@ function dropReturnOrders(expectedHTTPStatus){
     })
 }
 
-function dropRestockOrders() {
-    agent.delete('/restockOrders/deletetable')
-}
-
-function addRestockOrder(order){
-    agent.post('/api/restockOrder')
-        .send(order)
-        .then(function (res) {
-            done();
-        })
-}
-
 function addReturnOrder(expectedHTTPStatus, order){
     it('Adding a new return order', function (done){
         agent.post('/api/returnOrder')
@@ -71,12 +59,26 @@ function deleteReturnOrder(expectedHTTPStatus, id){
     })
 }
 
-describe('test return order apis', () => {
-    beforeEach(async () => {
-        await dropRestockOrders()
-    });
+before(function (done) {
+    let order = {
+        issueDate: '2021/11/29 09:33',
+        supplierId:  1,
+        products: [
+            {"SKUId":12,"description":"a product","price":10.99,"qty":30},
+            {"SKUId":180,"description":"another product","price":11.99,"qty":20}
+        ]
+    }
+    agent.delete('/restockOrders/deletetable').then(res => {
+        agent.post('/api/restockOrder')
+            .send(order)
+            .then(function (res) {
+                done();
+            })
+    })
+});
 
 
+describe('test return order apis', function() {
     let order = {
         returnDate:"2021/11/29 09:33",
         products: [{SKUId:12,description:"a product",price:10.99, RFID:"12345678901234567890123456789016"},
@@ -104,11 +106,7 @@ describe('test return order apis', () => {
     addReturnOrder(422) //invalid body
     addReturnOrder(422, {}) //invalid body
 
-
-    //GET /api/returnOrders
-    //TODO
-    //const allExpectedRecords = [{id:1, ...order},{id:2, ...order2}]
-    //getAllReturnOrders(200, allExpectedRecords)
+    //GET /api/returnOrders  moved to end of file
 
     //GET /api/returnOrders/:id
     getReturnOrderById(200, 1, {...order} )
@@ -119,5 +117,23 @@ describe('test return order apis', () => {
     //DELETE /api/returnOrder/:id
     deleteReturnOrder(204, 1)
     deleteReturnOrder(422, undefined) //validation of id failed
+
+
+    //GET /api/returnOrders
+    order = {
+        returnDate:"2021/11/29 09:33",
+        products: [{SKUId:12,description:"a product",price:10.99, RFID:"12345678901234567890123456789016"},
+            {SKUId:180,description:"another product",price:11.99, RFID:"12345678901234567890123456789038"}],
+        restockOrderId : 1
+    }
+    dropReturnOrders(204)
+    addReturnOrder(201, order)
+    deleteReturnOrder(204, 1)
+    getAllReturnOrders(200, [])
+    dropReturnOrders(204)
+    const allExpectedRecords = [{id:1, ...order},{id:2, ...order2, restockOrderId: 1}]
+    addReturnOrder(201, order)
+    addReturnOrder(201, {...order2, restockOrderId: 1})
+    getAllReturnOrders(200, allExpectedRecords)
 
 })

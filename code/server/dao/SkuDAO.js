@@ -167,7 +167,7 @@ class SkuDAO{
     //for testing only
     deleteAllSkus(){
         return new Promise((resolve, reject) => {
-            const sql = `DROP TABLE SKU IF EXISTS SKU`
+            const sql = `DROP TABLE IF EXISTS SKU`
             this.db.run(sql, [], (err) => {
                 if(err){
                     reject(err);
