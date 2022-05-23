@@ -119,6 +119,43 @@ function deleteRestockOrder(expectedHTTPStatus, id){
     })
 }
 
+before(function (done) {
+    let order = {
+        issueDate: '2021/11/29 09:33',
+        supplierId:  1,
+        products: [
+            {"SKUId":12,"description":"a product","price":10.99,"qty":30},
+            {"SKUId":180,"description":"another product","price":11.99,"qty":20}
+        ]
+    }
+    let testDescriptor = {
+        name:"test descriptor 1",
+        procedureDescription:"simple description",
+        idSKU: 2
+    }
+
+    let failedTestRes =  {
+        rfid:"12345678901234567890123456789016",
+        idTestDescriptor: 1,
+        Date:"2021/11/28",
+        Result: true
+    }
+
+    agent.delete('/testDescriptor/dropTable').then(res => {
+        agent.delete('/skuItems/dropTable').then(function (res) {
+            agent.post('/api/testDescriptor')
+                .send(testDescriptor)
+                .then(function (res) {
+                    agent.post('/api/skuitems/testResult')
+                        .send(failedTestRes)
+                        .then(function (res) {
+                            done()
+                        })
+                })
+        })
+    })
+});
+
 
 describe('test restock order apis', () => {
     let order = {
@@ -194,7 +231,7 @@ describe('test restock order apis', () => {
     getRestockOrderById(422) //validation of id failed
 
     //GET /api/restockOrders/:id/returnItems
-    //getAllReturnablesById(200, 1, {})
+    //moved to end of file
 
     //put /api/restockOrder/:id
     updateRestockOrder(200, {newState: 'DELIVERED'}, 1) //OK
@@ -288,7 +325,7 @@ describe('test restock order apis', () => {
         {"SKUId":2,"description":"nice product","price":10.99,"qty":30},
         {"SKUId":3,"description":"another nice product","price":11.99,"qty":20}
     ],
-        skuItems: [{"SKUId":2,"description":"nice product","price":10.99,"qty":30}]
+        skuItems: [{"SKUId":2,"rfid":"12345678901234567890123456789016"},{"SKUId":3,"rfid":"12345678901234567890123456789017"}]
     }
 
     let deliveryOrder = {
@@ -310,10 +347,15 @@ describe('test restock order apis', () => {
     //GET /api/restockOrders
     dropRestockOrders(204);
     addRestockOrder(201, order); // new
+    deleteRestockOrder(204, 1);
+    getAllRestockOrders(200, []) //test empty table
+
+    dropRestockOrders(204);
+    addRestockOrder(201, order); // new
     addRestockOrder(201, order2); // new
     addRestockOrder(201, order3); // new
 
-    const skuItems2 = {skuItems: [{"SKUId":2,"description":"nice product","price":10.99,"qty":30}]}
+    const skuItems2 = {skuItems: [{"SKUId":2,"rfid":"12345678901234567890123456789016"},{"SKUId":3,"rfid":"12345678901234567890123456789017"}]}
     updateRestockOrder(200, {newState: 'DELIVERY'}, 2)
     transportNote2 = {transportNote: {deliveryDate: "2021/12/29"}}
     updateRestockOrderTransportNote(200, transportNote2, 2)
@@ -325,6 +367,16 @@ describe('test restock order apis', () => {
 
     let expectedList = [issuedOrder, notIssuedStateOrder, deliveryOrder]
     getAllRestockOrders(200, expectedList)
+
+
+    //GET /api/restockOrders/:id/returnItems     moved to end of file
+    updateRestockOrder(200, {newState: 'COMPLETEDRETURN'}, 2)
+    const returnableItems = [{"SKUId":2,"rfid":"12345678901234567890123456789016"}]
+    getAllReturnablesById(200, 2, returnableItems) // ok
+
+    getAllReturnablesById(404, 5, returnableItems) // id not found
+    getAllReturnablesById(422, 1, returnableItems) // state is not COMPLETEDRETURN
+
 
 })
 

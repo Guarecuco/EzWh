@@ -46,6 +46,7 @@ class ReturnOrderDAO{
                     {
                         id: r.ID,
                         returnDate: r.RETURN_DATE,
+                        products: JSON.parse(r.PRODUCTS),
                         restockOrderId: r.RESTOCK_ORDER_ID                     
                     }
                     
