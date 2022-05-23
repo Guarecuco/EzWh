@@ -13,7 +13,6 @@ router.get('/api/internalOrders', async (req,res)=>{
     try{
         //Get all internal orders
         let orders = await db.getInternalOrders();
-
         //For each order, get array of all products
         for (var i=0; i<orders.length; i++){
             if (orders[i].state !== "COMPLETED"){
@@ -249,7 +248,6 @@ router.delete('/api/internalOrders/:id', async (req,res)=>{
 
         //Check if orderId exist
         let count = await db.checkIfOrderExists(order);
-        console.log(count);
         if (count == 0){
             return res.status(422).json({error: `validation of id failed`});
         }

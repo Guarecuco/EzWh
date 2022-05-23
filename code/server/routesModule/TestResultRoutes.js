@@ -88,7 +88,7 @@ router.put('/api/skuitems/:rfid/testResult/:id', async (req,res)=>{
                 return res.status(200).end();
             }
             
-            return res.status(404).json({error: `Test does not exists`});
+            return res.status(404).json({error: `Result to modify does not exists`});
         }   
         return res.status(404).json({error: `New test does not exists`});
       }

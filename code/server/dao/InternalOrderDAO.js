@@ -165,6 +165,7 @@ class InternalOrderDAO{
                         id: r.ID,
                         issueDate: r.ISSUEDATE,
                         state: r.STATE,
+                        products: "",
                         customerId: r.CUSTOMERID
                     }
                     
@@ -231,6 +232,7 @@ class InternalOrderDAO{
                         id: r.ID,
                         issueDate: r.ISSUEDATE,
                         state: r.STATE,
+                        products: "",
                         customerId: r.CUSTOMERID
                     }
                     
@@ -253,6 +255,7 @@ class InternalOrderDAO{
                         id: r.ID,
                         issueDate: r.ISSUEDATE,
                         state: r.STATE,
+                        products: "",
                         customerId: r.CUSTOMERID
                     }
                     
