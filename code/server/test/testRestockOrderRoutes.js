@@ -171,6 +171,7 @@ describe('test restock order apis', () => {
     dropRestockOrders(204);
     addRestockOrder(201, order); // new
     addRestockOrder(201, order2); // new
+    addRestockOrder(422, {...order2, issueDate: '2020/11/11'}) //invalid date
     addRestockOrder(422);
     let order_rejected = {...order}
     delete order_rejected.products;

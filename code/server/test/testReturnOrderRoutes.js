@@ -68,6 +68,12 @@ before(function (done) {
             {"SKUId":180,"description":"another product","price":11.99,"qty":20}
         ]
     }
+    let newSkuItem = {
+        "RFID":"12345678901234567890123456789015",
+        "SKUId":1,
+        "DateOfStock":"2021/11/29 12:30"
+    }
+
     agent.delete('/restockOrders/deletetable').then(res => {
         agent.post('/api/restockOrder')
             .send(order)
@@ -128,6 +134,8 @@ describe('test return order apis', function() {
     }
     dropReturnOrders(204)
     addReturnOrder(201, order)
+    addReturnOrder(422, {...order, returnDate: '2021/11/29'})  //invalid date
+    addReturnOrder(404, {...order, restockOrderId:10})
     deleteReturnOrder(204, 1)
     getAllReturnOrders(200, [])
     dropReturnOrders(204)
