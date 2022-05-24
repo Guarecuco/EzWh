@@ -7,9 +7,10 @@ const router = express.Router();
 router.use(express.json());
 
 //GET /api/userinfo
+//Login apis not needed right now
 router.get('/api/userinfo', async (req,res)=>{
     try{
-        const users = await db.getLoggedUsers();
+        //const users = await db.getLoggedUsers();
         return res.status(200).json(users);
     }
     catch(err){
@@ -115,8 +116,8 @@ router.post('/api/managerSessions', async (req,res)=>{
                 //surname: storedUser[0].surname
             }
             //Flag as logged in
-            await db.newTableLoggedUsers();
-            await db.loginUser(storedUser[0]);
+            //await db.newTableLoggedUsers();
+            //await db.loginUser(storedUser[0]);
             //Return
             return res.status(200).json(userinfo); 
         }   
@@ -158,8 +159,8 @@ router.post('/api/customerSessions', async (req,res)=>{
                 //surname: storedUser[0].surname
             }
             //Flag as logged in
-            await db.newTableLoggedUsers();
-            await db.loginUser(storedUser[0]);
+            //await db.newTableLoggedUsers();
+            //await db.loginUser(storedUser[0]);
             //Return
             return res.status(200).json(userinfo); 
         }   
@@ -201,8 +202,8 @@ router.post('/api/supplierSessions', async (req,res)=>{
                 //surname: storedUser[0].surname
             }
             //Flag as logged in
-            await db.newTableLoggedUsers();
-            await db.loginUser(storedUser[0]);
+            //await db.newTableLoggedUsers();
+            //await db.loginUser(storedUser[0]);
             //Return
             return res.status(200).json(userinfo); 
         }   
@@ -244,8 +245,8 @@ router.post('/api/clerkSessions', async (req,res)=>{
                 //surname: storedUser[0].surname
             }
             //Flag as logged in
-            await db.newTableLoggedUsers();
-            await db.loginUser(storedUser[0]);
+            //await db.newTableLoggedUsers();
+            //await db.loginUser(storedUser[0]);
             //Return
             return res.status(200).json(userinfo); 
         }   
@@ -287,8 +288,8 @@ router.post('/api/qualityEmployeeSessions', async (req,res)=>{
                 //surname: storedUser[0].surname
             }
             //Flag as logged in
-            await db.newTableLoggedUsers();
-            await db.loginUser(storedUser[0]);
+            //await db.newTableLoggedUsers();
+            //await db.loginUser(storedUser[0]);
             //Return
             return res.status(200).json(userinfo); 
         }   
@@ -330,8 +331,8 @@ router.post('/api/deliveryEmployeeSessions', async (req,res)=>{
                 //surname: storedUser[0].surname
             }
             //Flag as logged in
-            await db.newTableLoggedUsers();
-            await db.loginUser(storedUser[0]);
+            //await db.newTableLoggedUsers();
+            //await db.loginUser(storedUser[0]);
             //Return
             return res.status(200).json(userinfo); 
         }   
