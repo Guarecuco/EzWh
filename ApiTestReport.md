@@ -29,6 +29,11 @@ Version:
     (ex: step1: class A, step 2: class A+B, step 3: class A+B+C, etc)> 
     <Some steps may  correspond to unit testing (ex step1 in ex above), presented in other document UnitTestReport.md>
     <One step will  correspond to API testing>
+
+    The integration approach used is **top down**.
+
+* **Step 1**: API class tested 
+* **Step 2**: DAO classes tested
     
 
 
@@ -62,21 +67,6 @@ Version:
 # API testing - Scenarios
 
 
-<If needed, define here additional scenarios for the application. Scenarios should be named
- referring the UC in the OfficialRequirements that they detail>
-
-## Scenario UCx.y
-
-| Scenario |  name |
-| ------------- |:-------------:| 
-|  Precondition     |  |
-|  Post condition     |   |
-| Step#        | Description  |
-|  1     |  ... |  
-|  2     |  ... |
-
-
-
 # Coverage of Scenarios and FR
 
 
@@ -88,12 +78,42 @@ Report also for each of the scenarios the (one or more) API Mocha tests that cov
 
 | Scenario ID | Functional Requirements covered | Mocha  Test(s) | 
 | ----------- | ------------------------------- | ----------- | 
-|  ..         | FRx                             |             |             
-|  ..         | FRy                             |             |             
-| ...         |                                 |             |             
-| ...         |                                 |             |             
-| ...         |                                 |             |             
-| ...         |                                 |             |             
+|  1.1         | FRx                             |             |             
+|  1.2         | FRy                             |             |             
+| 1.3        |                                 |             |             
+| 2.1        |                                 |             |             
+| 2.2        |                                 |             |             
+| 2.3       |                                 |             |          
+| 2.4       |                                 |             |             
+| 2.5    |                                 |             |             
+| 3.1     |                                 | addRestockOrder(),              |             
+| 3.2       |                                 | addRestockOrder(),            |             
+| 4.1      |                                 |             |             
+| 4.2       |                                 |             |             
+| 4.3        |                                 |             |             
+| 5.1.1      |                                 | updateRestockOrder(), updateRestockOrderSKUItems()             |             
+| 5.2.1      |                                 | updateRestockOrder()            |             
+| 5.2.2       |                                 | updateRestockOrder()            |             
+| 5.2.3       |                                 | updateRestockOrder()            |             
+| 5.3.1        |                                 | updateRestockOrder()            |             
+| 5.3.2        |                                 | updateRestockOrder()             |             
+| 5.3.3      |                                 | updateRestockOrder()             |             
+| 6.1     |                                 | getAllReturnablesById(), addReturnOrder()            |       
+| 6.2     |                                 | getAllReturnablesById(), addReturnOrder()             |             
+| 7.1     |                                 |             |             
+| 7.2      |                                 |             |             
+| 9.1    |                                 |             |             
+| 9.2     |                                 |             |             
+| 9.3       |                                 |             |             
+| 10.1      |                                 |             |   
+| 11.1      |                                 |             |             
+| 11.2      |                                 |             |             
+| 12.1      |                                 |             |             
+| 12.2      |                                 |             |             
+| 12.3     |                                 |             |             
+
+
+
 
 
 

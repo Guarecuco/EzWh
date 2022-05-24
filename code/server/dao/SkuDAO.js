@@ -8,38 +8,6 @@ class SkuDAO{
             if(err) throw err
         })
     }
-    printSku(rows){
-        const skus = rows.map((r) => (
-            {
-                id: r.ID,
-                description: r.DESCRIPTION,
-                weight: r.WEIGHT,
-                volume: r.VOLUME,
-                notes: r.NOTES,
-                position: r.POSITION,
-                availableQuantity: r.AVAILABLEQUANTITY,
-                price: r.PRICE,
-                testDescriptors: [dbT.getSKUDescriptors(r.ID)]
-            }
-        ));
-        return skus;
-    }
-
-    printSkuLess(rows){
-        const skus = rows.map((r) => (
-            {
-                description: r.DESCRIPTION,
-                weight: r.WEIGHT,
-                volume: r.VOLUME,
-                notes: r.NOTES,
-                position: r.POSITION,
-                availableQuantity: r.AVAILABLEQUANTITY,
-                price: r.PRICE,
-                testDescriptors: [dbT.getSKUDescriptors(r.ID)]
-            }
-        ));
-        return skus;
-    }
 
     newTableSku(){
         return new Promise((resolve, reject) => {
@@ -76,7 +44,20 @@ class SkuDAO{
                     reject(err);
                     return;
                 }
-                resolve(this.printSku(rows))
+                let pro = rows.map( async (r) => {
+                    return {
+                        id: r.ID,
+                        description: r.DESCRIPTION,
+                        weight: r.WEIGHT,
+                        volume: r.VOLUME,
+                        notes: r.NOTES,
+                        position: r.POSITION,
+                        availableQuantity: r.AVAILABLEQUANTITY,
+                        price: r.PRICE,
+                        testDescriptors: await dbT.getSKUDescriptors(r.ID)
+                    }
+                })
+                resolve(Promise.all(pro));
             })
         })
     }
@@ -89,7 +70,19 @@ class SkuDAO{
                     reject(err);
                     return;
                 }
-                resolve(this.printSkuLess(rows))
+                let pro = rows.map( async (r) => {
+                    return {
+                        description: r.DESCRIPTION,
+                        weight: r.WEIGHT,
+                        volume: r.VOLUME,
+                        notes: r.NOTES,
+                        position: r.POSITION,
+                        availableQuantity: r.AVAILABLEQUANTITY,
+                        price: r.PRICE,
+                        testDescriptors: await dbT.getSKUDescriptors(r.ID)
+                    }
+                })
+                resolve(Promise.all(pro));
             })
         })
     }

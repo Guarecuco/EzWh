@@ -27,7 +27,7 @@ router.get('/api/skus/:id', async (req,res)=>{
     if(sku.length <= 0){
       return res.status(404).json({error: `Sku not found`});
     }
-    return res.status(200).json(sku);
+    return res.status(200).json(sku[0]);
   }
   catch(err){
     res.status(500).end();
@@ -109,9 +109,13 @@ router.put('/api/sku/:id/position', async (req,res)=>{
     if (get <= 0){
       return res.status(404).json({error: `SKU does not exists`});
     }
+    let sku = get[0];
+    get = await dbP.getPosition(item.position);
+    if (get <= 0){
+      return res.status(404).json({error: `Position does not exists`});
+    }
+    let pos = get[0];
     try{
-      let sku = get[0];
-      let pos = (await dbP.getPosition(item.position))[0];
       await dbP.updateDimensions(sku.volume,sku.weight,sku.availableQuantity,pos);
     }
     catch(err){

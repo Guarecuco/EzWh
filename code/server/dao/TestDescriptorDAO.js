@@ -144,7 +144,7 @@ class TestDescriptorDAO{
                     reject(err);
                     return;
                 }
-                const results = rows.map((r) => (r.id));
+                const results = rows.map((r) => (r.ID));
                 resolve(results)
             })
         })
