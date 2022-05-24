@@ -107,14 +107,14 @@ class PositionDAO{
                 reject();
                 return 0;
             }
-            const v=volume*availableQuantity;
-            const w=weight*availableQuantity;
+            const v=volume*availableQuantity+pos.occupiedVolume;
+            const w=weight*availableQuantity+pos.occupiedWeight;
             if( w>pos.maxWeight || v>pos.maxVolume ){
                 reject();
                 return 0;
             }
             const sql = `UPDATE POSITION SET OCCUPIEDWEIGHT=?, OCCUPIEDVOLUME=? WHERE POSITIONID=?`
-            this.db.run(sql, [v,w,pos.positionID], (err) => {
+            this.db.run(sql, [w,v,pos.positionID], (err) => {
                 if (err) {
                     reject(err);
                     return 0;
