@@ -1,8 +1,8 @@
 const express = require("express");
 const TestResultDAO = require('../dao/TestResultDAO.js')
-const db = new TestResultDAO('EzWh')
+const db = new TestResultDAO('EzWh.db')
 const TestDescriptorDAO = require('../dao/TestDescriptorDAO.js')
-const dbT = new TestDescriptorDAO('EzWh')
+const dbT = new TestDescriptorDAO('EzWh.db')
 const router = express.Router()
 router.use(express.json());
 

@@ -3,6 +3,7 @@ const ReturnOrderDAO = require('../dao/ReturnOrderDAO.js')
 const SKUitemDAO = require('../dao/SkuitemDAO.js')
 const SkuDAO = require('../dao/SkuDAO.js')
 const PositionDAO = require('../dao/PositionDAO.js')
+const {isValid} = require("../utilities/dates");
 
 
 const db = new ReturnOrderDAO('EzWh.db')
@@ -56,6 +57,10 @@ router.post('/api/returnOrder', async (req,res)=>{
             return res.status(422).json({error: `Invalid order data`});
         }
 
+        if (!isValid(order.returnDate)){
+            return res.status(422).json({error: `Invalid order data`});
+        }
+
         let count = await db.checkIfRestockOrderExists(order.restockOrderId);
         if (count == 0) {
             return res.status(404).json({error: `No restock order associated to id`});
@@ -63,16 +68,17 @@ router.post('/api/returnOrder', async (req,res)=>{
         await db.newTableReturnOrders();
         await db.addReturnOrder(order);
 
-
-        for (let item of order.products) {
-            await skuitemdb.setAvailabilityByRFID(item.RFID, 0)
-            const sku = await skudb.getSku(item.SKUId)
-            if (sku.length > 0) {
-                const newQty = sku[0].availableQuantity === 0 ? 0 : sku[0].availableQuantity - 1
-                await skudb.setAvailableQuantityById(item.SKUId, newQty)
-                // increase Position ???
+        try {
+            for (let item of order.products) {
+                await skuitemdb.setAvailabilityByRFID(item.RFID, 0)
+                const sku = await skudb.getSku(item.SKUId)
+                if (sku.length > 0) {
+                    const newQty = sku[0].availableQuantity === 0 ? 0 : sku[0].availableQuantity - 1
+                    await skudb.setAvailableQuantityById(item.SKUId, newQty)
+                    // increase Position ???
+                }
             }
-        }
+        }catch (e){}
 
         return res.status(201).end();
 

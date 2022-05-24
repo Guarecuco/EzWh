@@ -1,9 +1,9 @@
 const express = require("express");
 const ItemDAO = require('../dao/ItemDAO.js')
-const db = new ItemDAO('EzWh')
+const db = new ItemDAO('EzWh.db')
 
 const SKUDAO = require('../dao/SkuDAO.js')
-const dbSKU = new SKUDAO('EzWh')
+const dbSKU = new SKUDAO('EzWh.db')
 
 const router = express.Router()
 router.use(express.json());

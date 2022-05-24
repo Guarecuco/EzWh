@@ -1,6 +1,6 @@
 const express = require("express");
 const TestDescriptorDAO = require('../dao/TestDescriptorDAO.js')
-const db = new TestDescriptorDAO('EzWh')
+const db = new TestDescriptorDAO('EzWh.db')
 
 const router = express.Router()
 router.use(express.json());

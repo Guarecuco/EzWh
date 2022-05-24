@@ -1,16 +1,18 @@
-const testDAO = require('../dao/TestDescriptorDAO');
+const testDAO = require('../dao/TestResultDAO');
 const db = new testDAO('EzWh.db');
 
 
-function testAddTest(input) {
-    test('Create new test', async () => {
+function testAddResult(input) {
+    test('Create new result', async () => {
         
-        await db.addTest(input);
+        await db.addResult(input);
         
-        let res = await db.getTestDescriptor([1]);
-        expect(res.name).toStrictEqual(input.name);
-        expect(res.procedureDescription).toStrictEqual(input.procedureDescription);
-        expect(res.idSKU).toStrictEqual(input.idSKU);
+        let res = await db.getSKUResult(input);
+        console.log(res);
+        expect(res[0].id).toStrictEqual(input.id);
+        expect(res[0].idTestDescriptor).toStrictEqual(input.idTestDescriptor);
+        expect(res[0].Date).toStrictEqual(input.Date);
+        expect(res[0].Result).toStrictEqual(input.Result);
         
     });
 }
@@ -75,16 +77,18 @@ function testDeleteTest(input) {
 
 //************************************************************************** */
 //Calling test functions
-describe('Test TestDescriptor DAO', () => {
+describe('Test TestResult DAO', () => {
     beforeAll(async () => {
-        await db.dropTestsTable();
-        await db.newTableTests();
+        await db.dropResultsTable();
+        await db.newResultTests();
     });
 
-    let test={
-        name: "prova",
-        procedureDescription: "dei test descriptor",
-        idSKU: 1
+    let result={
+            id:1,
+            rfid:"12345678901234567890123456789016",
+            idTestDescriptor:1,
+            Date:"2021/11/28",
+            Result: true
     }
 
     let edit={
@@ -94,9 +98,9 @@ describe('Test TestDescriptor DAO', () => {
         nsku: 1
     }
 
-    testAddTest(test);
-    testEditTest(edit);
+    testAddResult(result);
+   /* testEditTest(edit);
     testGetTests(edit);
     testGetTest(edit);
-    testDeleteTest(1);
+    testDeleteTest(1);*/
 });

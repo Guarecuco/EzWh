@@ -1,6 +1,8 @@
 const express = require("express");
-const InternalOrderDAO = require('../dao/InternalOrderDAO.js')
-const db = new InternalOrderDAO('EzWh.db')
+const InternalOrderDAO = require('../dao/InternalOrderDAO.js');
+const SkuDAO = require('../dao/SkuDAO.js');
+const db = new InternalOrderDAO('EzWh.db');
+const skudb = new SkuDAO('EzWh.db')
 
 const router = express.Router()
 router.use(express.json());
@@ -160,7 +162,14 @@ router.post('/api/internalOrders', async (req,res)=>{
             }
             //Store products in DB
             await db.storeInternalOrderProducts(product);
+
+            //Decrease quantity in SKU table
+            let sku = await skudb.getSku(product.SKUId);    //Get current availability
+            let newQty = sku[0].availableQuantity - product.qty;    //Decrease
+            await skudb.setAvailableQuantityById(product.SKUId, newQty)    //Update
+            //Increase position ????
         }
+
         return res.status(201).end();
     }
     catch(err){
@@ -228,6 +237,22 @@ router.put('/api/internalOrders/:id', async (req,res)=>{
                 await db.updateInternalOrderProducts(product);
             }         
         }   
+        //If new state is refused or cancelled, increase availability in SKU table
+        else if(order.newState == 'REFUSED' || order.newState == 'CANCELED'){
+            order.id = order.orderId
+            var products = await db.getInternalOrdersProducts(order);
+            for (var i=0; i<products.length; i++){
+                let product = {
+                    SKUId : products[i].SKUId,
+                    qty : products[i].qty
+                }
+                //Increase availability of SKU
+                let sku = await skudb.getSku(product.SKUId);    //Get current availability
+                let newQty = sku[0].availableQuantity + product.qty;    //Decrease
+                await skudb.setAvailableQuantityById(product.SKUId, newQty)    //Update
+                //Decrease position ????
+            }
+        }  
         return res.status(200).end();
     }
     catch(err){
