@@ -122,7 +122,7 @@ router.delete('/api/skuitems/:rfid', async (req,res)=>{
     }
 });
 
-router.delete('/api/skuitems', async (res)=>{
+router.delete('/api/skuitems', async (req,res)=>{
   try{
       await db.deleteSkuitems();
       await db.newTableSkuitem();

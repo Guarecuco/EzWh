@@ -137,6 +137,7 @@ router.delete('/testDescriptor/deleteAll', async (req,res)=>{
 router.delete('/testDescriptor/dropTable', async (req,res)=>{
     try{
         await db.dropTestsTable();
+        await db.newTableTests();
         return res.status(204).end();
     }
     catch(err){
