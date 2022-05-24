@@ -62,7 +62,18 @@ function testGetResultsRfidId(input) {
     });
 }
 
-
+function countFailed(input) {
+    test('Retrieving failed results number', async () => {
+        let res = await db.countFailedTest(input.rfid);
+        
+        if (res !== undefined){
+            expect(res[0]).toStrictEqual(1);
+        }
+        else{
+            expect(res).toStrictEqual([]);
+        }
+    });
+}
 
 function testDeleteResult(input) {
     test('Delete existing test', async () => {
@@ -74,6 +85,15 @@ function testDeleteResult(input) {
     });
 }
 
+function testDeleteAllResults(input) {
+    test('Delete all results', async () => {
+        
+        await db.deleteAllResults();
+        
+        let res = await db.getSKUResult(input);
+        expect(JSON.stringify(res)).toStrictEqual(JSON.stringify([]));
+    });
+}
 
 
 //************************************************************************** */
@@ -91,7 +111,13 @@ describe('Test TestResult DAO', () => {
             Date:"2021/11/28",
             Result: true
     }
-
+    let result2={
+        id:2,
+        rfid:"12345678901234567890123456789016",
+        idTestDescriptor:1,
+        Date:"2021/11/28",
+        Result: true
+}
     let edit= {
         id:1,
         rfid:"12345678901234567890123456789016",
@@ -106,4 +132,7 @@ describe('Test TestResult DAO', () => {
     testGetResultsRfid(edit);
     testGetResultsRfidId(edit);
     testDeleteResult(edit);
+    testAddResult(result2);
+    countFailed(result2);
+    testDeleteAllResults(result2);
 });

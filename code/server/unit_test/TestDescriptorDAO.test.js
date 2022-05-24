@@ -7,7 +7,7 @@ function testAddTest(input) {
         
         await db.addTest(input);
         
-        let res = await db.getTestDescriptor([1]);
+        let res = await db.getTestDescriptor(input.id);
         expect(res.name).toStrictEqual(input.name);
         expect(res.procedureDescription).toStrictEqual(input.procedureDescription);
         expect(res.idSKU).toStrictEqual(input.idSKU);
@@ -58,12 +58,45 @@ function testGetTest(input) {
     });
 }
 
+function testFindName(input) {
+    test('Retrieving name', async () => {
+
+        
+        let res = await db.findTestName(input.name);
+        if (res !== undefined){
+            expect(res.name).toStrictEqual(input.name);
+        }
+    });
+}
+
+function testIdFromSku(input) {
+    test('Retrieving id from sku', async () => {
+
+        
+        let res = await db.getSKUDescriptors(input.nsku);
+        if (res !== undefined){
+            expect(res[0]).toStrictEqual(input.nid);
+        }
+    });
+}
+
+
 
 
 function testDeleteTest(input) {
     test('Delete existing test', async () => {
         
         await db.deleteTest(input);
+        
+        let res = await db.findTestId(input);
+
+        expect(res).toStrictEqual(0);
+    });
+}
+function testDeleteAllTests(input) {
+    test('Delete all tests', async () => {
+        
+        await db.deleteAllTests();
         
         let res = await db.findTestId(input);
 
@@ -82,8 +115,15 @@ describe('Test TestDescriptor DAO', () => {
     });
 
     let test={
+        id:1,
         name: "prova",
         procedureDescription: "dei test descriptor",
+        idSKU: 1
+    }
+    let test2={
+        id:2,
+        name: "prova 2",
+        procedureDescription: "dei test descriptor 2",
         idSKU: 1
     }
 
@@ -98,5 +138,9 @@ describe('Test TestDescriptor DAO', () => {
     testEditTest(edit);
     testGetTests(edit);
     testGetTest(edit);
+    testFindName(edit);
+    testIdFromSku(edit);
     testDeleteTest(1);
+    testAddTest(test2);
+    testDeleteAllTests(2);
 });
