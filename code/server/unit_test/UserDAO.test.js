@@ -1,44 +1,76 @@
 const userDao = require('../dao/UserDAO');
 const db = new userDao('EzWh.db');
 
-function testAddUser(input) {
+function testAddUser(input,expectedResult) {
     test('Create new user', async () => {
         
-        await db.storeUser(input);
+        let res = await db.storeUser(input);
         
-        let res = await db.getUserByEmailType(input);
-
-        expect(res[0].name).toStrictEqual(input.name);
-        expect(res[0].surname).toStrictEqual(input.surname);
-        expect(res[0].username).toStrictEqual(input.email);
-        expect(res[0].type).toStrictEqual(input.type);
-        expect(res[0].password).toStrictEqual(input.password);
+        expect(res).toStrictEqual(expectedResult);
     });
 }
 
-function testEditUser(input) {
+function testEditUser(input,expectedResult) {
     test('Edit existing user', async () => {
 
-        await db.updateUser(input)
-        input.type = input.newType
-        let res = await db.getUserByEmailType(input);
-
-        expect(res[0].name).toStrictEqual(input.name);
-        expect(res[0].surname).toStrictEqual(input.surname);
-        expect(res[0].username).toStrictEqual(input.email);
-        expect(res[0].type).toStrictEqual(input.newType);
-        expect(res[0].password).toStrictEqual(input.password);
+        let res = await db.updateUser(input)
+        
+        expect(res).toStrictEqual(expectedResult);
     });
 }
 
-function testDeleteUser(input) {
-    test('Delete existing user', async () => {
-        
-        await db.deleteUser(input);
-        
+function testCheckStored(input,expectedResult) {
+    test('Check if user exist', async () => {
+
+        let res = await db.checkIfStored(input);
+
+        expect(res[0]).toStrictEqual(expectedResult);
+    });
+}
+
+
+function testGetUserByEmailType(input,expectedResult) {
+    test('Retrieve user by email and type', async () => {
+
         let res = await db.getUserByEmailType(input);
 
-        expect(res[0]).toStrictEqual(undefined);
+        expect(JSON.stringify(res)).toStrictEqual(JSON.stringify(expectedResult));
+    });
+}
+
+function testGetUsers(expectedResult) {
+    test('Retrieving users', async () => {
+
+        let res = await db.getStoredUsers();
+
+        expect(JSON.stringify(res)).toStrictEqual(JSON.stringify(expectedResult));
+    });
+}
+
+function testGetSuppliers(expectedResult) {
+    test('Retrieving suppliers', async () => {
+
+        let res = await db.getStoredSuppliers();
+
+        expect(JSON.stringify(res)).toStrictEqual(JSON.stringify(expectedResult));
+    });
+}
+
+function testGetUsersWithoutManagers(expectedResult) {
+    test('Retrieving users without manager', async () => {
+
+        let res = await db.getStoredUsersWithoutManagers();
+
+        expect(JSON.stringify(res)).toStrictEqual(JSON.stringify(expectedResult));
+    });
+}
+
+function testDeleteUser(input, expectedResult) {
+    test('Delete existing user', async () => {
+        
+        let res = await db.deleteUser(input);
+        
+        expect(res).toStrictEqual(expectedResult);
     });
 }
 
@@ -52,23 +84,35 @@ describe('Test User DAO', () => {
         await db.newTableUsers();
     });
 
-    let newUser =     {
-        username: "user1@ezwh.com",
-        name: "John",
-        surname : "Smith",
-        password : "testpassword",
-        type : "customer"
-    }
-    let editUser =     {
-        username: "user1@ezwh.com",
-        name: "John",
-        surname : "Smith",
-        password : "testpassword",
-        type : "customer",
-        newType : "supplier"
-    }
-
-    testAddUser(newUser);
-    testEditUser(editUser);
-    testDeleteUser(newUser);
+    //Add user
+    testAddUser({username: "user1@ezwh.com",name: "John",surname : "Smith",password : "testpassword",type : "customer"},1);
+    //Get user, should be the same as just added
+    testGetUsers([{id: 1, name: "John", surname: "Smith", email: "user1@ezwh.com",type: "customer"}]);
+    //Get users excluding manager.Should be the same as before
+    testGetUsersWithoutManagers([{id: 1, name: "John", surname: "Smith", email: "user1@ezwh.com",type: "customer"}]);
+    //Get suppliers, should be empty
+    testGetSuppliers([]);
+    //Get user using email and type
+    testGetUserByEmailType({username: "user1@ezwh.com",type : "customer"},
+                [{id: 1, name: "John", surname: "Smith",email: "user1@ezwh.com",password:"testpassword",type: "customer"}]);
+    
+    //Check if user is stored
+    testCheckStored({username: "user1@ezwh.com",type : "customer"},1)
+    
+    //Edit User to supplier
+    testEditUser({username: "user1@ezwh.com",type : "customer", newType: "supplier"},1);
+    //Get user, should be the same as just edited
+    testGetUsers([{id: 1, name: "John", surname: "Smith", email: "user1@ezwh.com",type: "supplier"}]);
+    //Get suppliers, should be the same as just edited
+    testGetSuppliers([{id: 1, name: "John", surname: "Smith", email: "user1@ezwh.com"}]);
+    
+    //Delete user (supplier)
+    testDeleteUser({username: "user1@ezwh.com",type : "supplier"},1);
+    //Get users, should be empty
+    testGetUsers([]);
+    //Get suppliers, should be empty
+    testGetSuppliers([]);
+    //Get users excluding manager.Should be empty
+    testGetUsersWithoutManagers([]);
+   
 });

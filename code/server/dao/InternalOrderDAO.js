@@ -48,7 +48,7 @@ class InternalOrderDAO{
     storeInternalOrderProducts(data){
         return new Promise((resolve, reject) => {
             const sql = 'INSERT INTO INTERNAL_ORDERS_PRODUCTS(SKUID, DESCRIPTION, PRICE, QTY, ORDERID) VALUES (?,?,?,?,?)'
-            this.db.run(sql, [data.SKUId, data.description, data.price, data.qty, data.orderId] , (err) => {
+            this.db.run(sql, [data.SKUId, data.description, data.price, data.qty, data.orderId] , function (err) {
                 if(err){
                     reject(err);
                     return;
@@ -77,7 +77,7 @@ class InternalOrderDAO{
     updateInternalOrder(data){
         return new Promise((resolve, reject) => {
             const sql = 'UPDATE INTERNAL_ORDERS SET STATE = ? WHERE ID = ?'
-            this.db.run(sql, [data.newState, data.orderId] , (err) => {
+            this.db.run(sql, [data.newState, data.orderId] , function (err) {
                 if(err){
                     reject(err);
                     return;
@@ -90,7 +90,7 @@ class InternalOrderDAO{
     updateInternalOrderProducts(data){
         return new Promise((resolve, reject) => {
             const sql = 'UPDATE INTERNAL_ORDERS_PRODUCTS SET RFID = ? WHERE ORDERID = ? AND SKUId = ?'
-            this.db.run(sql, [data.RFID, data.orderId, data.SKUId] , (err) => {
+            this.db.run(sql, [data.RFID, data.orderId, data.SKUId] , function (err) {
                 if(err){
                     reject(err);
                     return;
@@ -103,7 +103,7 @@ class InternalOrderDAO{
     deleteInternalOrder(data){
         return new Promise((resolve, reject) => {
             const sql = 'DELETE FROM INTERNAL_ORDERS WHERE ID = ?'
-            this.db.run(sql, [data.orderId] , (err) => {
+            this.db.run(sql, [data.orderId] , function (err) {
                 if(err){
                     reject(err);
                     return;
@@ -116,7 +116,7 @@ class InternalOrderDAO{
     deleteInternalOrderProducts(data){
         return new Promise((resolve, reject) => {
             const sql = 'DELETE FROM INTERNAL_ORDERS_PRODUCTS WHERE ORDERID = ?'
-            this.db.run(sql, [data.orderId] , (err) => {
+            this.db.run(sql, [data.orderId] , function (err) {
                 if(err){
                     reject(err);
                     return;

@@ -18,7 +18,7 @@ class UserDAO{
             })
         })
     }
-
+/* Login information is not needed yet
     newTableLoggedUsers(){
         return new Promise((resolve, reject) => {
             const sql = 'CREATE TABLE IF NOT EXISTS LOGGED_USERS(ID INTEGER, NAME VARCHAR, SURNAME VARCHAR, EMAIL VARCHAR, TYPE VARCHAR)';
@@ -55,6 +55,32 @@ class UserDAO{
         })
     }
 
+    loginUser(data){
+        return new Promise((resolve, reject) => {
+            const sql = 'INSERT INTO LOGGED_USERS(ID, NAME, SURNAME, EMAIL, TYPE) VALUES (?,?,?,?,?)'
+            this.db.run(sql, [data.id, data.name, data.surname, data.email, data.type] , (err) => {
+                if(err){
+                    reject(err);
+                    return;
+                }
+                resolve(this.lastID)
+            })
+        })
+    }
+
+    logoutUser(data){
+        return new Promise((resolve, reject) => {
+            const sql = 'DELETE FROM LOGGED_USERS WHERE '
+            this.db.run(sql, [data.id, data.name, data.surname, data.email, data.type] , (err) => {
+                if(err){
+                    reject(err);
+                    return;
+                }
+                resolve(this.lastID)
+            })
+        })
+    }
+*/
     getStoredSuppliers() {
         return new Promise((resolve, reject) => {
             const sql = 'SELECT * FROM USERS WHERE TYPE = "supplier"'
@@ -165,7 +191,7 @@ class UserDAO{
     storeUser(data){
         return new Promise((resolve, reject) => {
             const sql = 'INSERT INTO USERS(NAME, SURNAME, EMAIL, PASSWORD, TYPE) VALUES (?,?,?,?,?)'
-            this.db.run(sql, [data.name, data.surname, data.username, data.password, data.type] , (err) => {
+            this.db.run(sql, [data.name, data.surname, data.username, data.password, data.type] , function (err) {
                 if(err){
                     reject(err);
                     return;
@@ -178,7 +204,7 @@ class UserDAO{
     deleteUser(data){
         return new Promise((resolve, reject) => {
             const sql = 'DELETE FROM USERS WHERE EMAIL = ? AND TYPE = ?'
-            this.db.run(sql, [data.username, data.type] , (err) => {
+            this.db.run(sql, [data.username, data.type] , function (err) {
                 if(err){
                     reject(err);
                     return;
@@ -204,33 +230,7 @@ class UserDAO{
     updateUser(data){
         return new Promise((resolve, reject) => {
             const sql = 'UPDATE USERS SET TYPE = ? WHERE EMAIL = ? AND TYPE = ?'
-            this.db.run(sql, [data.newType, data.username, data.type] , (err) => {
-                if(err){
-                    reject(err);
-                    return;
-                }
-                resolve(this.lastID)
-            })
-        })
-    }
-
-    loginUser(data){
-        return new Promise((resolve, reject) => {
-            const sql = 'INSERT INTO LOGGED_USERS(ID, NAME, SURNAME, EMAIL, TYPE) VALUES (?,?,?,?,?)'
-            this.db.run(sql, [data.id, data.name, data.surname, data.email, data.type] , (err) => {
-                if(err){
-                    reject(err);
-                    return;
-                }
-                resolve(this.lastID)
-            })
-        })
-    }
-
-    logoutUser(data){
-        return new Promise((resolve, reject) => {
-            const sql = 'DELETE FROM LOGGED_USERS WHERE '
-            this.db.run(sql, [data.id, data.name, data.surname, data.email, data.type] , (err) => {
+            this.db.run(sql, [data.newType, data.username, data.type] , function (err) {
                 if(err){
                     reject(err);
                     return;
