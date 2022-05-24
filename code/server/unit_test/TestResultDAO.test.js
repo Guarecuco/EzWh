@@ -17,28 +17,28 @@ function testAddResult(input) {
     });
 }
 
-function testEditTest(input) {
-    test('Edit existing test', async () => {
+function testEditResult(input) {
+    test('Edit existing result', async () => {
 
-        await db.updateTest(input)
-        let res = await db.getTestDescriptor(input.nid);
+        await db.updateResult(input)
+        let res = await db.getSKUResult(input);
 
-        expect(res.name).toStrictEqual(input.nname);
-        expect(res.procedureDescription).toStrictEqual(input.ndescr);
-        expect(res.idSKU).toStrictEqual(input.nsku);
+        expect(res[0].idTestDescriptor).toStrictEqual(input.etest);
+        expect(res[0].Date).toStrictEqual(input.edate);
+        expect(res[0].Result).toStrictEqual(input.eresult);
     });
 }
 
-function testGetTests(input) {
-    test('Retrieving tests', async () => {
+function testGetResultsRfid(input) {
+    test('Retrieving results from rfid', async () => {
 
-        let res = await db.getTestsDescriptors();
-
+        let res = await db.getSKUResults(input.rfid);
+        
         if (res !== undefined){
-            expect(res[0].id).toStrictEqual(input.nid);
-            expect(res[0].name).toStrictEqual(input.nname);
-            expect(res[0].procedureDescription).toStrictEqual(input.ndescr);
-            expect(res[0].idSKU).toStrictEqual(input.nsku);
+            expect(res[0].id).toStrictEqual(input.id);
+            expect(res[0].idTestDescriptor).toStrictEqual(input.etest);
+            expect(res[0].Date).toStrictEqual(input.edate);
+            expect(res[0].Result).toStrictEqual(input.eresult);
         }
         else{
             expect(res).toStrictEqual([]);
@@ -46,30 +46,31 @@ function testGetTests(input) {
     });
 }
 
-function testGetTest(input) {
-    test('Retrieving test', async () => {
-
+function testGetResultsRfidId(input) {
+    test('Retrieving result from rfid and id', async () => {
+        let res = await db.getSKUResult(input);
         
-        let res = await db.getTestsDescriptors(input.id);
         if (res !== undefined){
-            expect(res.id).toStrictEqual(input.id);
-            expect(res.name).toStrictEqual(input.name);
-            expect(res.procedureDescription).toStrictEqual(input.procedureDescription);
-            expect(res.idSKU).toStrictEqual(input.idSKU);
+            expect(res[0].id).toStrictEqual(input.id);
+            expect(res[0].idTestDescriptor).toStrictEqual(input.etest);
+            expect(res[0].Date).toStrictEqual(input.edate);
+            expect(res[0].Result).toStrictEqual(input.eresult);
+        }
+        else{
+            expect(res).toStrictEqual([]);
         }
     });
 }
 
 
 
-function testDeleteTest(input) {
+function testDeleteResult(input) {
     test('Delete existing test', async () => {
         
-        await db.deleteTest(input);
+        await db.deleteResult(input);
         
-        let res = await db.findTestId(input);
-
-        expect(res).toStrictEqual(0);
+        let res = await db.getSKUResult(input);
+        expect(JSON.stringify(res)).toStrictEqual(JSON.stringify([]));
     });
 }
 
@@ -91,16 +92,18 @@ describe('Test TestResult DAO', () => {
             Result: true
     }
 
-    let edit={
-        nid:1,
-        nname: "aggiornamento",
-        ndescr: "dei test descriptor",
-        nsku: 1
+    let edit= {
+        id:1,
+        rfid:"12345678901234567890123456789016",
+        etest:1,
+        edate:"2021/11/29",
+        eresult: true
     }
 
+
     testAddResult(result);
-   /* testEditTest(edit);
-    testGetTests(edit);
-    testGetTest(edit);
-    testDeleteTest(1);*/
+    testEditResult(edit);
+    testGetResultsRfid(edit);
+    testGetResultsRfidId(edit);
+    testDeleteResult(edit);
 });

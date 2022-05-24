@@ -134,7 +134,7 @@ class ItemDAO{
     }
     dropItemsTable(){
         return new Promise((resolve, reject) => {
-            const sql = 'DROP TABLE ITEMS'
+            const sql = 'DROP TABLE IF EXISTS ITEMS'
             this.db.run(sql, (err) => {
                 if(err){
                     reject(err);

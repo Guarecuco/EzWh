@@ -133,7 +133,7 @@ class TestResultDAO{
 
     dropResultsTable(){
         return new Promise((resolve, reject) => {
-            const sql = 'DROP TABLE RESULTS'
+            const sql = 'DROP TABLE IF EXISTS RESULTS'
             this.db.run(sql, (err) => {
                 if(err){
                     reject(err);
