@@ -191,7 +191,7 @@ class UserDAO{
     storeUser(data){
         return new Promise((resolve, reject) => {
             const sql = 'INSERT INTO USERS(NAME, SURNAME, EMAIL, PASSWORD, TYPE) VALUES (?,?,?,?,?)'
-            this.db.run(sql, [data.name, data.surname, data.username, data.password, data.type] , (err) => {
+            this.db.run(sql, [data.name, data.surname, data.username, data.password, data.type] , function (err) {
                 if(err){
                     reject(err);
                     return;
@@ -204,7 +204,7 @@ class UserDAO{
     deleteUser(data){
         return new Promise((resolve, reject) => {
             const sql = 'DELETE FROM USERS WHERE EMAIL = ? AND TYPE = ?'
-            this.db.run(sql, [data.username, data.type] , (err) => {
+            this.db.run(sql, [data.username, data.type] , function (err) {
                 if(err){
                     reject(err);
                     return;
@@ -230,7 +230,7 @@ class UserDAO{
     updateUser(data){
         return new Promise((resolve, reject) => {
             const sql = 'UPDATE USERS SET TYPE = ? WHERE EMAIL = ? AND TYPE = ?'
-            this.db.run(sql, [data.newType, data.username, data.type] , (err) => {
+            this.db.run(sql, [data.newType, data.username, data.type] , function (err) {
                 if(err){
                     reject(err);
                     return;

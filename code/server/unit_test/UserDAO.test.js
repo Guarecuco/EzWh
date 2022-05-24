@@ -1,123 +1,76 @@
 const userDao = require('../dao/UserDAO');
 const db = new userDao('EzWh.db');
 
-function testAddUser(input) {
+function testAddUser(input,expectedResult) {
     test('Create new user', async () => {
         
-        await db.storeUser(input);
+        let res = await db.storeUser(input);
         
-        let res = await db.getUserByEmailType(input);
-
-        expect(res[0].name).toStrictEqual(input.name);
-        expect(res[0].surname).toStrictEqual(input.surname);
-        expect(res[0].username).toStrictEqual(input.email);
-        expect(res[0].type).toStrictEqual(input.type);
-        expect(res[0].password).toStrictEqual(input.password);
+        expect(res).toStrictEqual(expectedResult);
     });
 }
 
-function testEditUser(input) {
+function testEditUser(input,expectedResult) {
     test('Edit existing user', async () => {
 
-        await db.updateUser(input)
-        input.type = input.newType
-        let res = await db.getUserByEmailType(input);
-
-        expect(res[0].username).toStrictEqual(input.email);
-        expect(res[0].type).toStrictEqual(input.newType);
+        let res = await db.updateUser(input)
+        
+        expect(res).toStrictEqual(expectedResult);
     });
 }
 
-function testCheckStored(input) {
-    test('Retrieve user by email and type', async () => {
+function testCheckStored(input,expectedResult) {
+    test('Check if user exist', async () => {
 
         let res = await db.checkIfStored(input);
 
-        if (res[0] !== undefined){
-            expect(res[0]).toStrictEqual(input.count);
-        }
-        else{
-            expect(res[0]).toStrictEqual(input);
-        }
+        expect(res[0]).toStrictEqual(expectedResult);
     });
 }
 
 
-function testGetUserByEmailType(input) {
+function testGetUserByEmailType(input,expectedResult) {
     test('Retrieve user by email and type', async () => {
 
         let res = await db.getUserByEmailType(input);
 
-        if (res[0] !== undefined){
-            expect(res[0].name).toStrictEqual(input.name);
-            expect(res[0].surname).toStrictEqual(input.surname);
-            expect(res[0].username).toStrictEqual(input.email);
-            expect(res[0].type).toStrictEqual(input.type);
-        }
-        else{
-            expect(res[0]).toStrictEqual(input);
-        }
+        expect(JSON.stringify(res)).toStrictEqual(JSON.stringify(expectedResult));
     });
 }
 
-function testGetUsers(input) {
+function testGetUsers(expectedResult) {
     test('Retrieving users', async () => {
 
         let res = await db.getStoredUsers();
 
-        if (res[0] !== undefined){
-            expect(res[0].name).toStrictEqual(input.name);
-            expect(res[0].surname).toStrictEqual(input.surname);
-            expect(res[0].username).toStrictEqual(input.email);
-            expect(res[0].type).toStrictEqual(input.type);
-        }
-        else{
-            expect(res[0]).toStrictEqual(input);
-        }
+        expect(JSON.stringify(res)).toStrictEqual(JSON.stringify(expectedResult));
     });
 }
 
-function testGetSuppliers(input) {
+function testGetSuppliers(expectedResult) {
     test('Retrieving suppliers', async () => {
 
         let res = await db.getStoredSuppliers();
 
-        if (res[0] !== undefined){
-            expect(res[0].name).toStrictEqual(input.name);
-            expect(res[0].surname).toStrictEqual(input.surname);
-            expect(res[0].username).toStrictEqual(input.email);
-        }
-        else{
-            expect(res[0]).toStrictEqual(input);
-        }
+        expect(JSON.stringify(res)).toStrictEqual(JSON.stringify(expectedResult));
     });
 }
 
-function testGetUsersWithoutManagers(input) {
+function testGetUsersWithoutManagers(expectedResult) {
     test('Retrieving users without manager', async () => {
 
         let res = await db.getStoredUsersWithoutManagers();
 
-        if (res[0] !== undefined){
-            expect(res[0].name).toStrictEqual(input.name);
-            expect(res[0].surname).toStrictEqual(input.surname);
-            expect(res[0].username).toStrictEqual(input.email);
-            expect(res[0].type).toStrictEqual(input.type);
-        }
-        else{
-            expect(res[0]).toStrictEqual(input);
-        }
+        expect(JSON.stringify(res)).toStrictEqual(JSON.stringify(expectedResult));
     });
 }
 
-function testDeleteUser(input) {
+function testDeleteUser(input, expectedResult) {
     test('Delete existing user', async () => {
         
-        await db.deleteUser(input);
+        let res = await db.deleteUser(input);
         
-        let res = await db.getUserByEmailType(input);
-
-        expect(res[0]).toStrictEqual(undefined);
+        expect(res).toStrictEqual(expectedResult);
     });
 }
 
@@ -132,26 +85,34 @@ describe('Test User DAO', () => {
     });
 
     //Add user
-    testAddUser({username: "user1@ezwh.com",name: "John",surname : "Smith",password : "testpassword",type : "customer"});
+    testAddUser({username: "user1@ezwh.com",name: "John",surname : "Smith",password : "testpassword",type : "customer"},1);
     //Get user, should be the same as just added
-    testGetUsers({username: "user1@ezwh.com",name: "John",surname : "Smith",type : "customer"});
-    //Get users excluding manager
-    testGetUsersWithoutManagers({username: "user1@ezwh.com",name: "John",surname : "Smith",type : "customer"});
+    testGetUsers([{id: 1, name: "John", surname: "Smith", email: "user1@ezwh.com",type: "customer"}]);
+    //Get users excluding manager.Should be the same as before
+    testGetUsersWithoutManagers([{id: 1, name: "John", surname: "Smith", email: "user1@ezwh.com",type: "customer"}]);
+    //Get suppliers, should be empty
+    testGetSuppliers([]);
     //Get user using email and type
-    testGetUserByEmailType({username: "user1@ezwh.com",name: "John",surname : "Smith",password : "testpassword",type : "customer"});
+    testGetUserByEmailType({username: "user1@ezwh.com",type : "customer"},
+                [{id: 1, name: "John", surname: "Smith",email: "user1@ezwh.com",password:"testpassword",type: "customer"}]);
+    
     //Check if user is stored
-    testCheckStored({username: "user1@ezwh.com",type : "customer",count:1})
+    testCheckStored({username: "user1@ezwh.com",type : "customer"},1)
     
     //Edit User to supplier
-    testEditUser({username: "user1@ezwh.com",type : "customer", newType: "supplier"});
+    testEditUser({username: "user1@ezwh.com",type : "customer", newType: "supplier"},1);
     //Get user, should be the same as just edited
-    testGetUsers({username: "user1@ezwh.com",name: "John",surname : "Smith",type : "supplier"});
+    testGetUsers([{id: 1, name: "John", surname: "Smith", email: "user1@ezwh.com",type: "supplier"}]);
     //Get suppliers, should be the same as just edited
-    testGetSuppliers({username: "user1@ezwh.com",name: "John",surname : "Smith"});
+    testGetSuppliers([{id: 1, name: "John", surname: "Smith", email: "user1@ezwh.com"}]);
     
     //Delete user (supplier)
-    testDeleteUser({username: "user1@ezwh.com",type : "supplier"});
+    testDeleteUser({username: "user1@ezwh.com",type : "supplier"},1);
     //Get users, should be empty
-    testGetUsers(undefined);
+    testGetUsers([]);
+    //Get suppliers, should be empty
+    testGetSuppliers([]);
+    //Get users excluding manager.Should be empty
+    testGetUsersWithoutManagers([]);
    
 });
