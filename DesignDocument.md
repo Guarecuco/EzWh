@@ -7,9 +7,9 @@ Authors:
 * Daniel Guarecuco
 * Zoltan Mazzuco 
 
-Date: 27 April, 2022
+Date: 3 May, 2022
 
-Version:
+Version: 1.1
 
 
 # Contents
@@ -24,6 +24,7 @@ Version:
   - [UC3, sc1-2 - Manage issue of restock orders](#uc3-sc1-2---manage-issue-of-restock-orders)
   - [UC5.1, sc 5.1.1 - Record restock order arrival](#uc51-sc-511---record-restock-order-arrival)
   - [UC5.2, sc 5.2.1, 5.2.2, 5.2.3](#uc52-sc-521-522-523)
+  - [UC6, sc 6.2 - Return order of any SKU items](#uc6-sc-62---return-order-of-any-sku-items)
 
 # Instructions
 
@@ -35,7 +36,7 @@ The application is composed of the following packages:
 * ***GUI***: Implementing the Graphical User Interface through a web browser.
 * ***Data***:Implementing the model layer in a MVC architecture. It manages and processes all the data.
 * ***Exceptions***:Implementing the exceptions handler, triggered by the user.
-* 
+
 ```plantuml
 @startuml
 package it.company.ezwh.gui as GUI
@@ -114,7 +115,7 @@ class DataImpl {
   List<RestockOrder>: getAllRestockOrders()
   List<RestockOrder>: getAllRestockOrdersIssued()
   RestockOrder: getRestockOrder(int ID)
-  List<SKUItem>: getReturnedItems(int ID)
+  List<SKUItem>: getReturnableItems(int ID)
   Int: addRestockOrder(JSON Info)
   Int: updateRestockOrder(JSON info, int ID)
   Int: updateRestockOrderSKUItmes(JSON info, int ID)
@@ -194,8 +195,10 @@ class RestockOrder {
   transportNote
   SKUItems
   state
-  createRestockOrder(string issueDate, List<Item> products, int supplierId, string state)
-  int: updateRestockOrder(string newState, int ID)
+  RestockOrder: createRestockOrder(string issueDate, List<Item> products, int supplierId, string state)
+ List<SKUItem>: getFaultySKUItems(ID)
+ List<SKUItem>: getToBeReturnedSKUItems(ID)
+ int: updateRestockOrder(string newState, int ID)
   void setIssueDate(string issueDate)
   void setState(string state)
   void setProducts(List<Item> products)
@@ -234,6 +237,7 @@ class SKU {
   void : setPrice(int price)
   void : setNotes(string notes)
   void : setAvailableQuantity(int quantity)
+  int: getAvailableQuantity()
   SKU : getSKU()
   List<int> : GetTestDescriptors()
   int : updatePosition(string position)
@@ -393,7 +397,6 @@ N3 .. ReturnOrder
 
 
 # Verification sequence diagrams 
-\<select key scenarios from the requirement document. For each of them define a sequence diagram showing that the scenario can be implemented by the classes and methods in the design>
 
 ## UC3, sc1-2 - Manage issue of restock orders
 
@@ -465,6 +468,51 @@ deactivate RestockOrder
 DataImpl --> EzWh: Done
 deactivate DataImpl
 end loop
+deactivate EzWh
+@enduml
+```
+
+## UC6, sc 6.2 - Return order of any SKU items
+```plantuml
+@startuml
+activate EzWh
+EzWh->DataImpl: getReturnableItems(ID)
+activate DataImpl
+DataImpl -> RestockOrder: getFaultySKUItems(ID)
+activate RestockOrder
+RestockOrder --> DataImpl: return faultySKUItems
+DataImpl -> RestockOrder: getToBeReturnedSKUItems(ID)
+RestockOrder --> DataImpl: return toBeReturnedSKUItems
+deactivate RestockOrder
+DataImpl -> DataImpl: union(faultySKUItems, toBeReturnedSKUItems)
+DataImpl -->EzWh: return unionResult
+EzWh -> DataImpl: addReturnOrder(returnDate, unionResult, roID)
+DataImpl -> ReturnOrder: createReturnOrder(returnDate, unionResult, roID)
+activate ReturnOrder
+ReturnOrder -> ReturnOrder: setReturnDate(returnDate)
+ReturnOrder -> ReturnOrder: setProducts(unionResult)
+ReturnOrder -> ReturnOrder: setRestockOrderId(roID)
+ReturnOrder -> DataImpl: return RO
+deactivate ReturnOrder
+activate SKUItem
+activate SKU
+activate Position
+loop for each SKUItem as item
+DataImpl -> SKUItem: setAvailability(0)
+SKUItem --> DataImpl: Done
+DataImpl -> SKU: setAvailableQuantity(item.getSKU().getAvailableQuantity()-1)
+SKU --> DataImpl: Done
+DataImpl -> Position: increasePosition(item)
+Position --> DataImpl: Done
+end loop
+deactivate Position
+deactivate SKU
+deactivate SKUItem
+DataImpl --> EzWh: Done
+deactivate DataImpl
+EzWh -> EzWh: notifySupplier()
+activate EzWh
+deactivate EzWh
 deactivate EzWh
 @enduml
 ```
