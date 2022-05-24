@@ -3,6 +3,7 @@ const ReturnOrderDAO = require('../dao/ReturnOrderDAO.js')
 const SKUitemDAO = require('../dao/SkuitemDAO.js')
 const SkuDAO = require('../dao/SkuDAO.js')
 const PositionDAO = require('../dao/PositionDAO.js')
+const {isValid} = require("../utilities/dates");
 
 
 const db = new ReturnOrderDAO('EzWh.db')
@@ -53,6 +54,10 @@ router.post('/api/returnOrder', async (req,res)=>{
         //Check if any field is empty
         if (order === undefined || order.returnDate === undefined ||
             order.products === undefined || order.restockOrderId === undefined) {
+            return res.status(422).json({error: `Invalid order data`});
+        }
+
+        if (!isValid(order.returnDate)){
             return res.status(422).json({error: `Invalid order data`});
         }
 

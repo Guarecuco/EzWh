@@ -3,6 +3,7 @@ const RestockOrderDAO = require('../dao/RestockOrderDAO.js')
 const TestResultDAO = require('../dao/TestResultDAO.js')
 const db = new RestockOrderDAO('EzWh.db')
 const testdb = new TestResultDAO('EzWh.db')
+const dates = require('../utilities/dates.js')
 
 const router = express.Router()
 router.use(express.json());
@@ -90,6 +91,9 @@ router.post('/api/restockOrder', async (req,res)=>{
             order.supplierId === undefined || order.products === undefined) {
                 return res.status(422).json({error: `Invalid order data`});
         }
+
+        if(dates.isValid(order.issueDate) === false)
+            return res.status(422).json({error: `Invalid order data`});
 
         await db.newTableRestockOrders();
         const lastID = await db.addRestockOrder(order);
