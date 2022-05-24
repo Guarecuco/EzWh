@@ -1,16 +1,16 @@
 const testDAO = require('../dao/TestDescriptorDAO');
 const db = new testDAO('EzWh.db');
 
+
 function testAddTest(input) {
     test('Create new test', async () => {
         
         await db.addTest(input);
         
-        let res = await db.findTestName(input.name);
-
-        expect(res[0].name).toStrictEqual(input.name);
-        expect(res[0].procedureDescription).toStrictEqual(input.procedureDescription);
-        expect(res[0].idSKU).toStrictEqual(input.idSKU);
+        let res = await db.getTestDescriptor([1]);
+        expect(res.name).toStrictEqual(input.name);
+        expect(res.procedureDescription).toStrictEqual(input.procedureDescription);
+        expect(res.idSKU).toStrictEqual(input.idSKU);
         
     });
 }
@@ -18,12 +18,12 @@ function testAddTest(input) {
 function testEditTest(input) {
     test('Edit existing test', async () => {
 
-        await db.updateTest(input.id)
-        let res = await db.findTestId(input.id);
+        await db.updateTest(input)
+        let res = await db.getTestDescriptor(input.nid);
 
-        expect(res[0].name).toStrictEqual(input.name);
-        expect(res[0].procedureDescription).toStrictEqual(input.procedureDescription);
-        expect(res[0].idSKU).toStrictEqual(input.idSKU);
+        expect(res.name).toStrictEqual(input.nname);
+        expect(res.procedureDescription).toStrictEqual(input.ndescr);
+        expect(res.idSKU).toStrictEqual(input.nsku);
     });
 }
 
@@ -32,14 +32,14 @@ function testGetTests(input) {
 
         let res = await db.getTestsDescriptors();
 
-        if (res[0] !== undefined){
-            expect(res[0].id).toStrictEqual(input.id);
-            expect(res[0].name).toStrictEqual(input.name);
-            expect(res[0].procedureDescription).toStrictEqual(input.procedureDescription);
-            expect(res[0].idSKU).toStrictEqual(input.idSKU);
+        if (res !== undefined){
+            expect(res[0].id).toStrictEqual(input.nid);
+            expect(res[0].name).toStrictEqual(input.nname);
+            expect(res[0].procedureDescription).toStrictEqual(input.ndescr);
+            expect(res[0].idSKU).toStrictEqual(input.nsku);
         }
         else{
-            expect(res[0]).toStrictEqual([]);
+            expect(res).toStrictEqual([]);
         }
     });
 }
@@ -47,13 +47,13 @@ function testGetTests(input) {
 function testGetTest(input) {
     test('Retrieving test', async () => {
 
-        await db.updateTest(input.id)
-        let res = await db.findTestId(input.id);
-        if (res[0] !== undefined){
-            expect(res[0].id).toStrictEqual(input.id);
-            expect(res[0].name).toStrictEqual(input.name);
-            expect(res[0].procedureDescription).toStrictEqual(input.procedureDescription);
-            expect(res[0].idSKU).toStrictEqual(input.idSKU);
+        
+        let res = await db.getTestsDescriptors(input.id);
+        if (res !== undefined){
+            expect(res.id).toStrictEqual(input.id);
+            expect(res.name).toStrictEqual(input.name);
+            expect(res.procedureDescription).toStrictEqual(input.procedureDescription);
+            expect(res.idSKU).toStrictEqual(input.idSKU);
         }
     });
 }
@@ -67,7 +67,7 @@ function testDeleteTest(input) {
         
         let res = await db.findTestId(input);
 
-        expect(res[0]).toStrictEqual(undefined);
+        expect(res).toStrictEqual(0);
     });
 }
 
@@ -86,26 +86,17 @@ describe('Test TestDescriptor DAO', () => {
         procedureDescription: "dei test descriptor",
         idSKU: 1
     }
-    testAddTest(test)
-    /*Get user, should be the same as just added
-    testGetUsers({username: "user1@ezwh.com",name: "John",surname : "Smith",type : "customer"});
-    //Get users excluding manager
-    testGetUsersWithoutManagers({username: "user1@ezwh.com",name: "John",surname : "Smith",type : "customer"});
-    //Get user using email and type
-    testGetUserByEmailType({username: "user1@ezwh.com",name: "John",surname : "Smith",password : "testpassword",type : "customer"});
-    //Check if user is stored
-    testCheckStored({username: "user1@ezwh.com",type : "customer",count:1})
-    
-    //Edit User to supplier
-    testEditUser({username: "user1@ezwh.com",type : "customer", newType: "supplier"});
-    //Get user, should be the same as just edited
-    testGetUsers({username: "user1@ezwh.com",name: "John",surname : "Smith",type : "supplier"});
-    //Get suppliers, should be the same as just edited
-    testGetSuppliers({username: "user1@ezwh.com",name: "John",surname : "Smith"});
-    
-    //Delete user (supplier)
-    testDeleteUser({username: "user1@ezwh.com",type : "supplier"});
-    //Get users, should be empty
-    testGetUsers(undefined);
-   */
+
+    let edit={
+        nid:1,
+        nname: "aggiornamento",
+        ndescr: "dei test descriptor",
+        nsku: 1
+    }
+
+    testAddTest(test);
+    testEditTest(edit);
+    testGetTests(edit);
+    testGetTest(edit);
+    testDeleteTest(1);
 });
