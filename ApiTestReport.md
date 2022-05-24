@@ -8,7 +8,18 @@ Version:
 
 - [Dependency graph](#dependency graph)
 
-- [Integration approach](#integration)
+- [Integration and API Test Report](#integration-and-api-test-report)
+- [Contents](#contents)
+- [Dependency graph](#dependency-graph)
+- [Integration approach](#integration-approach)
+- [Integration Tests](#integration-tests)
+  - [Step 1](#step-1)
+  - [Step 2](#step-2)
+  - [Step n](#step-n)
+- [API testing - Scenarios](#api-testing---scenarios)
+- [Coverage of Scenarios and FR](#coverage-of-scenarios-and-fr)
+- [Coverage of Non Functional Requirements](#coverage-of-non-functional-requirements)
+    - [](#)
 
 - [Tests](#tests)
 
@@ -88,9 +99,9 @@ Report also for each of the scenarios the (one or more) API Mocha tests that cov
 | 2.5    |                                 |             |             
 | 3.1     |                                 | addRestockOrder(),              |             
 | 3.2       |                                 | addRestockOrder(),            |             
-| 4.1      |                                 |             |             
-| 4.2       |                                 |             |             
-| 4.3        |                                 |             |             
+| 4.1      | FR1.1, FR4.1                       | newUser()            |             
+| 4.2       | FR1.1, FR1.3, FR1.4, FR4.1, FR4.3, FR4.4        | editUser(), getUsers()            |             
+| 4.3       | FR1.2, FR1.3, FR1.4, FR4.2, FR4.3, FR4.4        | deleteUser(), getUsers()            |             
 | 5.1.1      |                                 | updateRestockOrder(), updateRestockOrderSKUItems()             |             
 | 5.2.1      |                                 | updateRestockOrder()            |             
 | 5.2.2       |                                 | updateRestockOrder()            |             
@@ -100,12 +111,12 @@ Report also for each of the scenarios the (one or more) API Mocha tests that cov
 | 5.3.3      |                                 | updateRestockOrder()             |             
 | 6.1     |                                 | getAllReturnablesById(), addReturnOrder()            |       
 | 6.2     |                                 | getAllReturnablesById(), addReturnOrder()             |             
-| 7.1     |                                 |             |             
-| 7.2      |                                 |             |             
-| 9.1    |                                 |             |             
-| 9.2     |                                 |             |             
-| 9.3       |                                 |             |             
-| 10.1      |                                 |             |   
+| 7.1     | FR1.5            | managerSessions(), customerSessions(), supplierSessions(), clerkSessions(), qualityEmployeeSessions(), deliveryEmployeeSessions()            |             
+| 7.2      |                                 | Not to be implemented yet            |             
+| 9.1    | FR6.1, FR6.2, FR6.3, FR6.4, FR6.5, FR6.6, FR6.7 | newInternalOrder(), getInternalOrdersIssued(), editInternalOrder()           |             
+| 9.2     | FR6.1, FR6.2, FR6.3, FR6.4, FR6.5, FR6.6, FR6.7 | newInternalOrder(), getInternalOrdersIssued(), editInternalOrder()            |             
+| 9.3       | FR6.1, FR6.2, FR6.3, FR6.4, FR6.5, FR6.6, FR6.7 | newInternalOrder(), getInternalOrdersIssued(), editInternalOrder()             |             
+| 10.1      | FR6.7, FR6.8 | getInternalOrdersAccepted(), editInternalOrder()             |   
 | 11.1      |                                 |             |             
 | 11.2      |                                 |             |             
 | 12.1      |                                 |             |             
