@@ -1,8 +1,8 @@
 const express = require("express");
 const RestockOrderDAO = require('../dao/RestockOrderDAO.js')
 const TestResultDAO = require('../dao/TestResultDAO.js')
-const db = new RestockOrderDAO('EzWh')
-const testdb = new TestResultDAO('EzWh')
+const db = new RestockOrderDAO('EzWh.db')
+const testdb = new TestResultDAO('EzWh.db')
 
 const router = express.Router()
 router.use(express.json());

@@ -5,10 +5,10 @@ const SkuDAO = require('../dao/SkuDAO.js')
 const PositionDAO = require('../dao/PositionDAO.js')
 
 
-const db = new ReturnOrderDAO('EzWh')
-const skuitemdb= new SKUitemDAO('EzWh')
-const skudb = new SkuDAO('EzWh')
-const positiondb = new PositionDAO('EzWh')
+const db = new ReturnOrderDAO('EzWh.db')
+const skuitemdb= new SKUitemDAO('EzWh.db')
+const skudb = new SkuDAO('EzWh.db')
+const positiondb = new PositionDAO('EzWh.db')
 
 
 const router = express.Router()

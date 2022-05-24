@@ -59,7 +59,7 @@ router.get('/api/items', async (req,res)=>{
           let count = await dbSKU.countSku(newItem.SKUId);
           if (count == 0){
                   
-            return res.status(422).json({error: `SKU not exist`});
+            return res.status(404).json({error: `SKU not exist`});
             }
               await db.addItem(newItem);
         return res.status(201).end(); 
@@ -85,8 +85,8 @@ router.put('/api/item/:id', async (req,res)=>{
         }
 
         //Check if item exist
-        let count = await db.getItem(item.nid);
-        if (!count){
+        let count = await db.countItems(item.nid);
+        if (count===0){
             return res.status(404).end();
         }
         //Update test

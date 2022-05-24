@@ -1,6 +1,6 @@
 const express = require("express");
 const InternalOrderDAO = require('../dao/InternalOrderDAO.js')
-const db = new InternalOrderDAO('EzWh')
+const db = new InternalOrderDAO('EzWh.db')
 
 const router = express.Router()
 router.use(express.json());

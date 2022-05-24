@@ -34,20 +34,34 @@ function getItem(expectedHTTPStatus, id, expectedJSON){
             .then(function (res) {
                 res.should.have.status(expectedHTTPStatus);
                 if (expectedHTTPStatus === 200)
-                    res.text.should.equal(JSON.stringify(expectedJSON));
+                    res.text.should.equal('['+JSON.stringify(expectedJSON)+']');
                 done();
             })
     })
 }
 //POST
+let sku= {
+    description : "a new sku",
+    weight : 100,
+    volume : 50,
+    notes : "first SKU",
+    price : 10.99,
+    availableQuantity : 50
+}
+
+
 function addItem(expectedHTTPStatus, item){
     it('Adding a new item', function (done){
-        agent.post('/api/item')
+        agent.post('/api/sku')
+        .send(sku)
+        .then(
+            agent.post('/api/item')
                 .send(item)
                 .then(function (res){
                     res.should.have.status(expectedHTTPStatus);
                     done()
                 })
+        )
     })
 }
 
@@ -57,7 +71,7 @@ function modItem(expectedHTTPStatus, id, modification){
         agent.put('/api/item/' + id)
                 .send(modification)
                 .then(function (res){
-                    
+                 
                     res.should.have.status(expectedHTTPStatus);
                     
                     done()
@@ -73,9 +87,17 @@ describe('test Items apis', () => {
         SKUId : 1,
         supplierId : 2
     }
+
+    let itemfail = {
+        id:3,
+        description : "a new item",
+        price : 10.99,
+        SKUId : 10,
+        supplierId : 2
+    }
    
     let modbody={
-        newDescription : "a new sku",
+        newDescription : "another item",
         newPrice : 20
         
     }
@@ -84,12 +106,18 @@ describe('test Items apis', () => {
     dropItemsTable(204);
     addItem(201, item);
     addItem(422);
+    addItem(404, itemfail);
 
     getAllItems(200, item);
 
     getItem(200, 1, item);
+    getItem(404, 20);
+    getItem(404);
+
     
     modItem(200, 1, modbody)
+    modItem(404, 30, modbody)
+    modItem(422, 1)
     
 })
 

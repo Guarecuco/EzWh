@@ -31,7 +31,7 @@ class ItemDAO{
                         id: r.id,
                         description: r.description,
                         price: r.price,
-                        idSKU: r.SKUId,
+                        SKUId: r.SKUId,
                         supplierId: r.supplierId
                     }
                     
@@ -71,7 +71,7 @@ class ItemDAO{
                         id: r.id,
                         description: r.description,
                         price: r.price,
-                        idSKU: r.SKUId,
+                        SKUId: r.SKUId,
                         supplierId: r.supplierId
                     }
                     
