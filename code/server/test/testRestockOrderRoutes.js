@@ -120,14 +120,6 @@ function deleteRestockOrder(expectedHTTPStatus, id){
 }
 
 before(function (done) {
-    let order = {
-        issueDate: '2021/11/29 09:33',
-        supplierId:  1,
-        products: [
-            {"SKUId":12,"description":"a product","price":10.99,"qty":30},
-            {"SKUId":180,"description":"another product","price":11.99,"qty":20}
-        ]
-    }
     let testDescriptor = {
         name:"test descriptor 1",
         procedureDescription:"simple description",
