@@ -1,8 +1,8 @@
 const express = require("express");
 const SkuitemDAO = require('../dao/SkuitemDAO.js')
-const db = new SkuitemDAO('EzWh')
+const db = new SkuitemDAO('EzWh.db')
 const SkuDAO = require('../dao/SkuDAO.js')
-const dbS = new SkuDAO('EzWh')
+const dbS = new SkuDAO('EzWh.db')
 
 const router = express.Router()
 router.use(express.json());
@@ -59,7 +59,8 @@ router.post('/api/skuitem', async (req,res)=>{
       }
       let item = req.body;
         //Check if any field is empty
-      if (!( item && item.RFID && item.SKUId !== undefined && item.DateOfStock )) {
+      if (!( item && item.RFID && item.SKUId !== undefined && item.DateOfStock && item.RFID.length==32 
+        && item.DateOfStock.match(/^([1-9]\d{3}\/(0[1-9]|1[0-2])\/(0[1-9]|[12]\d|3[01])[\ ]([01]?[0-9]|2[0-3]):[0-5][0-9])$/)!=null )) {
         return res.status(422).json({error: `Invalid skuitem data`});
       }
       //TODO: check existance of SKU
@@ -88,7 +89,8 @@ router.put('/api/skuitems/:rfid', async (req,res)=>{
         }
         const rfid=req.params.rfid;
         const item=req.body;
-        if (!( rfid && item && item.newRFID && item.newAvailable !== undefined && item.newDateOfStock)) {
+        if (!( rfid && item && item.newRFID && item.newAvailable !== undefined && item.newDateOfStock && item.newRFID.length==32
+          && item.newDateOfStock.match(/^([1-9]\d{3}\/(0[1-9]|1[0-2])\/(0[1-9]|[12]\d|3[01])[\ ]([01]?[0-9]|2[0-3]):[0-5][0-9])$/)!=null)) {
             return res.status(422).json({error: `Invalid skuitem data`});
         }
 

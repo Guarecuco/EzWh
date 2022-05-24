@@ -1,8 +1,8 @@
 const express = require("express");
 const SkuDAO = require('../dao/SkuDAO.js')
-const db = new SkuDAO('EzWh')
+const db = new SkuDAO('EzWh.db')
 const PositionDAO = require('../dao/PositionDAO.js');
-const dbP = new PositionDAO('EzWh');
+const dbP = new PositionDAO('EzWh.db');
 
 const router = express.Router()
 router.use(express.json());

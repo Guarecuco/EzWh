@@ -146,6 +146,17 @@ function updateSkuPosition(expectedHTTPStatus, id, position){
     })
 }
 
+//DELETE /api/skus/:id
+function deleteSku(expectedHTTPStatus, id){
+    it('DELETE /api/skus/:id', function (done){
+        agent.delete('/api/skus/'+id)
+            .then(function (res){
+                res.should.have.status(expectedHTTPStatus);
+                done();
+            }).catch((err)=>console.log(err));
+    })
+}
+
 describe('Test sku APIs', () => {
     deleteAllData(204);
     deleteAllPositions(204);
@@ -183,6 +194,7 @@ describe('Test sku APIs', () => {
 
     addTest(201, {id: 2,name: 'test2',procedureDescription:  'Another beautiful test',idSKU: 1});
     addTest(201, {id: 1,name: 'test1',procedureDescription:  'What a beautiful test',idSKU: 1});
+    addTest(201, {id: 3,name: 'test3',procedureDescription:  'Separeted test',idSKU: 2});
     
     getSkus(200,[
         {
@@ -205,7 +217,7 @@ describe('Test sku APIs', () => {
             "position" : "",
             "availableQuantity" : 0,
             "price" : 10.99,
-            "testDescriptors" : []
+            "testDescriptors" : [3]
         }
     ]
     );
@@ -222,4 +234,10 @@ describe('Test sku APIs', () => {
     });
 
     getSku(404,3,{error: "Sku not found"});
+
+    //DELETE /api/skus/:id
+    deleteSku(204,1);
+    deleteSku(422,3);
+
+    getSku(404,1,{error: "Sku not found"});
 })

@@ -1,6 +1,6 @@
 const express = require("express");
 const PositionDAO = require('../dao/PositionDAO.js')
-const db = new PositionDAO('EzWh')
+const db = new PositionDAO('EzWh.db')
 
 const router = express.Router()
 router.use(express.json());
