@@ -15,7 +15,6 @@ Version: 01
 - [Integration Tests](#integration-tests)
   - [Step 1](#step-1)
   - [Step 2](#step-2)
-  - [Step n](#step-n)
 - [API testing - Scenarios](#api-testing---scenarios)
 - [Coverage of Scenarios and FR](#coverage-of-scenarios-and-fr)
 - [Coverage of Non Functional Requirements](#coverage-of-non-functional-requirements)
@@ -32,7 +31,7 @@ Version: 01
 
 # Dependency graph 
 
-![DependencyGraph](diagrams/dependencyGraph.drawio.svg)
+![DependencyGraph](diagrams/DependencyGrap.jpg)
      
 # Integration approach
 
