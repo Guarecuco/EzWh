@@ -145,4 +145,19 @@ router.delete('/skuItems/dropTable', async (req,res)=>{
     }
 
 });
+
+async function TestResultStartup () {
+    try{
+        //Droping table
+        await db.dropResultsTable();
+        //Creating table
+        await db.newResultTests();
+    }
+    catch(err){
+        console.log(err);
+    }
+  
+  }
+  TestResultStartup();
+  
 module.exports = router

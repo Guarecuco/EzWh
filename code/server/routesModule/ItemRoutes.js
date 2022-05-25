@@ -145,4 +145,18 @@ router.delete('/items/dropTable', async (req,res)=>{
 
 });
 
+async function TestResultStartup () {
+    try{
+        //Droping table
+        await db.dropItemsTable();
+        //Creating table
+        await db.newTableItems();
+    }
+    catch(err){
+        console.log(err);
+    }
+  
+  }
+  TestResultStartup();
+
 module.exports = router

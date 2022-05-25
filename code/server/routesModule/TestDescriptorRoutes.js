@@ -145,4 +145,19 @@ router.delete('/testDescriptor/dropTable', async (req,res)=>{
     }
 
 });
+
+async function TestDescriptorStartup () {
+    try{
+        //Droping table
+        await db.dropTestsTable();
+        //Creating table
+        await db.newTableTests();
+    }
+    catch(err){
+        console.log(err);
+    }
+  
+  }
+  TestDescriptorStartup();
+
 module.exports = router
