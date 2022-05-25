@@ -477,4 +477,26 @@ router.post('/api/newManager', async (req,res)=>{
 }); 
 
 
+async function userStartup () {
+    try{
+        //Droping table
+        await db.dropUsers();
+        //Creating table
+        await db.newTableUsers();
+        //Encrypt password
+        encryptPassword = await bcrypt.hash("testpassword", 5);
+        //Creating hardcoded accounts
+        await db.storeUser({username: "user1@ezwh.com",name:"John",surname : "Smith",password : encryptPassword, type : "customer"});
+        await db.storeUser({username: "qualityEmployee1@ezwh.com@ezwh.com",name:"John",surname : "Smith",password : encryptPassword, type : "qualityEmployee"});
+        await db.storeUser({username: "clerk1@ezwh.com",name:"John",surname : "Smith",password : encryptPassword,type : "clerk"});
+        await db.storeUser({username: "deliveryEmployee1@ezwh.com",name:"John",surname : "Smith",password : encryptPassword, type : "deliveryEmployee"});
+        await db.storeUser({username: "supplier1@ezwh.com",name:"John",surname : "Smith",password : encryptPassword, type : "supplier"});
+        await db.storeUser({username: "manager1@ezwh.com",name:"John",surname : "Smith",password : encryptPassword, type : "manager"});
+    }
+    catch(err){
+        console.log(err);
+    }
+
+}
+userStartup();
 module.exports = router;

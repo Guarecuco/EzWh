@@ -301,4 +301,20 @@ router.delete('/api/internalOrdersAll', async (req,res)=>{
 
 });
 
+async function internalOrderStartup () {
+    try{
+        //Droping table
+        await db.dropInternalOrders();
+        await db.dropInternalOrdersProducts();
+        //Creating table
+        await db.newTableInternalOrders();
+        await db.newTableInternalOrdersProducts();
+    }
+    catch(err){
+        console.log(err);
+    }
+
+}
+internalOrderStartup();
+
 module.exports = router;
