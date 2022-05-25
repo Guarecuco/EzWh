@@ -150,7 +150,7 @@ Class User {
   username
   password
   type
-  List<User>:getStoredSuppliers()
+ List<User>:getStoredSuppliers()
   List<User>:getStoredUsers()
   List<User>:getStoredUsersWithoutManagers()
   User:getUserByEmailType(user)
@@ -181,7 +181,15 @@ class Item {
   price
   SKUId
   supplierId
-  void: setDescriptionAndPrice(string description, float price)
+   int: newTableItems()
+  void: getItems()
+  void: getItem(json)
+void: countItems(json)
+int: addItem(json)
+int: updateItem(json)
+int: deleteItem(json)
+boolean: deleteAllItems()
+boolean: dropItemsTable()
 }
 
 class A {
@@ -197,10 +205,15 @@ class RestockOrder {
   transportNote
   SKUItems
   state
-  RestockOrder: createRestockOrder(string issueDate, List<Item> products, int supplierId, string state)
- List<SKUItem>: getFaultySKUItems(ID)
- List<SKUItem>: getToBeReturnedSKUItems(ID)
- int: updateRestockOrder(string newState, int ID)
+  List<RestockOrder> getAllRestockOrders()
+  List<RestockOrder> getAllRestockOrdersIssued()
+  int checkIfStored(id)
+  RestockOrder getRestockOrder(id)
+  int addRestockOrder(issueDate, supplierId, products)
+  int updateRestockOrder(state, id)
+  int updateRestockOrderSKUItems(skuItems, id)
+  int updateRestockOrderTransportNote(id, transportNote)
+  int deleteRestockOrder(id)
   void setIssueDate(string issueDate)
   void setState(string state)
   void setProducts(List<Item> products)
@@ -218,6 +231,12 @@ class ReturnOrder {
   returnDate
   products
   restockOrderId
+   List<ReturnOrder> getAllReturnOrders()
+   int checkIfRestockOrderExists(restockOrderId)
+   ReturnOrder getReturnOrder(id)
+   Int addReturnOrder(returnDate, products, restockOrderId)
+   int deleteReturnOrder(id)
+
   void: setReturnDate(string date)
   void: setProducts(List<SKU> products)
   void: setRestockOrderId(int restockOrderId)
@@ -269,9 +288,21 @@ class TestDescriptor {
   ID
   name
   procedure description
-  void: setTestDescriptor(int ID, string Name, string Description)
-  String: getTestDescriptorName()
-  String: getTestDescriptorDescription()
+  idSKU
+  Void setName()
+  Void setProcedureDescription()
+  void idSku()
+  int: newTableTests()
+  void: getTestsDescriptors()
+  void: getTestDescriptor(json)
+void: findTestName(json)
+void: findTestId(json)
+int: addTest(json)
+int: updateTest(json)
+int: deleteTest(json)
+void: getSKUDescriptors(String)
+boolean: deleteAllTests()
+boolean: dropTestsTable()
 }
 
 
@@ -281,13 +312,19 @@ class TestResult {
   RFID
   date
   Result
-  void: setRFID(int RFID)
-  int: addTestResult(JSON info)
-  void: setIdTestDescriptor(int ID)
-  void: setDate(string Date)
-  void: setResult(boolean Result) 
-  String: getDate()
-  boolean: getResult()
+  void setIdTestDescriptor()
+  void setRfid()
+  void setDate()
+  Void setResult()
+ int: newResultTests()
+  void: getSKUResults(json)
+  void: getSKUResult(json)
+int: addResult(json)
+int: updateResult(json)
+int: deleteResult(json)
+void: countFailedTest(String)
+boolean: deleteAllResult()
+boolean: dropResultsTable()
 }
 
 class Warehouse
@@ -329,7 +366,7 @@ class InternalOrder {
   List<products>:getInternalOrdersProductsCompleted(order.id)
   List<InternalOrder>:getInternalOrdersByState(state)
   InternalOrder:getInternalOrdersbyID(order.id)
-}
+ }
 
 DataImpl – “*” SKUItem
 DataImpl – “*” SKU
@@ -415,12 +452,12 @@ N3 .. ReturnOrder
 activate EzWh
 EzWh->DataImpl: addRestockOrder(issueDate, products, supplierId)
 activate DataImpl
-DataImpl -> RestockOrder: createRestockOrder(issueDate, products, supplierId, issuedState)
+DataImpl -> RestockOrder: addRestockOrder(issueDate, products, supplierId)
 activate RestockOrder
 RestockOrder-> RestockOrder: setIssueDate(issueDate)
 RestockOrder-> RestockOrder: setProducts(products)
 RestockOrder -> RestockOrder: setSupplierId(supplierId)
-RestockOrder-> RestockOrder: setState(issuedState)
+RestockOrder-> RestockOrder: setState('ISSUED')
 RestockOrder--> DataImpl: restockOrderId
 deactivate RestockOrder
 DataImpl --> EzWh: Done
@@ -472,6 +509,7 @@ DataImpl --> EzWh: SKUItemId
 EzWh->DataImpl: updateRestockOrder(deliveredState, id)
 DataImpl -> RestockOrder: updateRestockOrder(id, deliveredState)
 activate RestockOrder
+RestockOrder -> RestockOrder: setState('DELIVERED')
 RestockOrder --> DataImpl: Done
 deactivate RestockOrder 
 DataImpl --> EzWh: Done
@@ -500,6 +538,7 @@ DataImpl --> EzWh: TestResultId
 EzWh->DataImpl: updateRestockOrder(testedState, id)
 DataImpl -> RestockOrder: updateRestockOrder(id, testedState)
 activate RestockOrder
+RestockOrder -> RestockOrder: setState('TESTED')
 RestockOrder --> DataImpl: Done
 deactivate RestockOrder 
 DataImpl --> EzWh: Done
@@ -515,19 +554,23 @@ deactivate EzWh
 activate EzWh
 EzWh->DataImpl: getReturnableItems(ID)
 activate DataImpl
-DataImpl -> RestockOrder: getFaultySKUItems(ID)
+DataImpl -> RestockOrder: getRestockOrder(ID)
 activate RestockOrder
-RestockOrder --> DataImpl: return faultySKUItems
-DataImpl -> RestockOrder: getToBeReturnedSKUItems(ID)
-RestockOrder --> DataImpl: return toBeReturnedSKUItems
+RestockOrder --> DataImpl: return restockOrder
+loop for each restockOrder.skuItems as item
+DataImpl -> TestResult: countFailedTest(item.rfid)
+activate TestResult
+TestResult --> DataImpl: return count
+alt count > 0
+DataImpl -> DataImpl: push(failedItems, item)
+end loop
 deactivate RestockOrder
-DataImpl -> DataImpl: union(faultySKUItems, toBeReturnedSKUItems)
-DataImpl -->EzWh: return unionResult
-EzWh -> DataImpl: addReturnOrder(returnDate, unionResult, roID)
-DataImpl -> ReturnOrder: createReturnOrder(returnDate, unionResult, roID)
+DataImpl -->EzWh: return failedItems
+EzWh -> DataImpl: addReturnOrder(returnDate, failedItems, roID)
+DataImpl -> ReturnOrder: addReturnOrder(returnDate, failedItems, roID)
 activate ReturnOrder
 ReturnOrder -> ReturnOrder: setReturnDate(returnDate)
-ReturnOrder -> ReturnOrder: setProducts(unionResult)
+ReturnOrder -> ReturnOrder: setProducts(failedItems)
 ReturnOrder -> ReturnOrder: setRestockOrderId(roID)
 ReturnOrder -> DataImpl: return RO
 deactivate ReturnOrder
