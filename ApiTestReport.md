@@ -143,7 +143,7 @@ Report also for each of the scenarios the (one or more) API Mocha tests that cov
 | Non Functional Requirement | Test name |
 | -------------------------- | --------- |
 | NFR4                          | updatePosition() //wrong id          |
-| NFR5                          |           |
+| NFR5                          | db autogenerates 12 digits sku.id          |
 | NFR6                           | newSkuitem() //Too short rfid          |
 | NFR9                           | (Jest) dates.test.js, addRestockOrder(), addReturnOrder()     |
 
