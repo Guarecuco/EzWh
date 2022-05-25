@@ -77,6 +77,7 @@ Version: 01
 |UserDAO|| testAddUser(), testEditUser(), testCheckStored(), testGetUserByEmailType(), testGetUsers(), testGetSuppliers(), testGetUsersWithoutManagers(), testDeleteUser()|
 
 
+![Test API Coverage](./diagrams/TestAPICoverage.png)
 
 # API testing - Scenarios
 
