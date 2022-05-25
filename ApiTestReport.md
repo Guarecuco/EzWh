@@ -50,7 +50,14 @@ Version: 01
 ## Step 1
 | Classes  | mock up used |Jest test cases |
 |--|--|--|
-||||
+|Internal Order| POST to /api/sku is done before test|   getInternalOrders(), getInternalOrdersIssued(), getInternalOrdersAccepted(), getinternalOrdersById(), newInternalOrder(), editInternalOrder(), deleteInternalOrder()|
+| |  | |
+| |  | |
+| |  | |
+| |  | |
+| |  | |
+| |  | |
+|User |  | getSuppliers(), getUsers(), newUser(), newManager(), managerSessions(), customerSessions(), supplierSessions(), clerkSessions(), qualityEmployeeSessions(), deliveryEmployeeSessions(), editUser(), deleteUser() |
 
 
 ## Step 2
