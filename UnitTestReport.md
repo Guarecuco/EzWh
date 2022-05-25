@@ -83,7 +83,27 @@ Version:
 
 | Unit name | Jest test case |
 |--|--|
-|||
+|Test Unit - Item | testAddItem() |
+|Test Unit - Item | testEditItem() |
+|Test Unit - Item | testGetItems() |
+|Test Unit - Item | testGetItem() |
+|Test Unit - Item | testDeleteItem() |
+|Test Unit - Item | testDeleteAllItems() |
+|Test Unit - Test Descriptor | testAddTest() |
+|Test Unit - Test Descriptor | testEditTest() |
+|Test Unit - Test Descriptor | testGetTests() |
+|Test Unit - Test Descriptor | testGetTest() |
+|Test Unit - Test Descriptor | testFindName() |
+|Test Unit - Test Descriptor | testIdFromSku() |
+|Test Unit - Test Descriptor | testDeleteTest() |
+|Test Unit - Test Descriptor | testDeleteAllTests() |
+|Test Unit - Test Result | testAddResult() |
+|Test Unit - Test Result | testEditResult() |
+|Test Unit - Test Result | testGetResultsRfid() |
+|Test Unit - Test Result | testGetResultsRfidId() |
+|Test Unit - Test Result | countFailed() |
+|Test Unit - Test Result | testDeleteResult() |
+|Test Unit - Test Result | testDeleteAllResults() |
 |||
 ||||
 

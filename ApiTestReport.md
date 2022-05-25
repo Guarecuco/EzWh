@@ -123,12 +123,12 @@ Report also for each of the scenarios the (one or more) API Mocha tests that cov
 | 9.1    | FR6.1, FR6.2, FR6.3, FR6.4, FR6.5, FR6.6, FR6.7 | newInternalOrder(), getInternalOrdersIssued(), editInternalOrder()           |             
 | 9.2     | FR6.1, FR6.2, FR6.3, FR6.4, FR6.5, FR6.6, FR6.7 | newInternalOrder(), getInternalOrdersIssued(), editInternalOrder()            |             
 | 9.3       | FR6.1, FR6.2, FR6.3, FR6.4, FR6.5, FR6.6, FR6.7 | newInternalOrder(), getInternalOrdersIssued(), editInternalOrder()             |             
-| 10.1      | FR6.7, FR6.8 | getInternalOrdersAccepted(), editInternalOrder()             |   
-| 11.1      |                                 |             |             
-| 11.2      |                                 |             |             
-| 12.1      |                                 |             |             
-| 12.2      |                                 |             |             
-| 12.3     |                                 |             |             
+| 10.1      | FR6.7, FR6.8      | getInternalOrdersAccepted(), editInternalOrder()             |   
+| 11.1      | FR4 FR4.6         | countItems(), addItem() |             
+| 11.2      | FR4 FR4.6         |  updateItem(), countItems(),getItem()|           
+| 12.1      | FR4.1             | findTestName(),addTest(), countSku()            |             
+| 12.2      | FR4.1             | findTestName(), updateTest()          |             
+| 12.3      |FR4.1              |deleteTest(),  findTestId()           |             
 
 
 

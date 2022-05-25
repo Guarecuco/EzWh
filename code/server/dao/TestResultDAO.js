@@ -20,7 +20,6 @@ class TestResultDAO{
 
     getSKUResults(data) {
         return new Promise((resolve, reject) => {
-            console.log(data);
             const sql = 'SELECT * FROM RESULTS WHERE  RFID = ?'           //Add condition to check if online
             this.db.all(sql, [data], (err, rows) => {
                 if(err){

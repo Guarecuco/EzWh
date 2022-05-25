@@ -8,7 +8,6 @@ function testAddResult(input) {
         await db.addResult(input);
         
         let res = await db.getSKUResult(input);
-        console.log(res);
         expect(res[0].id).toStrictEqual(input.id);
         expect(res[0].idTestDescriptor).toStrictEqual(input.idTestDescriptor);
         expect(res[0].Date).toStrictEqual(input.Date);
