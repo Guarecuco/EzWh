@@ -16,6 +16,13 @@ function testAddRestockOrder(input, id) {
     });
 }
 
+function testCheckIfStored(id, expected){
+    test('Check if restock orders exists', async () => {
+        let res = await db.checkIfStored(id)
+        expect(res).toEqual(expected);
+    })
+}
+
 function testGetIssuedRestockOrders(orders){
     test('Get all issued restock orders', async () => {
         let res = await db.getAllRestockOrdersIssued()
@@ -153,6 +160,7 @@ describe('Test Restock Order DAO', () => {
 
 
     testAddRestockOrder(order, 4);
+    testCheckIfStored(4, [1])  //it does exists
     testGetIssuedRestockOrders([{id: 1, ...newOrder, skuItems: [], state: 'ISSUED'},
                                         {id: 4, ...order, skuItems: [], state: 'ISSUED'}])
 

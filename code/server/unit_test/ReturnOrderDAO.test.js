@@ -1,5 +1,7 @@
 const ReturnOrderDAO = require('../dao/ReturnOrderDAO.js')
+const RestockOrderDAO = require('../dao/RestockOrderDAO')
 const db = new ReturnOrderDAO('EzWh.db')
+const rdb = new RestockOrderDAO('EzWh.db')
 
 
 function testAddReturnOrder(input, id) {
@@ -21,6 +23,12 @@ function testGetAllReturnOrders(orders){
     })
 }
 
+function testCheckIfRestockOrderIsStored(id, expected){
+    test('Check if restock orders exists', async () => {
+        let res = await db.checkIfRestockOrderExists(id)
+        expect(res).toEqual(expected);
+    })
+}
 
 
 function testDeleteReturnOrder(id){
@@ -49,12 +57,27 @@ let newOrder2 = {
 
 describe('Test Return Order DAO', () => {
     beforeAll(async function () {
+        const restockOrder = {
+            issueDate: '2021/11/29 09:33',
+            supplierId:  1,
+            products: [
+                {"SKUId":12,"description":"a product","price":10.99,"qty":30},
+                {"SKUId":180,"description":"another product","price":11.99,"qty":20}
+            ]
+        }
         await db.dropReturnOrders();
         await db.newTableReturnOrders();
+        await rdb.dropRestockOrders();
+        await rdb.newTableRestockOrders()
+        await rdb.addRestockOrder(restockOrder)
     });
 
+    testCheckIfRestockOrderIsStored(1, [1])
+    testCheckIfRestockOrderIsStored(2, [0])
+
     testAddReturnOrder(newOrder, 1);
-    testAddReturnOrder(newOrder2, 2);
+    testAddReturnOrder(newOrder2, 2);   //the return order is issued even though the restock order doesn't exist
+                                            // because the check is performed at upper layers
     testGetAllReturnOrders([{id: 1, ...newOrder}, {id: 2, ...newOrder2}])
 
 
