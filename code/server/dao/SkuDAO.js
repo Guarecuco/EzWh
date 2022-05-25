@@ -1,5 +1,5 @@
 const TestDescriptorDAO = require('../dao/TestDescriptorDAO.js');
-const dbT = new TestDescriptorDAO('EzWh');
+const dbT = new TestDescriptorDAO('EzWh.db');
 
 class SkuDAO{
     sqlite3 = require('sqlite3')
