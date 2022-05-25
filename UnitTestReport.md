@@ -83,8 +83,47 @@ Version:
 
 | Unit name | Jest test case |
 |--|--|
-|||
-|||
+|Test Unit - Item | ItemDAO.test.js --> AddItem() |
+|Test Unit - Item | ItemDAO.test.js --> testEditItem() |
+|Test Unit - Item | ItemDAO.test.js --> testGetItems() |
+|Test Unit - Item | ItemDAO.test.js -->testGetItem() |
+|Test Unit - Item | ItemDAO.test.js --> testDeleteItem() |
+|Test Unit - Item | ItemDAO.test.js --> testDeleteAllItems() |
+|Test Unit - Test Descriptor | TestDescriptorDAO.test.js --> testAddTest() |
+|Test Unit - Test Descriptor | TestDescriptorDAO.test.js --> testEditTest() |
+|Test Unit - Test Descriptor | TestDescriptorDAO.test.js --> testGetTests() |
+|Test Unit - Test Descriptor | TestDescriptorDAO.test.js --> testGetTest() |
+|Test Unit - Test Descriptor | TestDescriptorDAO.test.js --> testFindName() |
+|Test Unit - Test Descriptor | TestDescriptorDAO.test.js --> testIdFromSku() |
+|Test Unit - Test Descriptor | TestDescriptorDAO.test.js --> testDeleteTest() |
+|Test Unit - Test Descriptor | TestDescriptorDAO.test.js --> testDeleteAllTests() |
+|Test Unit - Test Result | TestResultDAO.test.js --> testAddResult() |
+|Test Unit - Test Result | TestResultDAO.test.js --> testEditResult() |
+|Test Unit - Test Result | TestResultDAO.test.js --> testGetResultsRfid() |
+|Test Unit - Test Result | TestResultDAO.test.js --> testGetResultsRfidId() |
+|Test Unit - Test Result | TestResultDAO.test.js --> countFailed() |
+|Test Unit - Test Result | TestResultDAO.test.js --> testDeleteResult() |
+|Test Unit - Test Result | TestResultDAO.test.js --> testDeleteAllResults() |
+|Test User               | UserDAO.test.js --> testAddUser() |
+|Test User               | UserDAO.test.js --> testEditUser() |
+|Test User               | UserDAO.test.js --> testCheckStored() |
+|Test User               | UserDAO.test.js --> testGetUserByEmailType() |
+|Test User               | UserDAO.test.js --> testGetUsers() |
+|Test User               | UserDAO.test.js --> testGetSuppliers() |
+|Test User               | UserDAO.test.js --> testGetUsersWithoutManagers() |
+|Test User               | UserDAO.test.js --> testDeleteUser() |
+|Test Internal Order     | InternalOrder.test.js --> testAddInternalOrder() |
+|Test Internal Order     | InternalOrder.test.js --> testAddInternalOrderProducts() |
+|Test Internal Order     | InternalOrder.test.js --> testCheckIfOrderExists() |
+|Test Internal Order     | InternalOrder.test.js --> testUpdateInternalOrder() |
+|Test Internal Order     | InternalOrder.test.js --> testUpdateInternalOrderProduct() |
+|Test Internal Order     | InternalOrder.test.js --> testDeleteInternalOrder() |
+|Test Internal Order     | InternalOrder.test.js --> testDeleteInternalOrderProducts() |
+|Test Internal Order     | InternalOrder.test.js --> testGetInternalOrder() |
+|Test Internal Order     | InternalOrder.test.js --> testGetInternalOrderProducts() |
+|Test Internal Order     | InternalOrder.test.js --> testGetInternalOrderProductsCompleted() |
+|Test Internal Order     | InternalOrder.test.js --> testGetInternalOrdersByState() |
+|Test Internal Order     | InternalOrder.test.js --> testGetInternalOrdersbyID() |
 ||||
 
 ### Code coverage report
@@ -92,6 +131,7 @@ Version:
     <Add here the screenshot report of the statement and branch coverage obtained using
     the coverage tool. >
 
+![Test Coverage](./diagrams/TestCoverage.png)
 
 ### Loop coverage analysis
 
