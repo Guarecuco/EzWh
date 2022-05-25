@@ -58,9 +58,9 @@ Version: 01
 | Classes  | mock up used |Jest test cases |
 |--|--|--|
 |InternalOrderDAO|  | testAddInternalOrder(), testAddInternalOrderProducts(), testCheckIfOrderExists(), testUpdateInternalOrder(), testUpdateInternalOrderProduct(), testDeleteInternalOrder(), testDeleteInternalOrderProducts(), testGetInternalOrder(), testGetInternalOrderProducts(), testGetInternalOrderProductsCompleted(), testGetInternalOrdersByState(),testGetInternalOrdersbyID() |
-||||
-||||
-||||
+|SkuDAO||testgetSku(), testgetSkus()|
+|SkuitemDAO||testgetSkuitem(), testgetSkuitems(), testgetAvailableSkuitem()|
+|PositionDAO||testUpdatePosition(), testChangePosition(), testUpdateDimensions()|
 |RestockOrderDAO|||
 |ReturnOderDAO|||
 ||||
@@ -82,14 +82,14 @@ Report also for each of the scenarios the (one or more) API Mocha tests that cov
 
 | Scenario ID | Functional Requirements covered | Mocha  Test(s) | 
 | ----------- | ------------------------------- | ----------- | 
-|  1.1         | FRx                             |             |             
-|  1.2         | FRy                             |             |             
-| 1.3        |                                 |             |             
-| 2.1        |                                 |             |             
-| 2.2        |                                 |             |             
-| 2.3       |                                 |             |          
-| 2.4       |                                 |             |             
-| 2.5    |                                 |             |             
+|  1.1         | FR2.1          | newSku()            |             
+|  1.2         | FR2.1        | updateSkuPosition()            |             
+| 1.3        | FR2.1       | updateSku()            |             
+| 2.1        | FR3.1.1           | newPosition()            |             
+| 2.2        | FR3.1.1          | updatePositionID()           |             
+| 2.3       | FR3.1.1             | updatePosition()            |          
+| 2.4       | FR3.1.1                | updatePosition()            |             
+| 2.5    | FR3.1.2              | deletePosition()            |             
 | 3.1     |                                 | addRestockOrder(),              |             
 | 3.2       |                                 | addRestockOrder(),            |             
 | 4.1      | FR1.1, FR4.1                       | newUser()            |             
@@ -131,8 +131,8 @@ Report also for each of the scenarios the (one or more) API Mocha tests that cov
 
 | Non Functional Requirement | Test name |
 | -------------------------- | --------- |
-| NFR4                          |           |
+| NFR4                          | updatePosition() //wrong id          |
 | NFR5                          |           |
-| NFR6                           |           |
+| NFR6                           | newSkuitem() //Too short rfid          |
 | NFR9                           | (Jest) dates.test.js    |
 
