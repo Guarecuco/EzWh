@@ -135,4 +135,19 @@ router.delete('/api/skuitems', async (req,res)=>{
   }
 });
 
+async function skuitemStartup () {
+  try{
+      //Droping table
+      await db.deleteSkuitems();
+      //Creating table
+      await db.newTableSkuitem();
+      //Encrypt password
+  }
+  catch(err){
+      console.log(err);
+  }
+
+}
+skuitemStartup();
+
 module.exports = router

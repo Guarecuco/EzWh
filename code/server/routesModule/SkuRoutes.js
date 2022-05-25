@@ -159,4 +159,19 @@ router.delete('/api/skus/', async (req,res)=>{
   }
 });
 
+async function skuStartup () {
+  try{
+      //Droping table
+      await db.deleteAllSkus();
+      //Creating table
+      await db.newTableSku();
+      //Encrypt password
+  }
+  catch(err){
+      console.log(err);
+  }
+
+}
+skuStartup();
+
 module.exports = router
