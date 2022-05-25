@@ -200,19 +200,6 @@ class RestockOrderDAO{
         })
     }
 
-    deleteRestockOrderData(){
-        return new Promise((resolve, reject) => {
-            const sql = 'DELETE FROM RESTOCK_ORDERS'
-            this.db.run(sql, (err) => {
-                if(err){
-                    reject(err);
-                    return;
-                }
-                resolve(true)
-            })
-        })
-    }
-
     dropRestockOrders(){
         return new Promise((resolve, reject) => {
             const sql = 'DROP TABLE IF EXISTS RESTOCK_ORDERS'

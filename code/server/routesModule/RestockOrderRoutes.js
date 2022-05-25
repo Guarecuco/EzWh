@@ -222,19 +222,6 @@ router.delete('/api/restockOrder/:id', async (req,res)=>{
 
 });
 
-//DELETE /restockOrders/deleteRestockOrders
-router.delete('/restockOrders/deleteRestockOrders', async (req,res)=>{
-    try{
-        //Delete All Restock Order
-        await db.deleteRestockOrderData();
-        return res.status(204).end();
-    }
-    catch(err){
-        res.status(503).end();
-    }
-
-});
-
 //DELETE /restockOrders/deletetable
 router.delete('/restockOrders/deletetable', async (req,res)=>{
     try{
@@ -248,6 +235,18 @@ router.delete('/restockOrders/deletetable', async (req,res)=>{
 
 });
 
+async function restockOrderStartup () {
+    try{
+        //Dropping table
+        await db.dropRestockOrders();
+        //Creating table
+        await db.newTableRestockOrders();
+    }
+    catch(err){
+        console.log(err);
+    }
 
+}
+restockOrderStartup();
 
 module.exports = router

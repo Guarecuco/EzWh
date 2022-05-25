@@ -118,6 +118,19 @@ router.delete('/returnOrders/deletetable', async (req,res)=>{
 
 });
 
+async function returnOrderStartup () {
+    try{
+        //Dropping table
+        await db.dropReturnOrders();
+        //Creating table
+        await db.newTableReturnOrders();
+    }
+    catch(err){
+        console.log(err);
+    }
+
+}
+returnOrderStartup();
 
 
 module.exports = router
