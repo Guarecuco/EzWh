@@ -60,9 +60,11 @@ Version: 01
 |SkuDAO||testgetSku(), testgetSkus()|
 |SkuitemDAO||testgetSkuitem(), testgetSkuitems(), testgetAvailableSkuitem()|
 |PositionDAO||testUpdatePosition(), testChangePosition(), testUpdateDimensions()|
-|RestockOrderDAO|||
-|ReturnOderDAO|||
-||||
+|RestockOrderDAO||testAddRestockOrder(), testCheckIfStored(), testGetIssuedRestockOrders(), testGetAllRestockOrders(), testGetIssuedOrder(), testGetNotIssuedOrder(), testGetDeliveryOrder(), testUpdateState(), testUpdateTransportNote(), testUpdateSkuItems(), testDeleteRestockOrder()    |
+|ReturnOderDAO||testAddReturnOrder(), testGetAllReturnOrders(), testCheckIfRestockOrderIsStored(), testDeleteReturnOrder()  |
+|ItemDAO|||
+|TestDescriptorDAO|||
+|TestResultDAO|||
 |UserDAO|| testAddUser(), testEditUser(), testCheckStored(), testGetUserByEmailType(), testGetUsers(), testGetSuppliers(), testGetUsersWithoutManagers(), testDeleteUser()|
 
 
@@ -89,20 +91,20 @@ Report also for each of the scenarios the (one or more) API Mocha tests that cov
 | 2.3       | FR3.1.1             | updatePosition()            |          
 | 2.4       | FR3.1.1                | updatePosition()            |             
 | 2.5    | FR3.1.2              | deletePosition()            |             
-| 3.1     |                                 | addRestockOrder(),              |             
-| 3.2       |                                 | addRestockOrder(),            |             
+| 3.1     | FR5.1, FR5.2, FR5.3, FR5.5                                | addRestockOrder(),              |             
+| 3.2       | FR5.1, FR5.2, FR5.3, FR5.5                                 | addRestockOrder(),            |             
 | 4.1      | FR1.1, FR4.1                       | newUser()            |             
 | 4.2       | FR1.1, FR1.3, FR1.4, FR4.1, FR4.3, FR4.4        | editUser(), getUsers()            |             
 | 4.3       | FR1.2, FR1.3, FR1.4, FR4.2, FR4.3, FR4.4        | deleteUser(), getUsers()            |             
-| 5.1.1      |                                 | updateRestockOrder(), updateRestockOrderSKUItems()             |             
-| 5.2.1      |                                 | updateRestockOrder()            |             
-| 5.2.2       |                                 | updateRestockOrder()            |             
-| 5.2.3       |                                 | updateRestockOrder()            |             
-| 5.3.1        |                                 | updateRestockOrder()            |             
-| 5.3.2        |                                 | updateRestockOrder()             |             
-| 5.3.3      |                                 | updateRestockOrder()             |             
-| 6.1     |                                 | getAllReturnablesById(), addReturnOrder()            |       
-| 6.2     |                                 | getAllReturnablesById(), addReturnOrder()             |             
+| 5.1.1      | FR5.7                                | updateRestockOrder()             |             
+| 5.2.1      | FR5.7                                | updateRestockOrder()            |             
+| 5.2.2       | FR5.7                                | updateRestockOrder()            |             
+| 5.2.3       | FR5.7                                | updateRestockOrder()            |             
+| 5.3.1        | FR5.7                                | updateRestockOrder()            |             
+| 5.3.2        | FR5.7                                 | updateRestockOrder()             |             
+| 5.3.3      |  FR5.7                               | updateRestockOrder()             |             
+| 6.1     |  FR5.9, FR5.10, FR5.11                               | getAllReturnablesById(), addReturnOrder()            |       
+| 6.2     |  FR5.9, FR5.10, FR5.11                                | getAllReturnablesById(), addReturnOrder()             |             
 | 7.1     | FR1.5            | managerSessions(), customerSessions(), supplierSessions(), clerkSessions(), qualityEmployeeSessions(), deliveryEmployeeSessions()            |             
 | 7.2      |                                 | Not to be implemented yet            |             
 | 9.1    | FR6.1, FR6.2, FR6.3, FR6.4, FR6.5, FR6.6, FR6.7 | newInternalOrder(), getInternalOrdersIssued(), editInternalOrder()           |             
@@ -133,5 +135,5 @@ Report also for each of the scenarios the (one or more) API Mocha tests that cov
 | NFR4                          | updatePosition() //wrong id          |
 | NFR5                          |           |
 | NFR6                           | newSkuitem() //Too short rfid          |
-| NFR9                           | (Jest) dates.test.js    |
+| NFR9                           | (Jest) dates.test.js, addRestockOrder(), addReturnOrder()     |
 
