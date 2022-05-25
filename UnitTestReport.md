@@ -124,6 +124,14 @@ Version:
 |Test Internal Order     | InternalOrder.test.js --> testGetInternalOrderProductsCompleted() |
 |Test Internal Order     | InternalOrder.test.js --> testGetInternalOrdersByState() |
 |Test Internal Order     | InternalOrder.test.js --> testGetInternalOrdersbyID() |
+|Test Unit - Sku | SkuDAO.test.js --> testgetSkus() |
+|Test Unit - Sku | SkuDAO.test.js --> testgetSku() |
+|Test Unit - Skuitem | SkuitemDAO.test.js --> testgetSkuitem() |
+|Test Unit - Skuitem | SkuitemDAO.test.js --> testgetSkuitems() |
+|Test Unit - Skuitem | SkuitemDAO.test.js --> testgetAvailableSkuitem() |
+|Test Unit - Position | PositionDAO.test.js --> testUpdatePosition() |
+|Test Unit - Position | PositionDAO.test.js --> testChangePosition() |
+|Test Unit - Position | PositionDAO.test.js --> testUpdateDimensions() |
 ||||
 
 ### Code coverage report
