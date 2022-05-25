@@ -7,9 +7,9 @@ Authors:
 * Daniel Guarecuco
 * Zoltan Mazzuco 
 
-Date: 3 May, 2022
+Date: 25 May, 2022
 
-Version: 1.1
+Version: 2.0
 
 
 # Contents
@@ -33,21 +33,24 @@ The design must satisfy the Official Requirements document, notably functional a
 
 # High level design 
 
+
+_Architectural patterns_:
+* MVC
+* layered - 3 tiered
+
 The application is composed of the following packages:
-* ***GUI***: Implementing the Graphical User Interface through a web browser.
-* ***Data***:Implementing the model layer in a MVC architecture. It manages and processes all the data.
-* ***Exceptions***:Implementing the exceptions handler, triggered by the user.
+* ***EZWH_GUI***: Implementing the Graphical User Interface through a web browser.
+* ***EZWH_SERVER***: Implementing the controller layer in a MVC architecture. It performs interactions on the data model objects and responds to the user input. 
+* ***EZWH_DATA***:Implementing the model layer in a MVC architecture. It manages and processes all the data.
+
 
 ```plantuml
 @startuml
-package it.company.ezwh.gui as GUI
-package it.company.ezwh as application
-package it.company.ezwh.exceptions as exceptions
-package it.company.ezwh.data as data
-GUI - application
-application - exceptions
-data - application
-exceptions -> data: import
+package EZWH_GUI
+package EZWH_SERVER
+package EZWH_DATA
+EZWH_GUI - EZWH_SERVER
+EZWH_SERVER- EZWH_DATA
 @enduml
 ```
 # Low level design
@@ -243,7 +246,7 @@ class ReturnOrder {
 }
 
 class SKU {
-  ID
+  id
   description
   weight
   volume
@@ -251,33 +254,31 @@ class SKU {
   position
   availableQuantity
   price
-  testDescriptors  
-  void : setDescription(string description)
-  void : setWeight(int weight)
-  void : setVolume(int volume)
-  void : setPrice(int price)
-  void : setNotes(string notes)
-  void : setAvailableQuantity(int quantity)
-  int: getAvailableQuantity()
-  SKU : getSKU()
-  List<int> : GetTestDescriptors()
-  int : updatePosition(string position)
+  testDescriptors 
+  void : storeSku(sku)
+  List<sku> : getStoredSkus()
+  List<sku> : getSku(id)
+  void : updateSku(id,sku)
+  void : setPosition(id,position)
+  void : deleteSku(id)
+  void : setAvailableQuantityById(id, newQty)
 }
 
 class Inventory
 
 class SKUItem {
-  RFID
+  rfid
   Available
   DateOfStock
   Position
 
-  Int getSKUId()
-  int getAvailability()
-  void : setRFID(int RFID)
-  void : setAvailability(int Availability)
-  void : setSKUId(int SKUId)
-  void : setDateOfStock(string DateOfStock)
+  List<skuitem> : getStoredSkuitems()
+  void : storeSkuitem(skuitem)
+  List<skuitem> : getStoredSkuitem(rfid)
+  List<skuitem> : getAvailableSkuitems(SKUId)
+  void : setAvailabilityByRFID(rfid, newQty)
+  void : updateSkuitem(rfid,skuitem)
+  void : deleteSkuitem(rfid)
 }
 
 class AA {
@@ -338,14 +339,13 @@ class Position {
   maxVolume
   occupiedWeight
   occupiedVolume
-  string : getPositionID()
-  void : setPositionID()
-  void : setAisleID()
-  void : setRow()
-  void : setCol()
-  void : setMaxWeight()
-  void : setMaxVolume()
-  void : getSKUItem()
+  void : storePosition(position)
+  List<position> : getStoredPositions()
+  position : getPosition(id)
+  void : updatePositionID(id,position)
+  void : changePositionID(oldPosID,newPosID)
+  void : updateDimensions(volume,weight,availableQuantity,position)
+  void : deletePosition(id)
 }
 
 class InternalOrder {
