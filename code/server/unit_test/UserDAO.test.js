@@ -50,18 +50,6 @@ function testGetUserByEmailType(input,expectedResult) {
     });
 }
 
-function testGetUsers(expectedResult) {
-    test('Retrieving users', async () => {
-        try{
-            let res = await db.getStoredUsers();
-            expect(JSON.stringify(res)).toStrictEqual(JSON.stringify(expectedResult));
-        }
-        catch(err){
-            expect(err.code).toStrictEqual(expectedResult);
-        }
-    });
-}
-
 function testGetSuppliers(expectedResult) {
     test('Retrieving suppliers', async () => {
         try{
@@ -116,8 +104,6 @@ describe('Test User DAO', () => {
 
     //Add user
     testAddUser({username: "user1@ezwh.com",name: "John",surname : "Smith",password : "testpassword",type : "customer"},1);
-    //Get user, should be the same as just added
-    testGetUsers([{id: 1, name: "John", surname: "Smith", email: "user1@ezwh.com",type: "customer"}]);
     //Get users excluding manager.Should be the same as before
     testGetUsersWithoutManagers([{id: 1, name: "John", surname: "Smith", email: "user1@ezwh.com",type: "customer"}]);
     //Get suppliers, should be empty
@@ -131,15 +117,11 @@ describe('Test User DAO', () => {
     
     //Edit User to supplier
     testEditUser({username: "user1@ezwh.com",type : "customer", newType: "supplier"},1);
-    //Get user, should be the same as just edited
-    testGetUsers([{id: 1, name: "John", surname: "Smith", email: "user1@ezwh.com",type: "supplier"}]);
     //Get suppliers, should be the same as just edited
     testGetSuppliers([{id: 1, name: "John", surname: "Smith", email: "user1@ezwh.com"}]);
     
     //Delete user (supplier)
     testDeleteUser({username: "user1@ezwh.com",type : "supplier"},1);
-    //Get users, should be empty
-    testGetUsers([]);
     //Get suppliers, should be empty
     testGetSuppliers([]);
     //Get users excluding manager.Should be empty
@@ -150,7 +132,6 @@ describe('Test User DAO', () => {
     //Repeat all test without create the proper table, this will generate a SQLLITE_ERROR
     testDropUsers();    //DROP TABLE
     testAddUser({username: "user1@ezwh.com",name: "John",surname : "Smith",password : "testpassword",type : "customer"},"SQLITE_ERROR");
-    testGetUsers("SQLITE_ERROR");
     testGetUsersWithoutManagers("SQLITE_ERROR");
     testGetSuppliers("SQLITE_ERROR");
     testGetUserByEmailType({username: "user1@ezwh.com",type : "customer"},"SQLITE_ERROR");  

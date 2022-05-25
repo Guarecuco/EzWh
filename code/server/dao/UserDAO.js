@@ -103,29 +103,6 @@ class UserDAO{
         })
     }
 
-    getStoredUsers() {
-        return new Promise((resolve, reject) => {
-            const sql = 'SELECT * FROM USERS'
-            this.db.all(sql, [], (err, rows) => {
-                if(err){
-                    reject(err);
-                    return;
-                }
-                const names = rows.map((r) => (
-                    {
-                        id: r.ID,
-                        name: r.NAME,
-                        surname: r.SURNAME,
-                        email: r.EMAIL,
-                        type: r.TYPE
-                    }
-                    
-                ));
-                resolve(names)
-            })
-        })
-    }
-
     getStoredUsersWithoutManagers() {
         return new Promise((resolve, reject) => {
             const sql = 'SELECT * FROM USERS WHERE TYPE != "manager"'
