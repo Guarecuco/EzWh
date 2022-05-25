@@ -83,27 +83,27 @@ Version:
 
 | Unit name | Jest test case |
 |--|--|
-|Test Unit - Item | ItemDAO.test.js --> AddItem() |
-|Test Unit - Item | ItemDAO.test.js --> testEditItem() |
-|Test Unit - Item | ItemDAO.test.js --> testGetItems() |
-|Test Unit - Item | ItemDAO.test.js -->testGetItem() |
-|Test Unit - Item | ItemDAO.test.js --> testDeleteItem() |
-|Test Unit - Item | ItemDAO.test.js --> testDeleteAllItems() |
-|Test Unit - Test Descriptor | TestDescriptorDAO.test.js --> testAddTest() |
-|Test Unit - Test Descriptor | TestDescriptorDAO.test.js --> testEditTest() |
-|Test Unit - Test Descriptor | TestDescriptorDAO.test.js --> testGetTests() |
-|Test Unit - Test Descriptor | TestDescriptorDAO.test.js --> testGetTest() |
-|Test Unit - Test Descriptor | TestDescriptorDAO.test.js --> testFindName() |
-|Test Unit - Test Descriptor | TestDescriptorDAO.test.js --> testIdFromSku() |
-|Test Unit - Test Descriptor | TestDescriptorDAO.test.js --> testDeleteTest() |
-|Test Unit - Test Descriptor | TestDescriptorDAO.test.js --> testDeleteAllTests() |
-|Test Unit - Test Result | TestResultDAO.test.js --> testAddResult() |
-|Test Unit - Test Result | TestResultDAO.test.js --> testEditResult() |
-|Test Unit - Test Result | TestResultDAO.test.js --> testGetResultsRfid() |
-|Test Unit - Test Result | TestResultDAO.test.js --> testGetResultsRfidId() |
-|Test Unit - Test Result | TestResultDAO.test.js --> countFailed() |
-|Test Unit - Test Result | TestResultDAO.test.js --> testDeleteResult() |
-|Test Unit - Test Result | TestResultDAO.test.js --> testDeleteAllResults() |
+|Item | ItemDAO.test.js --> AddItem() |
+|Item | ItemDAO.test.js --> testEditItem() |
+|Item | ItemDAO.test.js --> testGetItems() |
+|Item | ItemDAO.test.js -->testGetItem() |
+|Item | ItemDAO.test.js --> testDeleteItem() |
+|Item | ItemDAO.test.js --> testDeleteAllItems() |
+|Test Descriptor | TestDescriptorDAO.test.js --> testAddTest() |
+|Test Descriptor | TestDescriptorDAO.test.js --> testEditTest() |
+|Test Descriptor | TestDescriptorDAO.test.js --> testGetTests() |
+|Test Descriptor | TestDescriptorDAO.test.js --> testGetTest() |
+|Test Descriptor | TestDescriptorDAO.test.js --> testFindName() |
+|Test Descriptor | TestDescriptorDAO.test.js --> testIdFromSku() |
+|Test Descriptor | TestDescriptorDAO.test.js --> testDeleteTest() |
+|Test Descriptor | TestDescriptorDAO.test.js --> testDeleteAllTests() |
+|Test Result | TestResultDAO.test.js --> testAddResult() |
+|Test Result | TestResultDAO.test.js --> testEditResult() |
+|Test Result | TestResultDAO.test.js --> testGetResultsRfid() |
+|Test Result | TestResultDAO.test.js --> testGetResultsRfidId() |
+|Test Result | TestResultDAO.test.js --> countFailed() |
+|Test Result | TestResultDAO.test.js --> testDeleteResult() |
+|Test Result | TestResultDAO.test.js --> testDeleteAllResults() |
 |Test User               | UserDAO.test.js --> testAddUser() |
 |Test User               | UserDAO.test.js --> testEditUser() |
 |Test User               | UserDAO.test.js --> testCheckStored() |
@@ -124,14 +124,14 @@ Version:
 |Test Internal Order     | InternalOrder.test.js --> testGetInternalOrderProductsCompleted() |
 |Test Internal Order     | InternalOrder.test.js --> testGetInternalOrdersByState() |
 |Test Internal Order     | InternalOrder.test.js --> testGetInternalOrdersbyID() |
-|Test Unit - Sku | SkuDAO.test.js --> testgetSkus() |
-|Test Unit - Sku | SkuDAO.test.js --> testgetSku() |
-|Test Unit - Skuitem | SkuitemDAO.test.js --> testgetSkuitem() |
-|Test Unit - Skuitem | SkuitemDAO.test.js --> testgetSkuitems() |
-|Test Unit - Skuitem | SkuitemDAO.test.js --> testgetAvailableSkuitem() |
-|Test Unit - Position | PositionDAO.test.js --> testUpdatePosition() |
-|Test Unit - Position | PositionDAO.test.js --> testChangePosition() |
-|Test Unit - Position | PositionDAO.test.js --> testUpdateDimensions() |
+|Sku | SkuDAO.test.js --> testgetSkus() |
+|Sku | SkuDAO.test.js --> testgetSku() |
+|Skuitem | SkuitemDAO.test.js --> testgetSkuitem() |
+|Skuitem | SkuitemDAO.test.js --> testgetSkuitems() |
+|Skuitem | SkuitemDAO.test.js --> testgetAvailableSkuitem() |
+|Position | PositionDAO.test.js --> testUpdatePosition() |
+|Position | PositionDAO.test.js --> testChangePosition() |
+|Position | PositionDAO.test.js --> testUpdateDimensions() |
 ||||
 
 ### Code coverage report

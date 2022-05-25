@@ -51,12 +51,14 @@ Version: 01
 | Classes  | mock up used |Jest test cases |
 |--|--|--|
 |Internal Order| POST to /api/sku is done before test|   getInternalOrders(), getInternalOrdersIssued(), getInternalOrdersAccepted(), getinternalOrdersById(), newInternalOrder(), editInternalOrder(), deleteInternalOrder()|
-| |  | |
-| |  | |
-| |  | |
-| |  | |
-| |  | |
-| |  | |
+|SKU |  | addTest(), newPosition(), newSku(), getSkus(), getSku(), updateSku(), updateSkuPosition(), deleteSku() |
+|SKU Item |  |newSku(), newSkuitem(),updateSkuitem(), getSkuitems(),getSkuitem(), getAvailableSkuitem(), deleteSkuitem() |
+|Position |  | newPosition(), updatePosition(), updatePositionID(), getPositions(), deletePosition() |
+|Restock Order |  | addRestockOrder(), getAllRestockOrders(), getAllRestockOrdersIssued(), getRestockOrderById(), getAllReturnablesById(), updateRestockOrder(), updateRestockOrderSKUItems(),updateRestockOrderTransportNote(), deleteRestockOrder()|
+|Return Order |  |addReturnOrder(),getAllReturnOrders(),getReturnOrderById(), deleteReturnOrder()  |
+|Item |  | getAllItems(), getItem(), addItem(), modItem()|
+|Test Descriptor |  |getAllTests(), getTest(), addTest(), modTest() |
+|Test Result |  | getAllResultsRFID(), addResult(),modResult()|
 |User |  | getSuppliers(), getUsers(), newUser(), newManager(), managerSessions(), customerSessions(), supplierSessions(), clerkSessions(), qualityEmployeeSessions(), deliveryEmployeeSessions(), editUser(), deleteUser() |
 
 
@@ -69,9 +71,9 @@ Version: 01
 |PositionDAO||testUpdatePosition(), testChangePosition(), testUpdateDimensions()|
 |RestockOrderDAO||testAddRestockOrder(), testCheckIfStored(), testGetIssuedRestockOrders(), testGetAllRestockOrders(), testGetIssuedOrder(), testGetNotIssuedOrder(), testGetDeliveryOrder(), testUpdateState(), testUpdateTransportNote(), testUpdateSkuItems(), testDeleteRestockOrder()    |
 |ReturnOderDAO||testAddReturnOrder(), testGetAllReturnOrders(), testCheckIfRestockOrderIsStored(), testDeleteReturnOrder()  |
-|ItemDAO|||
-|TestDescriptorDAO|||
-|TestResultDAO|||
+|ItemDAO| |testAddItem(), testEditItem(), testGetItems(), testGetItem(), testDeleteItem(), testDeleteAllItems |
+|TestDescriptorDAO| |testAddTest(), testEditTest(), testGetTests(), testGetTest(), testFindName(), testIdFromSku(), testDeleteTest(), testDeleteAllTests()|
+|TestResultDAO| |testAddResult(), testEditResult(), testGetResultsRfid(), testGetResultsRfidId(), countFailed(), testDeleteResult(), testDeleteAllResults() |
 |UserDAO|| testAddUser(), testEditUser(), testCheckStored(), testGetUserByEmailType(), testGetUsers(), testGetSuppliers(), testGetUsersWithoutManagers(), testDeleteUser()|
 
 
