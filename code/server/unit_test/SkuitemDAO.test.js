@@ -22,6 +22,13 @@ function testgetAvailableSkuitem(id,input) {
         expect(res).toEqual(input);
     });
 }
+function testdeleteSkuitem(id) {
+    test('test the deleteSku', async () => {
+        await db.deleteSkuitem(id)
+        let res = await db.getAvailableSkuitems(id);
+        expect(res).toEqual([]);
+    });
+}
 
 newSkuitem = {
     RFID:"12345678901234567890123456789015",
@@ -59,5 +66,6 @@ describe('Test Skuitem DAO', () => {
 
     testgetSkuitems(testgets);
     testgetSkuitem("12345678901234567890123456789016",testgets);
-    testgetAvailableSkuitem(1,testgetbysku)
+    testgetAvailableSkuitem(1,testgetbysku);
+    testdeleteSkuitem("12345678901234567890123456789016");
 })

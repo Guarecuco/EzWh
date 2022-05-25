@@ -17,6 +17,21 @@ function testgetSkus(input) {
         expect(res).toEqual(input);
     });
 }
+function testdeleteSku(id) {
+    test('test the deleteSku', async () => {
+        await db.deleteSku(id);
+        let res = await db.getStoredSkus();
+
+        expect(res).toEqual([]);
+    });
+}
+function testcountSku(id,input) {
+    test('test the countSku', async () => {
+        let res = await db.countSku(id);
+
+        expect(res).toEqual(1);
+    });
+}
 
 let test1={
     id:1,
@@ -89,4 +104,6 @@ describe('Test Sku DAO', () => {
 
     testgetSkus(testgets);
     testgetSku(1,testget);
+    testcountSku(1,1);
+    testdeleteSku(1);
 })
