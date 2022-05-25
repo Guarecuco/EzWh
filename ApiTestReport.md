@@ -1,8 +1,8 @@
 # Integration and API Test Report
 
-Date:
+Date: 25/05/2022
 
-Version:
+Version: 01
 
 # Contents
 
@@ -32,18 +32,13 @@ Version:
 
 # Dependency graph 
 
-     <report the here the dependency graph of the classes in EzWH, using plantuml or other tool>
+![DependencyGraph](diagrams/dependencyGraph.drawio.svg)
      
 # Integration approach
 
-    <Write here the integration sequence you adopted, in general terms (top down, bottom up, mixed) and as sequence
-    (ex: step1: class A, step 2: class A+B, step 3: class A+B+C, etc)> 
-    <Some steps may  correspond to unit testing (ex step1 in ex above), presented in other document UnitTestReport.md>
-    <One step will  correspond to API testing>
-
     The integration approach used is **top down**.
 
-* **Step 1**: API class tested 
+* **Step 1**: API classes tested 
 * **Step 2**: DAO classes tested
     
 
@@ -66,19 +61,10 @@ Version:
 ||||
 ||||
 ||||
-||||
-||||
+|RestockOrderDAO|||
+|ReturnOderDAO|||
 ||||
 |UserDAO|| testAddUser(), testEditUser(), testCheckStored(), testGetUserByEmailType(), testGetUsers(), testGetSuppliers(), testGetUsersWithoutManagers(), testDeleteUser()|
-
-
-## Step n 
-
-   
-| Classes  | mock up used |Jest test cases |
-|--|--|--|
-||||
-
 
 
 
@@ -145,5 +131,8 @@ Report also for each of the scenarios the (one or more) API Mocha tests that cov
 
 | Non Functional Requirement | Test name |
 | -------------------------- | --------- |
-|                            |           |
+| NFR4                          |           |
+| NFR5                          |           |
+| NFR6                           |           |
+| NFR9                           | (Jest) dates.test.js    |
 
