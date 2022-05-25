@@ -62,7 +62,14 @@ Version:
 ## Step 2
 | Classes  | mock up used |Jest test cases |
 |--|--|--|
+|InternalOrderDAO|  | testAddInternalOrder(), testAddInternalOrderProducts(), testCheckIfOrderExists(), testUpdateInternalOrder(), testUpdateInternalOrderProduct(), testDeleteInternalOrder(), testDeleteInternalOrderProducts(), testGetInternalOrder(), testGetInternalOrderProducts(), testGetInternalOrderProductsCompleted(), testGetInternalOrdersByState(),testGetInternalOrdersbyID() |
 ||||
+||||
+||||
+||||
+||||
+||||
+|UserDAO|| testAddUser(), testEditUser(), testCheckStored(), testGetUserByEmailType(), testGetUsers(), testGetSuppliers(), testGetUsersWithoutManagers(), testDeleteUser()|
 
 
 ## Step n 
