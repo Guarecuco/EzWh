@@ -83,27 +83,27 @@ Version:
 
 | Unit name | Jest test case |
 |--|--|
-|Test Unit - Item | testAddItem() |
-|Test Unit - Item | testEditItem() |
-|Test Unit - Item | testGetItems() |
-|Test Unit - Item | testGetItem() |
-|Test Unit - Item | testDeleteItem() |
-|Test Unit - Item | testDeleteAllItems() |
-|Test Unit - Test Descriptor | testAddTest() |
-|Test Unit - Test Descriptor | testEditTest() |
-|Test Unit - Test Descriptor | testGetTests() |
-|Test Unit - Test Descriptor | testGetTest() |
-|Test Unit - Test Descriptor | testFindName() |
-|Test Unit - Test Descriptor | testIdFromSku() |
-|Test Unit - Test Descriptor | testDeleteTest() |
-|Test Unit - Test Descriptor | testDeleteAllTests() |
-|Test Unit - Test Result | testAddResult() |
-|Test Unit - Test Result | testEditResult() |
-|Test Unit - Test Result | testGetResultsRfid() |
-|Test Unit - Test Result | testGetResultsRfidId() |
-|Test Unit - Test Result | countFailed() |
-|Test Unit - Test Result | testDeleteResult() |
-|Test Unit - Test Result | testDeleteAllResults() |
+|Test Unit - Item | ItemDAO.test.js --> AddItem() |
+|Test Unit - Item | ItemDAO.test.js --> testEditItem() |
+|Test Unit - Item | ItemDAO.test.js --> testGetItems() |
+|Test Unit - Item | ItemDAO.test.js -->testGetItem() |
+|Test Unit - Item | ItemDAO.test.js --> testDeleteItem() |
+|Test Unit - Item | ItemDAO.test.js --> testDeleteAllItems() |
+|Test Unit - Test Descriptor | TestDescriptorDAO.test.js --> testAddTest() |
+|Test Unit - Test Descriptor | TestDescriptorDAO.test.js --> testEditTest() |
+|Test Unit - Test Descriptor | TestDescriptorDAO.test.js --> testGetTests() |
+|Test Unit - Test Descriptor | TestDescriptorDAO.test.js --> testGetTest() |
+|Test Unit - Test Descriptor | TestDescriptorDAO.test.js --> testFindName() |
+|Test Unit - Test Descriptor | TestDescriptorDAO.test.js --> testIdFromSku() |
+|Test Unit - Test Descriptor | TestDescriptorDAO.test.js --> testDeleteTest() |
+|Test Unit - Test Descriptor | TestDescriptorDAO.test.js --> testDeleteAllTests() |
+|Test Unit - Test Result | TestResultDAO.test.js --> testAddResult() |
+|Test Unit - Test Result | TestResultDAO.test.js --> testEditResult() |
+|Test Unit - Test Result | TestResultDAO.test.js --> testGetResultsRfid() |
+|Test Unit - Test Result | TestResultDAO.test.js --> testGetResultsRfidId() |
+|Test Unit - Test Result | TestResultDAO.test.js --> countFailed() |
+|Test Unit - Test Result | TestResultDAO.test.js --> testDeleteResult() |
+|Test Unit - Test Result | TestResultDAO.test.js --> testDeleteAllResults() |
 |||
 ||||
 
