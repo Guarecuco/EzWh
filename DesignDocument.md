@@ -22,6 +22,7 @@ Version: 1.1
 - [Verification traceability matrix](#verification-traceability-matrix)
 - [Verification sequence diagrams](#verification-sequence-diagrams)
   - [UC3, sc1-2 - Manage issue of restock orders](#uc3-sc1-2---manage-issue-of-restock-orders)
+  - [UC4, sc4-1 - Issue internal order to warehouse](#uc4-sc4-1---issue-internal-order-to-warehouse)
   - [UC5.1, sc 5.1.1 - Record restock order arrival](#uc51-sc-511---record-restock-order-arrival)
   - [UC5.2, sc 5.2.1, 5.2.2, 5.2.3](#uc52-sc-521-522-523)
   - [UC6, sc 6.2 - Return order of any SKU items](#uc6-sc-62---return-order-of-any-sku-items)
@@ -146,16 +147,17 @@ Class User {
   ID
   name
   surname
-  email
+  username
   password
   type
-  void:setUserId(int Id)
-  void:setUserName(string Name)
-  void:setUserSurname(string Surname)
-  void:setUserEmail(string Email)
-  void:setPassword(string Password)
-  void:setUserType(string Type)
-  string: getUserData(string Email)
+  List<User>:getStoredSuppliers()
+  List<User>:getStoredUsers()
+  List<User>:getStoredUsersWithoutManagers()
+  User:getUserByEmailType(user)
+  int:checkIfStored(user)
+  void:storeUser(user)
+  void:deleteUser(user)
+  void:updateUser(user)
 }
 
 class Supplier {
@@ -315,10 +317,19 @@ class InternalOrder {
   state
   products
   customerId
-  string: getState()
-  void: setState(string newState)
-  void: setProducts(List<SKUItems> RFIDs)
- }
+  void:storeInternalOrder(order)
+  void:storeInternalOrderProducts(order.products)
+  void:updateInternalOrder(order)
+  void:updateInternalOrderProducts(order.products)
+  void:deleteInternalOrder(order)
+  void:deleteInternalOrderProducts(order.products)
+  int:checkIfOrderExists(order)
+  List<InternalOrder>:getInternalOrders()
+  List<products>:getInternalOrdersProducts(order.id)
+  List<products>:getInternalOrdersProductsCompleted(order.id)
+  List<InternalOrder>:getInternalOrdersByState(state)
+  InternalOrder:getInternalOrdersbyID(order.id)
+}
 
 DataImpl – “*” SKUItem
 DataImpl – “*” SKU
@@ -415,6 +426,32 @@ deactivate RestockOrder
 DataImpl --> EzWh: Done
 deactivate DataImpl
 deactivate EzWh
+```
+## UC4, sc4-1 - Issue internal order to warehouse
+```plantuml
+@startuml
+activate EzWh
+EzWh->DataImpl: POST /api/internalOrder
+activate DataImpl
+DataImpl-> InternalOrder: storeInternalOrder(issueDate,state,products,customerId)
+activate InternalOrder
+InternalOrder --> InternalOrder: orderId
+loop for each SKU in products
+InternalOrder -> Sku: getSku(products.SKUId)
+activate Sku
+Sku --> InternalOrder: qty
+deactivate Sku
+InternalOrder -> Sku: setAvailableQuantityById(products.SKUId, newQty)
+activate Sku
+Sku --> InternalOrder: Done
+deactivate Sku
+end loop
+InternalOrder --> DataImpl: Done
+deactivate InternalOrder
+DataImpl --> EzWh : Done
+deactivate DataImpl
+deactivate EzWh
+@enduml
 ```
 
 ## UC5.1, sc 5.1.1 - Record restock order arrival
