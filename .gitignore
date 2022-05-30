@@ -2,3 +2,7 @@
 code/server/coverage/
 code/server/node_modules/
 code/client/node_modules/
+code/server/EzWh
+code/server/EzWh.db
+code/server/package-lock.json
+code/server/.nyc_output/
