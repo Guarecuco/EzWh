@@ -6,6 +6,9 @@ const db = new UserDAO('EzWh.db');
 const router = express.Router();
 router.use(express.json());
 
+//Regular expression to check date. Format : yyyy/mm/dd hh:mm
+const email_regex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
 //GET /api/userinfo
 //Login apis not needed right now
 router.get('/api/userinfo', async (req,res)=>{
@@ -53,6 +56,10 @@ router.post('/api/newUser', async (req,res)=>{
             user.username === undefined || user.password === undefined || user.type === undefined || 
             user.name == '' || user.surname == '' || user.username == '' || user.password == '' || user.type == '') {
                 return res.status(422).json({error: `validation of request body failed or attempt to create manager or administrator accounts`});
+        }
+        //Check email format
+        if(!(email_regex.test(user.username))){
+            return res.status(422).json({error: `validation of request body failed or attempt to create manager or administrator accounts`});
         }
         //Check type is correct
         if (user.type !== 'customer' && user.type !== 'qualityEmployee' && user.type !== 'clerk' && 
@@ -398,6 +405,10 @@ router.delete('/api/users/:username/:type', async (req,res)=>{
             username : req.params.username,
             type : req.params.type
         }
+        //Check date format
+        if(!(email_regex.test(user.username))){
+            return res.status(422).json({error: `validation of request body failed`});
+        }
         //Check type is correct
         if (user.type !== 'customer' && user.type !== 'qualityEmployee' && user.type !== 'clerk' && 
         user.type !== 'deliveryEmployee' && user.type !== 'supplier') {
@@ -406,7 +417,7 @@ router.delete('/api/users/:username/:type', async (req,res)=>{
         //Check if user exist
         let count = await db.checkIfStored(user);
         if (count == 0){
-            return res.status(422).json({error: `validation of username or of type failed or attempt to delete a manager/administrator`});
+            return res.status(204).end();
         }
         //Delete user
         await db.deleteUser(user);   
