@@ -3,6 +3,8 @@ const SkuitemDAO = require('../dao/SkuitemDAO.js')
 const db = new SkuitemDAO('EzWh.db')
 const SkuDAO = require('../dao/SkuDAO.js')
 const dbS = new SkuDAO('EzWh.db')
+const {isValid} = require("../utilities/dates");
+const {check, validationResult} = require('express-validator'); // validation middleware
 
 const router = express.Router()
 router.use(express.json());
@@ -17,13 +19,15 @@ router.get('/api/skuitems', async (req,res)=>{
     }
 });
 
-router.get('/api/skuitems/sku/:id', async (req,res)=>{
+router.get('/api/skuitems/sku/:id',[
+  check("id").isInt( {min:1} ),
+], async (req,res)=>{
     try{
-      const SKUId=req.params.id;
-      if(!SKUId){
-        return res.status(422).json({error: `Invalid SKUId`});
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(422).json({errors: errors.array()});
       }
-      const skuitems = await db.getAvailableSkuitems(SKUId);
+      const skuitems = await db.getAvailableSkuitems(req.params.id);
       if(skuitems.length <= 0){
         return res.status(404).json({error: `sku not found`});
       }
@@ -34,13 +38,15 @@ router.get('/api/skuitems/sku/:id', async (req,res)=>{
     }
 });
 
-router.get('/api/skuitems/:rfid', async (req,res)=>{
+router.get('/api/skuitems/:rfid',[
+  check("rfid").isLength( {min:32, max:32} ),
+], async (req,res)=>{
     try{
-      const rfid=req.params.rfid;
-      if(!rfid){
-        return res.status(422).json({error: `Invalid rfid`});
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(422).json({errors: errors.array()});
       }
-      const skuitem = await db.getStoredSkuitem(rfid);
+      const skuitem = await db.getStoredSkuitem(req.params.rfid);
       if (skuitem.length<=0){
         return res.status(404).json({error: `no skuitem associated to rfid`});
       }
@@ -51,19 +57,18 @@ router.get('/api/skuitems/:rfid', async (req,res)=>{
     }
 });
 
-router.post('/api/skuitem', async (req,res)=>{
+router.post('/api/skuitem',[
+  check("RFID").isLength( {min:32, max:32} ),
+  check("SKUId").isInt( {min:1} ),
+  check("DateOfStock").custom(d=>isValid(d)===true ? 1 : 0 )
+], async (req,res)=>{
     try{
-      //Check if body is empty
-      if (Object.keys(req.body).length === 0) {
-        return res.status(422).json({error: `Empty body request`});
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(422).json({errors: errors.array()});
       }
       let item = req.body;
-        //Check if any field is empty
-      if (!( item && item.RFID && item.SKUId !== undefined && item.DateOfStock && item.RFID.length==32 
-        && item.DateOfStock.match(/^([1-9]\d{3}\/(0[1-9]|1[0-2])\/(0[1-9]|[12]\d|3[01])[\ ]([01]?[0-9]|2[0-3]):[0-5][0-9])$/)!=null )) {
-        return res.status(422).json({error: `Invalid skuitem data`});
-      }
-      //TODO: check existance of SKU
+      //check existance of SKU
       let sku = await dbS.getSku(item.SKUId);
       if (sku.length <= 0){
         return res.status(404).json({error: `SKU not found`});
@@ -82,42 +87,47 @@ router.post('/api/skuitem', async (req,res)=>{
     }
 });
 
-router.put('/api/skuitems/:rfid', async (req,res)=>{
+router.put('/api/skuitems/:rfid',[
+  check("rfid").isLength( {min:32, max:32} ),
+  check("newRFID").isLength( {min:32, max:32} ),
+  check("newAvailable").isInt( {min:0,max:1} ),
+  check("newDateOfStock").custom(d=>isValid(d)===true ? 1 : 0 )
+], async (req,res)=>{
     try{
-        if (Object.keys(req.body).length === 0) {
-            return res.status(422).json({error: `Empty body request`});
-        }
-        const rfid=req.params.rfid;
-        const item=req.body;
-        if (!( rfid && item && item.newRFID && item.newAvailable !== undefined && item.newDateOfStock && item.newRFID.length==32
-          && item.newDateOfStock.match(/^([1-9]\d{3}\/(0[1-9]|1[0-2])\/(0[1-9]|[12]\d|3[01])[\ ]([01]?[0-9]|2[0-3]):[0-5][0-9])$/)!=null)) {
-            return res.status(422).json({error: `Invalid skuitem data`});
-        }
-
-        const skuitem = await db.getStoredSkuitem(rfid);
-        if (skuitem.length<=0){
-          return res.status(404).json({error: `no skuitem associated to rfid`});
-        }
-        await db.updateSkuitem(rfid,item);
-        return res.status(200).end(); 
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(422).json({errors: errors.array()});
+      }
+      const rfid=req.params.rfid;
+      const item=req.body;
+      
+      const skuitem = await db.getStoredSkuitem(rfid);
+      if (skuitem.length<=0){
+        return res.status(404).json({error: `no skuitem associated to rfid`});
+      }
+      await db.updateSkuitem(rfid,item);
+      return res.status(200).end(); 
     }
     catch(err){
       res.status(503).end();
     }
 });
 
-router.delete('/api/skuitems/:rfid', async (req,res)=>{
+router.delete('/api/skuitems/:rfid',[
+  check("rfid").isLength( {min:32, max:32} ),
+], async (req,res)=>{
     try{
-        const rfid=req.params.rfid
-        if (!rfid) {
-            return res.status(422).json({error: `Invalid rfid`});
-        }
-        const skuitem = await db.getStoredSkuitem(rfid);
-        if (skuitem.length<=0){
-          return res.status(422).json({error: `no skuitem associated to rfid`});
-        }
-        await db.deleteSkuitem(rfid);
-        return res.status(204).end();
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(422).json({errors: errors.array()});
+      }
+      const rfid=req.params.rfid;
+      const skuitem = await db.getStoredSkuitem(rfid);
+      if (skuitem.length<=0){
+        return res.status(422).json({error: `no skuitem associated to rfid`});
+      }
+      await db.deleteSkuitem(rfid);
+      return res.status(204).end();
     }
     catch(err){
       res.status(503).end();
@@ -135,13 +145,12 @@ router.delete('/api/skuitems', async (req,res)=>{
   }
 });
 
-async function skuitemStartup () {
+function skuitemStartup () {
   try{
       //Droping table
-      await db.deleteSkuitems();
+      db.deleteSkuitems();
       //Creating table
-      await db.newTableSkuitem();
-      //Encrypt password
+      db.newTableSkuitem();
   }
   catch(err){
       console.log(err);

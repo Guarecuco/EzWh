@@ -57,7 +57,7 @@ class SkuDAO{
                         testDescriptors: await dbT.getSKUDescriptors(r.ID)
                     }
                 })
-                resolve(Promise.all(pro));
+                resolve(rows===[]?rows:Promise.all(pro));
             })
         })
     }

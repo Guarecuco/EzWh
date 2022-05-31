@@ -125,13 +125,12 @@ router.delete('/api/position/', async (req,res)=>{
   }
 });
 
-async function positionStartup () {
+function positionStartup () {
   try{
       //Droping table
-      await db.deleteAllPositions();
+      db.deleteAllPositions();
       //Creating table
-      await db.newTablePosition();
-      //Encrypt password
+      db.newTablePosition();
   }
   catch(err){
       console.log(err);
