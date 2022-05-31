@@ -90,7 +90,7 @@ class InternalOrderDAO{
     updateInternalOrderProducts(data){
         return new Promise((resolve, reject) => {
             const sql = 'UPDATE INTERNAL_ORDERS_PRODUCTS SET RFID = ? WHERE ORDERID = ? AND SKUId = ?'
-            this.db.run(sql, [data.RFID, data.orderId, data.SKUId] , function (err) {
+            this.db.run(sql, [data.RFID, data.orderId, data.SkuID] , function (err) {
                 if(err){
                     reject(err);
                     return;

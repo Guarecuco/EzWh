@@ -211,12 +211,12 @@ router.put('/api/internalOrders/:id', async (req,res)=>{
 
             for (var i=0; i<order.products.length; i++){
                 //Check product array is not empty
-                if (order.products[i].SKUId === undefined || order.products[i].RFID === undefined || 
-                    order.products[i].SKUId == '' || order.products[i].RFID == '' ) {
+                if (order.products[i].SkuID === undefined || order.products[i].RFID === undefined || 
+                    order.products[i].SkuID == '' || order.products[i].RFID == '' ) {
                         return res.status(422).json({error: `validation of request body or of id failed`});
                 }
                 //Check if product's SKUI is integer
-                if(!Number.isInteger(order.products[i].SKUId)){
+                if(!Number.isInteger(order.products[i].SkuID)){
                     return res.status(422).json({error: `validation of request body or of id failed`});
                 }
             }
