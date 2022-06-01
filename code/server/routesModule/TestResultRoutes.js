@@ -12,11 +12,16 @@ router.use(express.json());
 //GET
 router.get('/api/skuitems/:rfid/testResults', async (req,res)=>{
     try{
-        if(!req.params.rfid.length===32 && !Number.isInteger(Number(req.params.rfid)))
+        if(!(req.params.rfid.length===32 && Number.isInteger(Number(req.params.rfid))))
             return res.status(422).end();
         const results = await db.getSKUResults(req.params.rfid);
 
-      
+        //Check if sku exists
+      let rfids = await dbS.getStoredSkuitem(req.params.rfid);
+      if (rfids.length == 0){
+        return res.status(404).end(); 
+      }  
+    
     return res.status(200).json(results);
         
        
@@ -81,6 +86,8 @@ router.put('/api/skuitems/:rfid/testResult/:id', async (req,res)=>{
         if (Object.keys(req.body).length === 0) {
             return res.status(422).json({error: `Empty body request`});
         }
+        if(!(req.params.rfid.length===32 && Number.isInteger(Number(req.params.rfid))))
+            return res.status(422).end();
         const eresult = {
             rfid : req.params.rfid,
             id: req.params.id,
@@ -89,7 +96,11 @@ router.put('/api/skuitems/:rfid/testResult/:id', async (req,res)=>{
             eresult : req.body.newResult
             
         }
-
+         //Check if sku exists
+      let rfids = await dbS.getStoredSkuitem(req.params.rfid);
+      if (rfids.length == 0){
+        return res.status(404).end(); 
+      }  
         //Check if test exist
         let count = await dbT.findTestId(eresult.etest);
         if (count > 0){
