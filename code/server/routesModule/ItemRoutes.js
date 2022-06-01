@@ -25,6 +25,12 @@ router.get('/api/items', async (req,res)=>{
   router.get('/api/items/:id', async (req,res)=>{
     try{
 
+        const id = Number(req.params.id);
+            if(!Number.isInteger(id))
+             {
+                 if(!id>0)
+                    return res.status(422).end();
+             }
         //Check if item exist
         
         let count = await db.countItems(req.params.id);
