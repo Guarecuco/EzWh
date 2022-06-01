@@ -56,7 +56,7 @@ router.get('/api/testDescriptors', async (req,res)=>{
       }
       let newTest = req.body;
         //Check if any field is empty
-      if (!( newTest && newTest.name && newTest.procedureDescription && newTest.idSKU )) {
+      if (!( newTest && newTest.name && newTest.procedureDescription  && newTest.idSKU )) {
         return res.status(422).json({error: `Invalid test descriptor data`});
       }
       
