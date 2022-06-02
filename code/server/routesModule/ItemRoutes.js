@@ -26,15 +26,18 @@ router.get('/api/items', async (req,res)=>{
     try{
 
         const id = Number(req.params.id);
-            if(!Number.isInteger(id))
+            if(!id)
+            {
+                return res.status(422).end();
+            }
+            if(!(Number.isInteger(id)&&id>0))
              {
-                 if(!id>0)
                     return res.status(422).end();
              }
         //Check if item exist
         
         let count = await db.countItems(req.params.id);
-        if (count == 0){
+        if (count===0){
             return res.status(404).end();
         }
          const item = await db.getItem(req.params.id);
@@ -89,7 +92,15 @@ router.put('/api/item/:id', async (req,res)=>{
             ndescr : req.body.newDescription,
             nprice : req.body.newPrice,
         }
-
+        const id = Number(req.params.id);
+            if(!id)
+            {
+                return res.status(422).end();
+            }
+            if(!(Number.isInteger(id)&&id>0))
+             {
+                    return res.status(422).end();
+             }
         //Check if item exist
         let count = await db.countItems(item.nid);
         if (count===0){
