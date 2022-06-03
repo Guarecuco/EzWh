@@ -143,14 +143,14 @@ router.delete('/api/skus/:id',[
   check("id").isInt( {min:1} ),
 ], async (req,res)=>{
   try{
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
+    const id = req.params.id;
+    if (id<0){
       return res.status(422).json({errors: errors.array()});
     }
-    const id = req.params.id;
     let get = await db.getSku(id);
     if (get<=0){
-        return res.status(422).json({error: `no sku associated to id`});
+      //return 204 even if doest exist
+      return res.status(204).end();
     }
     await db.deleteSku(id);
     return res.status(204).end();
