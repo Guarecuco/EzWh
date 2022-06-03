@@ -179,7 +179,7 @@ describe('Test Internal Order DAO', () => {
     //Update internal order
     testUpdateInternalOrder({newState:"COMPLETED",orderId: 1},1);
     //Update internal order product
-    testUpdateInternalOrderProduct({RFID:"1234567891234567",SKUId:12,orderId: 1},1);
+    testUpdateInternalOrderProduct({RFID:"1234567891234567",SkuID:12,orderId: 1},1);
     //Get products of completed order
     testGetInternalOrderProductsCompleted({id:1},[{SKUId:12,description:"a product",price:10.99,RFID:"1234567891234567"}]);
 
@@ -210,7 +210,7 @@ describe('Test Internal Order DAO', () => {
     testGetInternalOrderProducts({id:1},"SQLITE_ERROR");
     testCheckIfOrderExists({orderId:1},"SQLITE_ERROR");
     testUpdateInternalOrder({newState:"COMPLETED",orderId: 1},"SQLITE_ERROR");
-    testUpdateInternalOrderProduct({RFID:"1234567891234567",SKUId:12,orderId: 1},"SQLITE_ERROR");
+    testUpdateInternalOrderProduct({RFID:"1234567891234567",SkuID:12,orderId: 1},"SQLITE_ERROR");
     testGetInternalOrderProductsCompleted({id:1},"SQLITE_ERROR");
     testGetInternalOrdersByState("COMPLETED","SQLITE_ERROR")
     testGetInternalOrdersByState("ISSUED","SQLITE_ERROR")

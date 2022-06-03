@@ -166,8 +166,8 @@ describe('Test internalOrder APIs', () => {
     newInternalOrder(422,"2022/05/10 09:33", [{"SKUId":1,"description":"SKU1","price":"price","qty":3}], 1);    //Wrong price, not number
     newInternalOrder(422);    //Empty body
 
-    editInternalOrder(200,1,"COMPLETED",[{"SKUId":1,"RFID":"12345678901234567890123456789016"},
-        {"SKUId":2,"RFID":"12345678901234567890123456789038"}]);                                    //Change from ISSUED to COMPLETED, also send RFID for each SKUID
+    editInternalOrder(200,1,"COMPLETED",[{"SkuID":1,"RFID":"12345678901234567890123456789016"},
+        {"SkuID":2,"RFID":"12345678901234567890123456789038"}]);                                    //Change from ISSUED to COMPLETED, also send RFID for each SKUID
     editInternalOrder(200,2,"ACCEPTED","");               //Change from ISSUED to accepted, RFID is not needed
     editInternalOrder(200,3,"REFUSED","TEST products");   //Change from ISSUED to refused, RFID is not needed it is ignored
     editInternalOrder(200,4,"CANCELED","");               //Change from ISSUED to canceled

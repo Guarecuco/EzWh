@@ -230,7 +230,7 @@ router.put('/api/internalOrders/:id', async (req,res)=>{
            
             for (var i=0; i<order.products.length; i++){
                 let product = {
-                    SKUId : order.products[i].SKUId,
+                    SkuID : order.products[i].SkuID,
                     RFID : order.products[i].RFID,
                     orderId: order.orderId
                 }
@@ -243,13 +243,13 @@ router.put('/api/internalOrders/:id', async (req,res)=>{
             var products = await db.getInternalOrdersProducts(order);
             for (var i=0; i<products.length; i++){
                 let product = {
-                    SKUId : products[i].SKUId,
+                    SkuID : products[i].SKUId,
                     qty : products[i].qty
                 }
                 //Increase availability of SKU
-                let sku = await skudb.getSku(product.SKUId);    //Get current availability
+                let sku = await skudb.getSku(product.SkuID);    //Get current availability
                 let newQty = sku[0].availableQuantity + product.qty;    //Decrease
-                await skudb.setAvailableQuantityById(product.SKUId, newQty)    //Update
+                await skudb.setAvailableQuantityById(product.SkuID, newQty)    //Update
                 //Decrease position ????
             }
         }  
