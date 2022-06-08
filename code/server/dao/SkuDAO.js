@@ -7,7 +7,6 @@ class SkuDAO{
         this.db = new this.sqlite3.Database(dbname, (err) => {
             if(err) throw err
         })
-        this.db.get("PRAGMA busy_timeout = 10000");
     }
 
     newTableSku(){
