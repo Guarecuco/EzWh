@@ -7,7 +7,7 @@ class ItemDAO{
     }
     newTableItems(){
         return new Promise((resolve, reject) => {
-            const sql = 'CREATE TABLE IF NOT EXISTS ITEMS(id INTEGER PRIMARY KEY AUTOINCREMENT, description VARCHAR, price FLOAT , SKUId INTEGER, supplierId INTEGER)';
+            const sql = 'CREATE TABLE IF NOT EXISTS ITEMS(id INTEGER PRIMARY KEY, description VARCHAR, price FLOAT , SKUId INTEGER, supplierId INTEGER)';
             this.db.run(sql, (err) => {
                 if(err){
                     reject(err);
@@ -83,8 +83,8 @@ class ItemDAO{
 
     addItem(data){
         return new Promise((resolve, reject) => {
-            const sql = 'INSERT INTO ITEMS( description, price, SKUId, supplierId) VALUES (?,?,?,?)';
-            this.db.run(sql, [data.description, data.price, data.SKUId, data.supplierId] , (err) => {
+            const sql = 'INSERT INTO ITEMS(id, description, price, SKUId, supplierId) VALUES (?,?,?,?,?)';
+            this.db.run(sql, [data.id, data.description, data.price, data.SKUId, data.supplierId] , (err) => {
                 if(err){
                     reject(err);
                     return;

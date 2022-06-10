@@ -3,6 +3,7 @@ const SkuDAO = require('../dao/SkuDAO.js')
 const db = new SkuDAO('EzWh.db')
 const PositionDAO = require('../dao/PositionDAO.js');
 const dbP = new PositionDAO('EzWh.db');
+const {check, validationResult} = require('express-validator'); // validation middleware
 
 const router = express.Router()
 router.use(express.json());
@@ -17,12 +18,15 @@ router.get('/api/skus', async (req,res)=>{
   }
 });
 
-router.get('/api/skus/:id', async (req,res)=>{
+router.get('/api/skus/:id',[
+  check("id").isInt( {min:1} ),
+], async (req,res)=>{
   try{
-    const id=req.params.id;
-    if(!id){
-      return res.status(422).json({error: `Invalid id`});
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({errors: errors.array()});
     }
+    const id=req.params.id;
     const sku = await db.getSku(id);
     if(sku.length <= 0){
       return res.status(404).json({error: `Sku not found`});
@@ -34,17 +38,20 @@ router.get('/api/skus/:id', async (req,res)=>{
   }
 });
 
-router.post('/api/sku', async (req,res)=>{
+router.post('/api/sku',[
+  check("description").isLength({ min: 1 }),
+  check("weight").isInt( {min:1} ),
+  check("volume").isInt( {min:1} ),
+  check("notes").isLength({ min: 1 }),
+  check("availableQuantity").isInt( {min:0} ),
+  check("price").isFloat( {gt:0} ),
+], async (req,res)=>{
   try{
-    //Check if body is empty
-    if (Object.keys(req.body).length === 0) {
-      return res.status(422).json({error: `Empty body request`});
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({errors: errors.array()});
     }
     let sku = req.body;
-      //Check if any field is empty, notes can be
-    if (!( sku && sku.description && sku.weight && sku.volume && sku.notes && sku.price && sku.availableQuantity!==undefined )) {
-      return res.status(422).json({error: `Invalid sku data`});
-    }
     await db.newTableSku();
 
     await db.storeSku(sku);
@@ -56,18 +63,22 @@ router.post('/api/sku', async (req,res)=>{
   }
 });
 
-router.put('/api/sku/:id', async (req,res)=>{
+router.put('/api/sku/:id',[
+  check("id").isInt( {min:1} ),
+  check("newDescription").isLength({ min: 1 }),
+  check("newWeight").isInt( {min:1} ),
+  check("newVolume").isInt( {min:1} ),
+  check("newNotes").isLength({ min: 1 }),
+  check("newAvailableQuantity").isInt( {min:0} ),
+  check("newPrice").isFloat( {gt:0} ),
+], async (req,res)=>{
   try{
-    //Check if body is empty
-    if (Object.keys(req.body).length === 0) {
-      return res.status(422).json({error: `Empty body request`});
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({errors: errors.array()});
     }
     const sku = req.body;
     const id=req.params.id;
-    //Check if any field is empty, notes can be
-    if (!( id && sku && sku.newDescription && sku.newWeight && sku.newVolume && sku.newNotes && sku.newPrice && sku.newAvailableQuantity!==undefined )) {
-      return res.status(422).json({error: `Invalid sku data`});
-    }
     //Check if sku exist
     let get = await db.getSku(id);
     if (get.length <= 0){
@@ -92,18 +103,17 @@ router.put('/api/sku/:id', async (req,res)=>{
   }
 });
 
-router.put('/api/sku/:id/position', async (req,res)=>{
+router.put('/api/sku/:id/position',[
+  check("id").isInt( {min:1} ),
+  check("position").isLength({ min: 12, max: 12 }).isInt(),
+], async (req,res)=>{
   try{
-    //Check if body is empty
-    if (Object.keys(req.body).length === 0) {
-      return res.status(422).json({error: `Empty body request`});
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({errors: errors.array()});
     }
     const item = req.body;
     const id=req.params.id;
-    //Check if any field is empty, notes can be
-    if (!( id && item && item.position )) {
-      return res.status(422).json({error: `Invalid sku data`});
-    }
     //Check if sku exist
     let get = await db.getSku(id);
     if (get <= 0){
@@ -129,18 +139,21 @@ router.put('/api/sku/:id/position', async (req,res)=>{
   }
 });
 
-router.delete('/api/skus/:id', async (req,res)=>{
+router.delete('/api/skus/:id',[
+  check("id").isInt( {min:1} ),
+], async (req,res)=>{
   try{
-      const id=req.params.id
-      if (!id) {
-          return res.status(422).json({error: `Invalid id`});
-      }
-      let get = await db.getSku(id);
-      if (get<=0){
-          return res.status(422).json({error: `no sku associated to id`});
-      }
-      await db.deleteSku(id);
+    const id = req.params.id;
+    if (id<0){
+      return res.status(422).json({errors: errors.array()});
+    }
+    let get = await db.getSku(id);
+    if (get<=0){
+      //return 204 even if doest exist
       return res.status(204).end();
+    }
+    await db.deleteSku(id);
+    return res.status(204).end();
   }
   catch(err){
     res.status(503).end();
@@ -159,18 +172,16 @@ router.delete('/api/skus/', async (req,res)=>{
   }
 });
 
-async function skuStartup () {
+function skuStartup () {
   try{
       //Droping table
-      await db.deleteAllSkus();
+      db.deleteAllSkus();
       //Creating table
-      await db.newTableSku();
-      //Encrypt password
+      db.newTableSku();
   }
   catch(err){
       console.log(err);
   }
-
 }
 skuStartup();
 

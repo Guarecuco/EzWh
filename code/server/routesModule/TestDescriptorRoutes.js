@@ -1,6 +1,8 @@
 const express = require("express");
 const TestDescriptorDAO = require('../dao/TestDescriptorDAO.js')
 const db = new TestDescriptorDAO('EzWh.db')
+const SkuDAO = require('../dao/SkuDAO.js')
+const dbS = new SkuDAO('EzWh.db')
 
 const router = express.Router()
 router.use(express.json());
@@ -24,6 +26,12 @@ router.get('/api/testDescriptors', async (req,res)=>{
 
   router.get('/api/testDescriptors/:id', async (req,res)=>{
     try{
+            const id = Number(req.params.id);
+            if(!Number.isInteger(id))
+             {
+                 if(!id>0)
+                    return res.status(422).end();
+             }
             let count = await db.findTestId(req.params.id);
             if (count == 0){
             
@@ -48,12 +56,17 @@ router.get('/api/testDescriptors', async (req,res)=>{
       }
       let newTest = req.body;
         //Check if any field is empty
-      if (!( newTest && newTest.name && newTest.procedureDescription && newTest.idSKU )) {
+      if (!( newTest && newTest.name && newTest.procedureDescription  && newTest.idSKU )) {
         return res.status(422).json({error: `Invalid test descriptor data`});
       }
       
       await db.newTableTests();
-      //Check if test exists
+      //Check if sku exists
+      let count0 = await dbS.countSku(newTest.idSKU);
+      if (count0 == 0){
+        return res.status(404).end(); 
+      }  
+
       let count = await db.findTestName(newTest.name);
       if (count == 0){
         await db.addTest(newTest);
@@ -83,8 +96,13 @@ router.put('/api/testDescriptor/:id', async (req,res)=>{
             ndescr : req.body.newProcedureDescription,
             nsku : req.body.newIdSKU
         }
-        //Check if test exist
         
+        //Check if sku exists
+      let count0 = await dbS.countSku(test.nsku);
+      if (count0 == 0){
+        return res.status(404).end(); 
+      }  
+        //Check if test exist
         let count = await db.findTestId(test.nid);
         if (count == 0){
             return res.status(404).end();

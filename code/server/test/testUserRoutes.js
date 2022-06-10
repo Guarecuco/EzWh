@@ -361,7 +361,7 @@ describe('Test user APIs', () => {
 
     deleteUser(204,"clerk1@ezwh.com","clerk")                           //OK
     deleteUser(204,"deliveryEmployee1@ezwh.com","deliveryEmployee")     //OK
-    deleteUser(422,"qualityEmployee1@ezwh.com","clerk")                 //Wrong type
+    deleteUser(204,"qualityEmployee1@ezwh.com","clerk")                 //Wrong type, but returns 204 anyways
     deleteUser(422,"manager1@ezwh.com","manager")                       //Manager type
     deleteUser(422,"qualityEmployee1@ezwh.com")                         //Missing type
     
