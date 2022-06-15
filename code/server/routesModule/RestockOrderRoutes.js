@@ -3,7 +3,9 @@ const RestockOrderDAO = require('../dao/RestockOrderDAO.js')
 const TestResultDAO = require('../dao/TestResultDAO.js')
 const db = new RestockOrderDAO('EzWh.db')
 const testdb = new TestResultDAO('EzWh.db')
+const itemdb = new ItemDAO('EzWh.db')
 const dates = require('../utilities/dates.js')
+const ItemDAO = require("../dao/ItemDAO");
 
 const router = express.Router()
 router.use(express.json());
@@ -89,6 +91,13 @@ router.post('/api/restockOrder', async (req,res)=>{
           //Check if any field is empty
         if (order === undefined || order.issueDate === undefined ||
             order.supplierId === undefined || order.products === undefined) {
+                return res.status(422).json({error: `Invalid order data`});
+        }
+
+        for (let product of order.products){
+            let item = await itemdb.getItem(product.itemId)
+            if (item === undefined || item.supplierId === undefined || item.SKUId === undefined
+             || item.supplierId !== order.supplierId || item.SKUId !== order.SKUId)
                 return res.status(422).json({error: `Invalid order data`});
         }
 
