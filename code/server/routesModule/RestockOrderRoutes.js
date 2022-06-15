@@ -96,9 +96,8 @@ router.post('/api/restockOrder', async (req,res)=>{
         }
 
         for (let product of order.products){
-            let item = await itemdb.getItem(product.itemId)
-            if (item === undefined || item.supplierId === undefined || item.SKUId === undefined
-             || item.supplierId !== order.supplierId || item.SKUId !== order.SKUId)
+            let item = await itemdb.getItem(product.itemId, order.supplierId)
+            if (item === undefined || item.SKUId === undefined || item.SKUId !== order.SKUId)
                 return res.status(422).json({error: `Invalid order data`});
         }
 
