@@ -3,9 +3,10 @@ const RestockOrderDAO = require('../dao/RestockOrderDAO.js')
 const TestResultDAO = require('../dao/TestResultDAO.js')
 const db = new RestockOrderDAO('EzWh.db')
 const testdb = new TestResultDAO('EzWh.db')
-const itemdb = new ItemDAO('EzWh.db')
 const dates = require('../utilities/dates.js')
 const ItemDAO = require("../dao/ItemDAO");
+const itemdb = new ItemDAO('EzWh.db')
+
 
 const router = express.Router()
 router.use(express.json());
