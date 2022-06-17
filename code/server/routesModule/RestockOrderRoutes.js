@@ -61,7 +61,6 @@ router.get('/api/restockOrders/:id/returnItems', async (req,res)=>{
         const order = await db.getRestockOrder(req.params.id);
         if (order === undefined)
             return res.status(404).json({error: `No restock order associated to id`})
-
         if (order.state !== 'COMPLETEDRETURN')
             return res.status(422).json({error: `Unprocessable Entity`})
 
@@ -97,7 +96,10 @@ router.post('/api/restockOrder', async (req,res)=>{
 
         for (let product of order.products){
             let item = await itemdb.getItem(product.itemId, order.supplierId)
-            if (item === undefined || item.SKUId === undefined || item.SKUId !== order.SKUId)
+            if (item !== undefined && item.length !== undefined)
+                item = item[0]
+
+            if (item === undefined || item.SKUId === undefined || item.SKUId !== product.SKUId)
                 return res.status(422).json({error: `Invalid order data`});
         }
 

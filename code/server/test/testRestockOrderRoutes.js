@@ -133,6 +133,23 @@ before(function (done) {
         Result: true
     }
 
+    let item = {
+        id : 12,
+        description : "a new item",
+        price : 10.99,
+        SKUId : 1,
+        supplierId : 2
+    }
+    let sku = {
+        description : "a new sku",
+        weight : 100,
+        volume : 50,
+        notes : "first SKU",
+        price : 10.99,
+        availableQuantity : 50
+    }
+
+
     agent.delete('/testDescriptor/dropTable').then(res => {
         agent.delete('/skuItems/dropTable').then(function (res) {
             agent.post('/api/testDescriptor')
@@ -141,36 +158,41 @@ before(function (done) {
                     agent.post('/api/skuitems/testResult')
                         .send(failedTestRes)
                         .then(function (res) {
-                            done()
+                            agent.delete('/api/skus/').then(res => {
+                                agent.post('/api/sku').send(sku).then((res) =>
+                                    agent.delete('/items/dropTable').then(res => {
+                                        agent.post('/api/item').send(item).then((res) => done())
+                                    }))
+                            })
                         })
                 })
         })
     })
+
+
+
 });
 
 
 describe('test restock order apis', () => {
     let order = {
         issueDate: '2021/11/29 09:33',
-        supplierId:  1,
+        supplierId:  2,
         products: [
-            {"SKUId":12,"description":"a product","price":10.99,"qty":30},
-            {"SKUId":180,"description":"another product","price":11.99,"qty":20}
+            {"SKUId":1,"itemId":12,"description":"a product","price":10.99,"qty":30}
         ]
     }
     let order2 = {
         issueDate: '2021/04/21 06:50',
-        supplierId:  2,
+        supplierId:  1,
         products: [
-            {"SKUId":2,"description":"nice product","price":10.99,"qty":30},
-            {"SKUId":3,"description":"another nice product","price":11.99,"qty":20}
-        ]
+            {"SKUId":1,"itemId":12,"description":"a product","price":10.99,"qty":30}]
     }
 
     //POST /api/restockOrder
     dropRestockOrders(204);
     addRestockOrder(201, order); // new
-    addRestockOrder(201, order2); // new
+    addRestockOrder(422, order2);
     addRestockOrder(422, {...order2, issueDate: '2020/11/11'}) //invalid date
     addRestockOrder(422);
     let order_rejected = {...order}
@@ -183,30 +205,9 @@ describe('test restock order apis', () => {
     let issued_order = {
         issueDate: "2021/11/29 09:33",
         state: "ISSUED",
-        supplierId: 1,
-        products: [
-            {
-                SKUId: 12,
-                description: "a product",
-                price: 10.99,
-                qty: 30
-            },
-            {
-                SKUId: 180,
-                description: "another product",
-                price: 11.99,
-                qty: 20
-            }
-        ],
-        skuItems: []
-    }
-    let issued_order2 = {
-        issueDate: "2021/04/21 06:50",
-        state: "ISSUED",
         supplierId: 2,
         products: [
-            {"SKUId":2,"description":"nice product","price":10.99,"qty":30},
-            {"SKUId":3,"description":"another nice product","price":11.99,"qty":20}
+            {"SKUId":1,"itemId":12,"description":"a product","price":10.99,"qty":30}
         ],
         skuItems: []
     }
@@ -215,7 +216,7 @@ describe('test restock order apis', () => {
     //spostata alla fine per facilitare la lettura
 
     //GET /api/restockOrdersIssued
-    let issued_orders = [{id: 1, ...issued_order}, {id: 2, ...issued_order2}]
+    let issued_orders = [{id: 1, ...issued_order}]
     getAllRestockOrdersIssued(200, issued_orders)
 
     //GET /api/restockOrders/:id
@@ -263,25 +264,23 @@ describe('test restock order apis', () => {
     //GET /api/restockOrders
     order = {
         issueDate: '2021/11/29 09:33',
-        supplierId:  1,
+        supplierId:  2,
         products: [
-            {"SKUId":12,"description":"a product","price":10.99,"qty":30},
-            {"SKUId":180,"description":"another product","price":11.99,"qty":20}
+            {"SKUId":1,"itemId":12,"description":"a product","price":10.99,"qty":30}
         ]
     }
     order2 = {
         issueDate: '2021/04/21 06:50',
         supplierId:  2,
         products: [
-            {"SKUId":2,"description":"nice product","price":10.99,"qty":30},
-            {"SKUId":3,"description":"another nice product","price":11.99,"qty":20}
+            {"SKUId":1,"itemId":12,"description":"a product","price":10.99,"qty":30}
         ]
     }
     let order3 = {
         issueDate: '2021/02/10 18:50',
-        supplierId:  3,
+        supplierId:  2,
         products: [
-            {"SKUId":2,"description":"nice product","price":10.99,"qty":30},
+            {"SKUId":1,"itemId":12,"description":"a product","price":10.99,"qty":30}
         ]
     }
 
@@ -289,23 +288,11 @@ describe('test restock order apis', () => {
         id: 1,
         issueDate: "2021/11/29 09:33",
         state: "ISSUED",
-        supplierId: 1,
-        products: [
-            {
-                SKUId: 12,
-                description: "a product",
-                price: 10.99,
-                qty: 30
-            },
-            {
-                SKUId: 180,
-                description: "another product",
-                price: 11.99,
-                qty: 20
-            }
-        ],
+        supplierId: 2,
+            products: [
+                {"SKUId":1,"itemId":12,"description":"a product","price":10.99,"qty":30}
+            ],
         skuItems: []
-
     }
 
     let notIssuedStateOrder = {
@@ -315,27 +302,23 @@ describe('test restock order apis', () => {
         supplierId: 2,
         transportNote: {deliveryDate: "2021/12/29"},
         products: [
-        {"SKUId":2,"description":"nice product","price":10.99,"qty":30},
-        {"SKUId":3,"description":"another nice product","price":11.99,"qty":20}
-    ],
-        skuItems: [{"SKUId":2,"rfid":"12345678901234567890123456789016"},{"SKUId":3,"rfid":"12345678901234567890123456789017"}]
+            {"SKUId":1,"itemId":12,"description":"a product","price":10.99,"qty":30}
+        ],
+        skuItems: [{"SKUId":12,"itemId":10,"rfid":"12345678901234567890123456789016"},{"SKUId":12, "itemId":10,"rfid":"12345678901234567890123456789017"}]
     }
 
     let deliveryOrder = {
         id: 3,
         issueDate: '2021/02/10 18:50',
         state: 'DELIVERY',
-        supplierId:  3,
+        supplierId:  2,
         transportNote: {deliveryDate: "2021/12/29"},
-        products: [
-            {"SKUId":2,"description":"nice product","price":10.99,"qty":30},
-        ],
+            products: [
+                {"SKUId":1,"itemId":12,"description":"a product","price":10.99,"qty":30}
+            ],
         skuItems: []
 
     }
-
-
-
 
     //GET /api/restockOrders
     dropRestockOrders(204);
@@ -348,7 +331,7 @@ describe('test restock order apis', () => {
     addRestockOrder(201, order2); // new
     addRestockOrder(201, order3); // new
 
-    const skuItems2 = {skuItems: [{"SKUId":2,"rfid":"12345678901234567890123456789016"},{"SKUId":3,"rfid":"12345678901234567890123456789017"}]}
+    const skuItems2 = {skuItems: [{"SKUId":12,"itemId":10,"rfid":"12345678901234567890123456789016"},{"SKUId":12, "itemId":10,"rfid":"12345678901234567890123456789017"}]}
     updateRestockOrder(200, {newState: 'DELIVERY'}, 2)
     transportNote2 = {transportNote: {deliveryDate: "2021/12/29"}}
     updateRestockOrderTransportNote(200, transportNote2, 2)
@@ -364,8 +347,8 @@ describe('test restock order apis', () => {
 
     //GET /api/restockOrders/:id/returnItems     moved to end of file
     updateRestockOrder(200, {newState: 'COMPLETEDRETURN'}, 2)
-    const returnableItems = [{"SKUId":2,"rfid":"12345678901234567890123456789016"}]
-    getAllReturnablesById(200, 2, returnableItems) // ok
+    const returnableItems = [{"SKUId":12,"itemId":10,"rfid":"12345678901234567890123456789016"},{"SKUId":12, "itemId":10,"rfid":"12345678901234567890123456789017"}]
+    getAllReturnablesById(200, 2, []) // ok
 
     getAllReturnablesById(404, 5, returnableItems) // id not found
     getAllReturnablesById(422, 1, returnableItems) // state is not COMPLETEDRETURN
