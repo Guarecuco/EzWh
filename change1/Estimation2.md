@@ -17,9 +17,9 @@ Report effort figures from the timesheet, compute size from the source code.
 ## New development (release 1  -- march 22 to may 25)
 | Measure| Value |
 |---|---|
-|effort E (report here effort in person hours, for all activities in the period, from your timesheet)  ||
-|size S (report here size in LOC of all code written, excluding test cases)  ||
-|productivity P = S/E ||
+|effort E (report here effort in person hours, for all activities in the period, from your timesheet)  | 253 |
+|size S (report here size in LOC of all code written, excluding test cases)  | 5463 |
+|productivity P = S/E | 21.59 |
 |defects before release D_before (number of defects found and fixed before may 25) ||
 
 
@@ -30,7 +30,7 @@ Report effort figures from the timesheet, compute size from the source code.
 |---|---|
 | effort for non-quality ENQ (effort for all activities in release 2, or effort to fix defects found when running official acceptance tests) ||
 | effort for non quality, relative = ENQ / E ||
-|defects after release D (number of defects found running official acceptance tests and  fixed in release 2) ||
+|defects after release D (number of defects found running official acceptance tests and  fixed in release 2) | 76 |
 | defects before release vs defects after release = D/D_before ||
 |DD = defect density = D/S||
 |D_fix = average effort to fix a defect = ENQ / D ||
