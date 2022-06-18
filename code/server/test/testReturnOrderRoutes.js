@@ -62,45 +62,66 @@ function deleteReturnOrder(expectedHTTPStatus, id){
 before(function (done) {
     let order = {
         issueDate: '2021/11/29 09:33',
-        supplierId:  1,
+        supplierId:  2,
         products: [
-            {"SKUId":12,"description":"a product","price":10.99,"qty":30},
-            {"SKUId":180,"description":"another product","price":11.99,"qty":20}
+            {"SKUId":1,"itemId":12,"description":"a product","price":10.99,"qty":30}
         ]
     }
-    let newSkuItem = {
-        "RFID":"12345678901234567890123456789015",
-        "SKUId":1,
-        "DateOfStock":"2021/11/29 12:30"
+
+
+    let item = {
+        id : 12,
+        description : "a new item",
+        price : 10.99,
+        SKUId : 1,
+        supplierId : 2
+    }
+    let sku = {
+        description : "a new sku",
+        weight : 100,
+        volume : 50,
+        notes : "first SKU",
+        price : 10.99,
+        availableQuantity : 50
     }
 
-    agent.delete('/restockOrders/deletetable').then(res => {
-        agent.post('/api/restockOrder')
-            .send(order)
-            .then(function (res) {
-                done();
-            })
+    agent.delete('/api/skus/').then(res => {
+        agent.post('/api/sku').send(sku).then((res) =>
+            agent.delete('/items/dropTable').then(res => {
+                agent.post('/api/item').send(item).then((res) =>
+                    agent.delete('/restockOrders/deletetable').then(res => {
+                    agent.post('/api/restockOrder')
+                        .send(order)
+                        .then(function (res) {
+                            done();
+                        })
+                }))
+            }))
     })
+
 });
 
 
 describe('test return order apis', function() {
     let order = {
-        returnDate:"2021/11/29 09:33",
-        products: [{SKUId:12,description:"a product",price:10.99, RFID:"12345678901234567890123456789016"},
-            {SKUId:180,description:"another product",price:11.99, RFID:"12345678901234567890123456789038"}],
+        returnDate: '2021/11/29 09:33',
+        products: [
+            {SKUId:12,"itemId":10,"description":"a product","price":10.99,"RFID":"12345678901234567890123456789016"}
+        ],
         restockOrderId : 1
     }
     let order2 = {
         returnDate:"2021/02/10 15:10",
-        products: [{SKUId:3,description:"a good product",price:1.99, RFID:"123"},
-            {SKUId:4,description:"another good product",price:5.99,RFID:"456"}],
+        products: [
+            {"SKUId":1,"itemId":12,"description":"a product","price":10.99,"qty":30}
+        ],
         restockOrderId : 10
     }
     let order3 = {
         returnDate:"2021/02/10 15:10",
-        products: [{SKUId:3,description:"a good product",price:1.99, RFID:"123"},
-            {SKUId:4,description:"another good product",price:5.99,RFID:"456"}],
+        products: [
+            {"SKUId":1,"itemId":12,"description":"a product","price":10.99,"qty":30}
+        ],
         restockOrderId : 1
     }
     dropReturnOrders(204)
@@ -128,8 +149,9 @@ describe('test return order apis', function() {
     //GET /api/returnOrders
     order = {
         returnDate:"2021/11/29 09:33",
-        products: [{SKUId:12,description:"a product",price:10.99, RFID:"12345678901234567890123456789016"},
-            {SKUId:180,description:"another product",price:11.99, RFID:"12345678901234567890123456789038"}],
+        products: [
+            {SKUId:12,"itemId":10,"description":"a product","price":10.99,"RFID":"12345678901234567890123456789016"}
+        ],
         restockOrderId : 1
     }
     dropReturnOrders(204)
