@@ -119,6 +119,79 @@ function deleteRestockOrder(expectedHTTPStatus, id){
     })
 }
 
+function dropItemsTable(expectedHTTPStatus){
+    it('Dropping table', function ( done){
+        agent.delete('/items/dropTable')
+            .then(function (res){
+                res.should.have.status(expectedHTTPStatus);
+                done();
+            })
+    })
+}
+
+//GET
+function getAllItems(expectedHTTPStatus, expectedJSON){
+    it('Get a all items', function (done){
+        agent.get('/api/items')
+            .then(function (res) {
+                res.should.have.status(expectedHTTPStatus);
+                res.text.should.equal('['+JSON.stringify(expectedJSON)+']');
+                done();
+            })
+    })
+}
+
+function getItem(expectedHTTPStatus, id, suppID, expectedJSON){
+    it('Get an item', function (done){
+        agent.get('/api/items/' + id + '/' + suppID)
+            .then(function (res) {
+                res.should.have.status(expectedHTTPStatus);
+                if (expectedHTTPStatus === 200)
+                    res.text.should.equal(JSON.stringify(expectedJSON));
+                done();
+            })
+    })
+}
+//POST
+let sku= {
+    description : "a new sku",
+    weight : 100,
+    volume : 50,
+    notes : "first SKU",
+    price : 10.99,
+    availableQuantity : 50
+}
+
+
+function addItem(expectedHTTPStatus, item){
+    it('Adding a new item', function (done){
+        agent.post('/api/sku')
+            .send(sku)
+            .then(
+                agent.post('/api/item')
+                    .send(item)
+                    .then(function (res){
+                        res.should.have.status(expectedHTTPStatus);
+                        done()
+                    })
+            )
+    })
+}
+
+//PUT
+function modItem(expectedHTTPStatus, id, suppID, modification){
+    it('Modifying an item', function (done){
+        agent.put('/api/item/' + id + '/' + suppID)
+            .send(modification)
+            .then(function (res){
+
+                res.should.have.status(expectedHTTPStatus);
+
+                done()
+            })
+    })
+}
+
 before(function (done) {
     let testDescriptor = {
         name:"test descriptor 1",
@@ -160,9 +233,7 @@ before(function (done) {
                         .then(function (res) {
                             agent.delete('/api/skus/').then(res => {
                                 agent.post('/api/sku').send(sku).then((res) =>
-                                    agent.delete('/items/dropTable').then(res => {
-                                        agent.post('/api/item').send(item).then((res) => done())
-                                    }))
+                                    done())
                             })
                         })
                 })
@@ -175,6 +246,19 @@ before(function (done) {
 
 
 describe('test restock order apis', () => {
+
+    dropItemsTable(204);
+    let item = {
+        id : 12,
+        description : "a new item",
+        price : 10.99,
+        SKUId : 1,
+        supplierId : 2
+    }
+    addItem(201, item);
+
+
+
     let order = {
         issueDate: '2021/11/29 09:33',
         supplierId:  2,
@@ -289,9 +373,9 @@ describe('test restock order apis', () => {
         issueDate: "2021/11/29 09:33",
         state: "ISSUED",
         supplierId: 2,
-            products: [
-                {"SKUId":1,"itemId":12,"description":"a product","price":10.99,"qty":30}
-            ],
+        products: [
+            {"SKUId":1,"itemId":12,"description":"a product","price":10.99,"qty":30}
+        ],
         skuItems: []
     }
 
@@ -313,9 +397,9 @@ describe('test restock order apis', () => {
         state: 'DELIVERY',
         supplierId:  2,
         transportNote: {deliveryDate: "2021/12/29"},
-            products: [
-                {"SKUId":1,"itemId":12,"description":"a product","price":10.99,"qty":30}
-            ],
+        products: [
+            {"SKUId":1,"itemId":12,"description":"a product","price":10.99,"qty":30}
+        ],
         skuItems: []
 
     }
