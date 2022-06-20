@@ -128,31 +128,6 @@ function dropItemsTable(expectedHTTPStatus){
             })
     })
 }
-
-//GET
-function getAllItems(expectedHTTPStatus, expectedJSON){
-    it('Get a all items', function (done){
-        agent.get('/api/items')
-            .then(function (res) {
-                res.should.have.status(expectedHTTPStatus);
-                res.text.should.equal('['+JSON.stringify(expectedJSON)+']');
-                done();
-            })
-    })
-}
-
-function getItem(expectedHTTPStatus, id, suppID, expectedJSON){
-    it('Get an item', function (done){
-        agent.get('/api/items/' + id + '/' + suppID)
-            .then(function (res) {
-                res.should.have.status(expectedHTTPStatus);
-                if (expectedHTTPStatus === 200)
-                    res.text.should.equal(JSON.stringify(expectedJSON));
-                done();
-            })
-    })
-}
-//POST
 let sku= {
     description : "a new sku",
     weight : 100,
@@ -175,20 +150,6 @@ function addItem(expectedHTTPStatus, item){
                         done()
                     })
             )
-    })
-}
-
-//PUT
-function modItem(expectedHTTPStatus, id, suppID, modification){
-    it('Modifying an item', function (done){
-        agent.put('/api/item/' + id + '/' + suppID)
-            .send(modification)
-            .then(function (res){
-
-                res.should.have.status(expectedHTTPStatus);
-
-                done()
-            })
     })
 }
 
