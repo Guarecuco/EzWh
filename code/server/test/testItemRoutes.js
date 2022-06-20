@@ -28,13 +28,13 @@ function getAllItems(expectedHTTPStatus, expectedJSON){
     })
 }
 
-function getItem(expectedHTTPStatus, id, expectedJSON){
+function getItem(expectedHTTPStatus, id, suppID, expectedJSON){
     it('Get an item', function (done){
-        agent.get('/api/items/' + id)
+        agent.get('/api/items/' + id + '/' + suppID)
             .then(function (res) {
                 res.should.have.status(expectedHTTPStatus);
                 if (expectedHTTPStatus === 200)
-                    res.text.should.equal('['+JSON.stringify(expectedJSON)+']');
+                    res.text.should.equal(JSON.stringify(expectedJSON));
                 done();
             })
     })
@@ -66,9 +66,9 @@ function addItem(expectedHTTPStatus, item){
 }
 
 //PUT
-function modItem(expectedHTTPStatus, id, modification){
+function modItem(expectedHTTPStatus, id, suppID, modification){
     it('Modifying an item', function (done){
-        agent.put('/api/item/' + id)
+        agent.put('/api/item/' + id + '/' + suppID)
                 .send(modification)
                 .then(function (res){
                  
@@ -110,13 +110,13 @@ describe('test Items apis', () => {
 
     getAllItems(200, item);
 
-    getItem(200, 1, item);
-    getItem(404, 20);
-    getItem(404);
+    getItem(200, 1, 2, item);
+    getItem(404, 20, 3);
+    getItem(422);
 
     
-    modItem(200, 1, modbody)
-    modItem(404, 30, modbody)
+    modItem(200, 1, 2, modbody)
+    modItem(404, 30, 3, modbody)
     modItem(422, 1)
     
 })

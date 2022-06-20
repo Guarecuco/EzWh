@@ -108,7 +108,8 @@ function getAvailableSkuitem(expectedHTTPStatus, SKUId, expectedJSON){
         agent.get('/api/skuitems/sku/'+SKUId)
             .then(function (res){
                 res.should.have.status(expectedHTTPStatus);
-                res.text.should.equal(JSON.stringify(expectedJSON));
+                if(expectedJSON)
+                    res.text.should.equal(JSON.stringify(expectedJSON));
                 done();
             }).catch((err)=>console.log(err));
     })
@@ -137,8 +138,8 @@ describe('Test skuitem APIs', () => {
     newSkuitem(422,"12345678901234567890123456789015","2021/11/29 12:30");    //Empty field
     newSkuitem(422,"12345678901234567890123456789015",1,"");    //Empty field
     newSkuitem(422);    //Empty field
-    newSkuitem(422,"12345678901234567890123456789014",1,"2021/7/29 12:30");    //wrong date format
-    newSkuitem(422,"12345678901234567890123456789015",7,"2021/11/29 12:");    //wrong date format
+    newSkuitem(422,"12345678901234567890123456789014",1,"2021/11/29 :30");    //wrong date format
+    newSkuitem(422,"12345678901234567890123456789015",7,"2021/11/29 12");    //wrong date format
     newSkuitem(422,"12345678901234567890123456789015",1,"2021/30/29 12:30");    //wrong date format
     newSkuitem(201,"12345678901234567890123456789015",1,"2021/11/29 12:30");    //New
 
@@ -191,8 +192,8 @@ describe('Test skuitem APIs', () => {
         "SKUId":1,
         "DateOfStock":"2021/11/30 12:30"
     }]);
-    getAvailableSkuitem(404, 2, {error: `sku not found`});
-    getAvailableSkuitem(404, 0, {error: `sku not found`});
+    getAvailableSkuitem(404, 2);
+    getAvailableSkuitem(422, 0);
 
     //DELETE /api/skuitems/:rfid
     deleteSkuitem(204, "12345678901234567890123456789016");

@@ -41,8 +41,8 @@ router.get('/api/items', async (req,res)=>{
         if (count===0){
             return res.status(404).end();
         }
-         const item = await db.getItem(req.params.id,req.params.supplierId);
-            return res.status(200).json(item[0]);
+        const item = await db.getItem(req.params.id,req.params.supplierId);
+        return res.status(200).json(item[0]);
         
     }
     catch(err){
