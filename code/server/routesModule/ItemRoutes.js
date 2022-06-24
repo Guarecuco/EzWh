@@ -22,7 +22,7 @@ router.get('/api/items', async (req,res)=>{
   }); 
 
 
-  router.get('/api/items/:id', async (req,res)=>{
+  router.get('/api/items/:id/:supplierId', async (req,res)=>{
     try{
 
         const id = Number(req.params.id);
@@ -30,14 +30,19 @@ router.get('/api/items', async (req,res)=>{
             {
                     return res.status(422).end();
             }
+        const sid = Number(req.params.supplierId);
+            if(!(Number.isInteger(sid)&&sid>=0))
+            {
+                    return res.status(422).end();
+            }
         //Check if item exist
         
-        let count = await db.countItems(req.params.id);
+        let count = await db.countItems(req.params.id,req.params.supplierId);
         if (count===0){
             return res.status(404).end();
         }
-         const item = await db.getItem(req.params.id);
-            return res.status(200).json(item[0]);
+        const item = await db.getItem(req.params.id,req.params.supplierId);
+        return res.status(200).json(item[0]);
         
     }
     catch(err){
@@ -77,7 +82,7 @@ router.get('/api/items', async (req,res)=>{
 
 
 //PUT
-router.put('/api/item/:id', async (req,res)=>{
+router.put('/api/item/:id/:supplierId', async (req,res)=>{
     try{
         //Check if body is empty
         if (Object.keys(req.body).length === 0) {
@@ -85,6 +90,7 @@ router.put('/api/item/:id', async (req,res)=>{
         }
         const item = {
             nid: req.params.id,
+            nsid: req.params.supplierId,
             ndescr : req.body.newDescription,
             nprice : req.body.newPrice,
         }
@@ -93,13 +99,18 @@ router.put('/api/item/:id', async (req,res)=>{
              {
                     return res.status(422).end();
              }
+        const sid = Number(req.params.supplierId);
+            if(!(Number.isInteger(sid)&&sid>=0))
+            {
+                    return res.status(422).end();
+            } 
         //Check if item exist
-        let count = await db.countItems(item.nid);
+        let count = await db.countItems(item.nid,item.nsid);
         if (count===0){
             return res.status(404).end();
         }
         //Update test
-        await db.updateItem(item);   
+        await db.updateItem(item);
         return res.status(200).end();
     }
     catch(err){
@@ -109,18 +120,19 @@ router.put('/api/item/:id', async (req,res)=>{
 }); 
 
 //DELETE
-router.delete('/api/items/:id', async (req,res)=>{
+router.delete('/api/items/:id/:supplierId', async (req,res)=>{
     try{
         let nid= req.params.id;
+        let nsid= req.params.supplierId;
 
         //Check if test exist
-        let count = await db.getItem(nid);
+        let count = await db.getItem(nid,nsid);
         if (!count){
             return res.status(404).end();
         }
 
         //Delete test
-        await db.deleteItem(nid);   
+        await db.deleteItem(nid,nsid);   
         return res.status(204).end();
     }
     catch(err){

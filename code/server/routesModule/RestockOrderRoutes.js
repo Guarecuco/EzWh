@@ -4,6 +4,9 @@ const TestResultDAO = require('../dao/TestResultDAO.js')
 const db = new RestockOrderDAO('EzWh.db')
 const testdb = new TestResultDAO('EzWh.db')
 const dates = require('../utilities/dates.js')
+const ItemDAO = require("../dao/ItemDAO");
+const itemdb = new ItemDAO('EzWh.db')
+
 
 const router = express.Router()
 router.use(express.json());
@@ -58,7 +61,6 @@ router.get('/api/restockOrders/:id/returnItems', async (req,res)=>{
         const order = await db.getRestockOrder(req.params.id);
         if (order === undefined)
             return res.status(404).json({error: `No restock order associated to id`})
-
         if (order.state !== 'COMPLETEDRETURN')
             return res.status(422).json({error: `Unprocessable Entity`})
 
@@ -89,6 +91,15 @@ router.post('/api/restockOrder', async (req,res)=>{
           //Check if any field is empty
         if (order === undefined || order.issueDate === undefined ||
             order.supplierId === undefined || order.products === undefined) {
+                return res.status(422).json({error: `Invalid order data`});
+        }
+
+        for (let product of order.products){
+            let item = await itemdb.getItem(product.itemId, order.supplierId)
+            if (item !== undefined && item.length !== undefined)
+                item = item[0]
+
+            if (item === undefined || item.SKUId === undefined || item.SKUId !== product.SKUId)
                 return res.status(422).json({error: `Invalid order data`});
         }
 

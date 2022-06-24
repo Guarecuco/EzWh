@@ -237,7 +237,7 @@ describe('Test sku APIs', () => {
 
     //DELETE /api/skus/:id
     deleteSku(204,1);
-    deleteSku(422,3);
+    deleteSku(204,3);
 
     getSku(404,1,{error: "Sku not found"});
 })

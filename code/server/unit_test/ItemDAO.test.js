@@ -7,7 +7,7 @@ function testAddItem(input) {
         
         await db.addItem(input);
         
-        let res = await db.getItem(input.id);
+        let res = await db.getItem(input.id,input.supplierId);
         expect(res[0].id).toStrictEqual(input.id);
         expect(res[0].description).toStrictEqual(input.description);
         expect(res[0].price).toStrictEqual(input.price);
@@ -21,7 +21,7 @@ function testEditItem(input) {
     test('Edit existing item', async () => {
 
         await db.updateItem(input)
-        let res = await db.getItem(1);
+        let res = await db.getItem(1,2);
         expect(res[0].nid).toStrictEqual(input.id);
         expect(res[0].ndescr).toStrictEqual(input.description);
         expect(res[0].nprice).toStrictEqual(input.price);
@@ -70,23 +70,23 @@ function testGetItem(input) {
 
 
 
-function testDeleteItem(input) {
+function testDeleteItem(input,supp) {
     test('Delete existing item', async () => {
         
-        await db.deleteItem(input);
+        await db.deleteItem(input,supp);
         
-        let res = await db.countItems(input);
+        let res = await db.countItems(input,supp);
 
         expect(res).toStrictEqual(0);
     });
 }
 
-function testDeleteAllItems(input) {
+function testDeleteAllItems(input,supp) {
     test('Delete existing item', async () => {
         
         await db.deleteAllItems();
         
-        let res = await db.countItems(input);
+        let res = await db.countItems(input,supp);
 
         expect(res).toStrictEqual(0);
     });
@@ -129,7 +129,7 @@ describe('Test TestDescriptor DAO', () => {
     testEditItem(edit);
     testGetItems(edit);
     testGetItem(edit);
-    testDeleteItem(1);
+    testDeleteItem(1,2);
     testAddItem(item2);
-    testDeleteAllItems(item2);
+    testDeleteAllItems(item2,2);
 });

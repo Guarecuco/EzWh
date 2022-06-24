@@ -7,9 +7,9 @@ Authors:
 * Daniel Guarecuco
 * Zoltan Mazzuco 
 
-Date: 25 May, 2022
+Date: 21 June, 2022
 
-Version: 2.0
+Version: 2.5
 
 
 # Contents
@@ -62,6 +62,7 @@ top to bottom direction
 class DataImpl {
   SKU
   SKUItem
+  Item
   Position
   TestDescriptor
   TestResults
@@ -84,6 +85,13 @@ class DataImpl {
   void : updateSKUItem(int RFID,JSON info)
   int : deleteSKUItem(int RFID)
   --
+ List<Item> : getAllItems()
+Item: getItemByIdAndSupplierId(int id, int supplierdId)
+int: addItem(JSON info)
+void: updateItemByIdAndSupplierId(int id, int supplierdId, JSON info)
+void: deleteItemByIdAndSupplierId(int id, int supplierdId)
+ --
+
   Position : getAllPositions()
   int : addPosition(JSON info)
   void : updatePosition(string positionID, JSON info)
@@ -161,6 +169,20 @@ Class User {
   void:storeUser(user)
   void:deleteUser(user)
   void:updateUser(user)
+
+}
+
+Class Item{
+ID
+description
+price
+SKUId
+supplierId
+ List<Item> : getAllItems()
+Item: getItemByIdAndSupplierId(int id, int supplierdId)
+int: addItem(JSON info)
+void: updateItemByIdAndSupplierId(int id, int supplierdId, JSON info)
+void: deleteItemByIdAndSupplierId(int id, int supplierdId)
 }
 
 class Supplier {
@@ -178,22 +200,6 @@ class Customer {
   surname
 }
 
-class Item {
-  ID
-  description
-  price
-  SKUId
-  supplierId
-   int: newTableItems()
-  void: getItems()
-  void: getItem(json)
-void: countItems(json)
-int: addItem(json)
-int: updateItem(json)
-int: deleteItem(json)
-boolean: deleteAllItems()
-boolean: dropItemsTable()
-}
 
 class A {
   quantity
@@ -366,9 +372,11 @@ class InternalOrder {
   List<products>:getInternalOrdersProductsCompleted(order.id)
   List<InternalOrder>:getInternalOrdersByState(state)
   InternalOrder:getInternalOrdersbyID(order.id)
+
  }
 
 DataImpl – “*” SKUItem
+DataImpl – “*” Item
 DataImpl – “*” SKU
 DataImpl – “*” Position
 DataImpl -- “*” User
@@ -379,8 +387,11 @@ RestockOrder -- "*" Item
 RestockOrder -- "0..1" TransportNote
 RestockOrder -- "0..1" ReturnOrder : refers
 RestockOrder -- "*" SKUItem
+RestockOrder -- "*" Item
 SKUItem "*" -- "0..1" ReturnOrder
+Item "*" -- "0..1" ReturnOrder
 SKU -- "*" SKUItem
+SKU – “*” Item
 SKU -- "*" Item : corresponds to 
 Inventory -- "*" SKU
 SKU "*" -- "*" TestDescriptor
